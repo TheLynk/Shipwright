@@ -23,7 +23,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,    []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_CHILD,       []{return logic->IsChild;}),
+        Entrance(RR_SPIRIT_TEMPLE_CHILD,       []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_SPIRIT_TEMPLE_EARLY_ADULT, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
     });
 
@@ -43,7 +43,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_CLIMB, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
+        Entrance(RR_SPIRIT_TEMPLE_CHILD_CLIMB, []{return logic->CanUse(RG_CRAWL) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD_CLIMB] = Region("Child Spirit Temple Climb", SCENE_SPIRIT_TEMPLE, {}, {
@@ -165,7 +165,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,                []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,              []{return logic->IsChild;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,              []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH, []{return logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5);}),
     });
 
@@ -183,7 +183,7 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH,        []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->IsChild && logic->MQSpiritCrawlBoulder;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->CanUse(RG_CRAWL) && logic->MQSpiritCrawlBoulder;}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH] = Region("Spirit Temple MQ 1F Gibdo Room South", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -249,7 +249,7 @@ void RegionTable_Init_SpiritTemple() {
         EventAccess(&logic->MQSpiritCrawlBoulder,    []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->IsChild && logic->MQSpiritCrawlBoulder;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->CanUse(RG_CRAWL) && logic->MQSpiritCrawlBoulder;}),
         //This tracks possible child access, if adult has not entered STATUE_ROOM. Certain Child Access is checked for separately as 7 Keys
         Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
     });

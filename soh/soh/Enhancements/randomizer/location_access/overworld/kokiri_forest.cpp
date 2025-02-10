@@ -12,7 +12,7 @@ void RegionTable_Init_KokiriForest() {
         EventAccess(&logic->ShowedMidoSwordAndShield, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
     }, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->IsChild),
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->CanUse(RG_CRAWL)),
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanAttack() && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
@@ -27,8 +27,8 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_SOUTH_GRASS_EAST_RUPEE,  logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_WEST_RUPEE,  logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_EAST_RUPEE,  logic->IsChild),
-        LOCATION(RC_KF_BOULDER_RUPEE_1,         logic->IsChild),
-        LOCATION(RC_KF_BOULDER_RUPEE_2,         logic->IsChild),
+        LOCATION(RC_KF_BOULDER_RUPEE_1,         logic->CanUse(RG_CRAWL)),
+        LOCATION(RC_KF_BOULDER_RUPEE_2,         logic->CanUse(RG_CRAWL)),
         LOCATION(RC_KF_BEAN_RUPEE_1,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_KF_BEAN_RUPEE_2,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_KF_BEAN_RUPEE_3,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),

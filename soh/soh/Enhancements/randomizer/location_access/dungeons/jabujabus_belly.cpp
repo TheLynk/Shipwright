@@ -25,7 +25,7 @@ void RegionTable_Init_JabuJabusBelly() {
     //Combines Lift room middle and lower, 1F holes room, the forked corridor, and it's side rooms
     areaTable[RR_JABU_JABUS_BELLY_MAIN] = Region("Jabu Jabus Belly Main", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuWestTentacle, []{return logic->JabuRutoIn1F && logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
+        EVENT_ACCESS(JabuWestTentacle, logic->JabuRutoIn1F && logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG)),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                    logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku()),
@@ -48,8 +48,8 @@ void RegionTable_Init_JabuJabusBelly() {
     //contains B1 of hole room (aside from the ledge leading to big octo), 2 octorock room and north water switch room
     areaTable[RR_JABU_JABUS_BELLY_B1_NORTH] = Region("Jabu Jabus Belly B1 North", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuRutoIn1F, []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
-        EventAccess(&logic->FairyPot,     []{return logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK));}),
+        EVENT_ACCESS(JabuRutoIn1F, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
+        EVENT_ACCESS(FairyPot,     logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, logic->HookshotOrBoomerang()),
@@ -70,7 +70,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE] = Region("Jabu Jabus Belly Water Switch Room Ledge", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return true;}),
+        EVENT_ACCESS(FairyPot, true),
     }, {
         //Locations
         //this is the logic for climbing back and forth to use the pots to kill the skull...                                                       or killing the skull before climbing to grab the token
@@ -105,7 +105,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BLUE_TENTACLE] = Region("Jabu Jabus Belly Blue Tentacle", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuEastTentacle, []{return logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
+        EVENT_ACCESS(JabuEastTentacle, logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG)),
     }, {}, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MAIN, []{return logic->JabuEastTentacle;}),
@@ -113,7 +113,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_GREEN_TENTACLE] = Region("Jabu Jabus Belly Green Tentacle", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuNorthTentacle, []{return logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
+        EVENT_ACCESS(JabuNorthTentacle, logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG)),
     }, {}, {
         //Exits
         //implied logic->CanKillEnemy(RE_BARI)
@@ -133,8 +133,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_ABOVE_BIGOCTO] = Region("Jabu Jabus Belly Above Bigocto", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return true;}),
-        EventAccess(&logic->NutPot,   []{return true;}),
+        EVENT_ACCESS(FairyPot, true),
+        EVENT_ACCESS(NutPot,   true),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_1, logic->CanBreakPots()),
@@ -147,7 +147,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_LIFT_UPPER] = Region("Jabu Jabus Belly Lift Upper", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->LoweredJabuPath, []{return true;}),
+        EVENT_ACCESS(LoweredJabuPath, true),
     }, {}, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MAIN, []{return true;}),
@@ -168,7 +168,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_BEGINNING] = Region("Jabu Jabus Belly MQ Beginning", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot, []{return true;}),
+        EVENT_ACCESS(NutPot, true),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             logic->BlastOrSmash()),
@@ -185,7 +185,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM] = Region("Jabu Jabus Belly MQ Lift Room", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQJabuLiftRoomCow, []{return logic->CanUse(RG_FAIRY_SLINGSHOT);}),
+        EVENT_ACCESS(MQJabuLiftRoomCow, logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,  true),
@@ -205,7 +205,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_UNDERWATER_ALCOVE] = Region("Jabu Jabus Belly MQ Underwater Alcove", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQJabuHolesRoomDoor, []{return true;}),
+        EVENT_ACCESS(MQJabuHolesRoomDoor, true),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, logic->CanHitSwitch(ED_HOOKSHOT, true) || (ctx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG) && logic->HasItem(RG_BRONZE_SCALE))),
@@ -257,7 +257,7 @@ void RegionTable_Init_JabuJabusBelly() {
     //Includes Like Like room
     areaTable[RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR] = Region("Jabu Jabus Belly MQ Forked Corridor", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuNorthTentacle, []{return Here(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, []{return logic->BlastOrSmash();}) && logic->CanUse(RG_BOOMERANG);}),
+        EVENT_ACCESS(JabuNorthTentacle, Here(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, []{return logic->BlastOrSmash();}) && logic->CanUse(RG_BOOMERANG)),
     }, {
         //Locations
         //Implies CanKillEnemy(RE_LIKE_LIKE)
@@ -276,7 +276,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS] = Region("Jabu Jabus Belly MQ West Forked Rooms", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuWestTentacle, []{return logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
+        EVENT_ACCESS(JabuWestTentacle, logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG)),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM, Here(RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS, []{return logic->HasExplosives();}) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -308,7 +308,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_MQ_PAST_OCTO] = Region("Jabu Jabus Belly MQ Past Octo", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //if a hover up to the path is added, this will want it's own room
-        EventAccess(&logic->LoweredJabuPath, []{return logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT);}),
+        EVENT_ACCESS(LoweredJabuPath, logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_COW,                    logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
@@ -333,7 +333,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_EAST_ROOM] = Region("Jabu Jabus Belly MQ Boss Region", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return true;}),
+        EVENT_ACCESS(FairyPot, true),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,     logic->CanUse(RG_FAIRY_SLINGSHOT)),
@@ -363,7 +363,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", {}, NO_DAY_NIGHT_CYCLE, {
         // Events //todo: add pot kill trick
-        EventAccess(&logic->JabuJabusBellyClear, []{return logic->JabuJabusBellyClear || logic->CanKillEnemy(RE_BARINADE);}),
+        EVENT_ACCESS(JabuJabusBellyClear, logic->JabuJabusBellyClear || logic->CanKillEnemy(RE_BARINADE)),
     }, {
         // Locations
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),

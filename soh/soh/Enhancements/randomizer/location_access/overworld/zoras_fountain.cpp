@@ -7,8 +7,8 @@ void RegionTable_Init_ZorasFountain() {
     // clang-format off
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", "Zoras Fountain", {RA_ZORAS_FOUNTAIN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(ButterflyFairy,   logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay)),
     }, {
         //Locations
         LOCATION(RC_ZF_GS_TREE,                      logic->IsChild),

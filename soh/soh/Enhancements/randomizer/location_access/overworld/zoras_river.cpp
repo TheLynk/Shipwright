@@ -28,10 +28,10 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZORAS_RIVER] = Region("Zora River", "Zora River", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugShrub,         []{return logic->BugShrub         || logic->CanCutShrubs();}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(BeanPlantFairy,   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        EVENT_ACCESS(ButterflyFairy,   logic->ButterflyFairy   || logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(BugShrub,         logic->BugShrub         || logic->CanCutShrubs()),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
@@ -97,7 +97,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", "ZR Fairy Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Event
-        EventAccess(&logic->FreeFairies, []{return true;}),
+        EVENT_ACCESS(FreeFairies, true),
     }, {
         //Locations
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_1, true),

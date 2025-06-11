@@ -7,7 +7,7 @@ void RegionTable_Init_GerudoValley() {
     // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BugRock, []{return logic->BugRock || logic->IsChild;}),
+        EVENT_ACCESS(BugRock, logic->BugRock || logic->IsChild),
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -23,8 +23,8 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(BeanPlantFairy,   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Locations
         LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE)),//can use cucco as child

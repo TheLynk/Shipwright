@@ -7,8 +7,8 @@ void RegionTable_Init_HyruleField() {
     // clang-format off
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", "Hyrule Field", {RA_HYRULE_FIELD}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BigPoeKill,       []{return logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_EPONA) && logic->HasBottle();}),
-        EventAccess(&logic->BorrowRightMasks, []{return logic->IsChild && logic->BorrowBunnyHood && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(BigPoeKill,       logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_EPONA) && logic->HasBottle()),
+        EVENT_ACCESS(BorrowRightMasks, logic->IsChild && logic->BorrowBunnyHood && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET),
     }, {
         //Locations
         LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,   logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),
@@ -135,8 +135,8 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_COW_GROTTO_BEHIND_WEBS] = Region("HF Cow Grotto Behind Webs", "HF Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BugShrub,         []{return logic->CanCutShrubs();}),
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
+        EVENT_ACCESS(BugShrub,         logic->CanCutShrubs()),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_HF_GS_COW_GROTTO,                     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -173,7 +173,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", "HF Fairy Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FreeFairies, []{return true;}),
+        EVENT_ACCESS(FreeFairies, true),
     }, {
         //Locations
         LOCATION(RC_HF_FAIRY_GROTTO_FAIRY_1, true),

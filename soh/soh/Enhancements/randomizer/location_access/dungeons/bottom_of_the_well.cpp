@@ -19,9 +19,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_PERIMETER] = Region("Bottom of the Well Perimeter", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->StickPot,               []{return true;}),
-        EventAccess(&logic->NutPot,                 []{return true;}),
-        EventAccess(&logic->LoweredWaterInsideBotw, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(StickPot,               true),
+        EVENT_ACCESS(NutPot,                 true),
+        EVENT_ACCESS(LoweredWaterInsideBotw, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives()),
@@ -97,8 +97,8 @@ void RegionTable_Init_BottomOfTheWell() {
     //If the player can voidwarp into one of these rooms they will need splitting up, and Fake walls will need specifying into middle and the rest moved to perimeter
     areaTable[RR_BOTTOM_OF_THE_WELL_INNER_ROOMS] = Region("Bottom of the Well Inner Rooms", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EVENT_ACCESS(DekuBabaSticks, logic->CanGetDekuBabaSticks()),
+        EVENT_ACCESS(DekuBabaNuts,   logic->CanGetDekuBabaNuts()),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -192,11 +192,11 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //technically obsolete due to a wonder item fairy which only needs a projectile, but we don't have an event var for it yet
-        EventAccess(&logic->FairyPot,               []{return Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets();}),
+        EVENT_ACCESS(FairyPot,               Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         //It is possible to hit the water switch with a pot from RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
-        EventAccess(&logic->LoweredWaterInsideBotw, []{return logic->CanJumpslash() || logic->CanUseProjectile();}),
+        EVENT_ACCESS(LoweredWaterInsideBotw, logic->CanJumpslash() || logic->CanUseProjectile()),
     }, {
         //Locations
         //Implies CanBreakPots()
@@ -216,7 +216,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_WEST_ROOM_SWITCH] = Region("Bottom of the Well MQ West Room Switch", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->OpenedWestRoomMQBotw, []{return true;}),
+        EVENT_ACCESS(OpenedWestRoomMQBotw, true),
     }, {}, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_MQ_PITS));}),
@@ -236,7 +236,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE] = Region("Bottom of the Well MQ Locked Cage", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->OpenedMiddleHoleMQBotw, []{return logic->HasExplosives();}),
+        EVENT_ACCESS(OpenedMiddleHoleMQBotw, logic->HasExplosives()),
     }, {}, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),

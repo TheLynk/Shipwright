@@ -7,7 +7,7 @@ void RegionTable_Init_DeathMountainTrail() {
     // clang-format off
     areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
+        EVENT_ACCESS(BeanPlantFairy, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
     }, {
         //Locations
         LOCATION(RC_DMT_CHEST,                    logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))),
@@ -32,8 +32,8 @@ void RegionTable_Init_DeathMountainTrail() {
 
     areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BugRock,          []{return logic->BugRock            || logic->IsChild;}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(BugRock,          logic->BugRock            || logic->IsChild),
     }, {
         //Locations
         LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),

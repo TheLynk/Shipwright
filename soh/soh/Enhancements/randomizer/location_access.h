@@ -17,10 +17,16 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class Region;
 
+std::string CleanCheckConditionString(std::string condition);
+
+#define EVENT_ACCESS(event, condition) \
+    EventAccess(&logic->event, #event, [] { return condition; }, CleanCheckConditionString(#condition))
+
 class EventAccess {
   public:
-    explicit EventAccess(bool* event_, ConditionFn condition_function_)
-        : event(event_), condition_function(condition_function_) {
+    explicit EventAccess(bool* event_, std::string event_str_, ConditionFn condition_function_,
+                         std::string condition_str_)
+        : event(event_), event_str(event_str_), condition_function(condition_function_), condition_str(condition_str_) {
     }
 
     bool ConditionsMet() const {
@@ -53,7 +59,9 @@ class EventAccess {
 
   private:
     bool* event;
+    std::string event_str;
     ConditionFn condition_function;
+    std::string condition_str;
 };
 
 std::string CleanCheckConditionString(std::string condition);

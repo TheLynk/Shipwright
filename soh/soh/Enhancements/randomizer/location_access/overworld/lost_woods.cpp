@@ -12,10 +12,10 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->BugShrub,         []{return logic->IsChild && logic->CanCutShrubs();}),
-        EventAccess(&logic->BorrowSpookyMask, []{return logic->IsChild && logic->BorrowSkullMask && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(BeanPlantFairy,   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        EVENT_ACCESS(BugShrub,         logic->IsChild && logic->CanCutShrubs()),
+        EVENT_ACCESS(BorrowSpookyMask, logic->IsChild && logic->BorrowSkullMask && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
@@ -65,7 +65,7 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || logic->CanUse(RG_STICKS);}),
+        EVENT_ACCESS(ButterflyFairy, logic->ButterflyFairy || logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),

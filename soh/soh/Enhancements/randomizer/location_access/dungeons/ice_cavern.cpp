@@ -27,7 +27,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MAIN] = Region("Ice Cavern", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BlueFireAccess, []{return logic->IsAdult;}),
+        EVENT_ACCESS(BlueFireAccess, logic->IsAdult),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MAP_CHEST,               logic->BlueFire() && logic->IsAdult),
@@ -71,7 +71,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return true;}),
+        EVENT_ACCESS(FairyPot, true),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1, logic->CanBreakPots()),
@@ -93,7 +93,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //Child can fit between the stalagmites on the left hand side
-        EventAccess(&logic->BlueFireAccess,  []{return logic->IsChild || logic->CanJumpslash() || logic->HasExplosives();}),
+        EVENT_ACCESS(BlueFireAccess,  logic->IsChild || logic->CanJumpslash() || logic->HasExplosives()),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();})),
@@ -132,7 +132,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Region("Ice Cavern MQ Compass Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BlueFireAccess, []{return true;}),
+        EVENT_ACCESS(BlueFireAccess, true),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    true),

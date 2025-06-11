@@ -14,7 +14,7 @@ void RegionTable_Init_DeathMountainCrater() {
 
     areaTable[RR_DMC_UPPER_LOCAL] = Region("DMC Upper Local", "Death Mountain Crater", {RA_DEATH_MOUNTAIN_CRATER}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->GossipStoneFairy || (logic->HasExplosives() && logic->CallGossipFairyExceptSuns() && (logic->FireTimer() >= 16 || logic->Hearts() >= 3));}),
+        EVENT_ACCESS(GossipStoneFairy, logic->GossipStoneFairy || (logic->HasExplosives() && logic->CallGossipFairyExceptSuns() && (logic->FireTimer() >= 16 || logic->Hearts() >= 3))),
     }, {
         //Locations
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,  logic->FireTimer() >= 16 || logic->Hearts() >= 3),
@@ -75,7 +75,7 @@ void RegionTable_Init_DeathMountainCrater() {
 
     areaTable[RR_DMC_CENTRAL_LOCAL] = Region("DMC Central Local", "Death Mountain Crater", {RA_DEATH_MOUNTAIN_CRATER}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3);}),
+        EVENT_ACCESS(BeanPlantFairy, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
     }, {
         //Locations
         LOCATION(RC_DMC_GS_BEAN_PATCH,                (logic->FireTimer() >= 8 || logic->Hearts() >= 3) && logic->CanSpawnSoilSkull() && logic->CanAttack()),

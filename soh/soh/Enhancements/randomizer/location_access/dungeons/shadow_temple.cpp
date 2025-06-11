@@ -18,7 +18,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BEGINNING] = Region("Shadow Temple Beginning", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot, []{return true;}),
+        EVENT_ACCESS(NutPot, true),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MAP_CHEST,              logic->CanJumpslashExceptHammer()),
@@ -39,7 +39,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_FIRST_BEAMOS] = Region("Shadow Temple First Beamos", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return true;}), //This fairy pot is only on 3DS
+        EVENT_ACCESS(FairyPot, true), //This fairy pot is only on 3DS
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_COMPASS_CHEST,            logic->CanJumpslashExceptHammer()),
@@ -260,13 +260,13 @@ void RegionTable_Init_ShadowTemple() {
     //while the spikes here are annoying, they don't really stop you doing anything, so I'll assume either lens trick, lens to see them, or taking damage from them. Not hovers though as a new player won't see the threat without lens to react properly
     areaTable[RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM] = Region("Shadow Temple MQ Floor Spikes Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events                                        //lens or trick is always required for hookshot targets. We handle it here to not complicate the RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_UPPER_DOOR logic
-        EventAccess(&logic->MQShadowFloorSpikeRupees, []{return (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
+        EVENT_ACCESS(MQShadowFloorSpikeRupees, (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                 //Upper door side high rupee needs (hookshot and redead kill(as either age) for chest and adult) or longshot. hovers can cross from the left side with a backflip but that would be a trick
                                                                 //East midair rupee needs (hookshot and(hover boots or jumpslash from the upper door platform)) or longshot.
                                                                 //Combined these are longshot or (IsAdult && hookshot && (CanJumpslash || (Hover Boots && Here(CanKillRedeads))))
                                                                 (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanJumpslash() || (logic->CanUse(RG_HOVER_BOOTS) && Here(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, []{return logic->CanKillEnemy(RE_REDEAD);}))))) &&
                                                                 //1 rupee is in spikes, needs hovers or damage
-                                                                (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS));}),
+                                                                (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, logic->CanKillEnemy(RE_REDEAD) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->TakeDamage() || logic->CanUse(RG_LENS_OF_TRUTH))),
@@ -304,7 +304,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM] = Region("Shadow Temple MQ B4 Gibdo Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot, []{return true;}),
+        EVENT_ACCESS(NutPot, true),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST,  logic->CanKillEnemy(RE_GIBDO)),
@@ -321,7 +321,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_DOCK] = Region("Shadow Temple MQ Dock", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ShadowShortcutBlock, []{return logic->HasItem(RG_GORONS_BRACELET);}),
+        EVENT_ACCESS(ShadowShortcutBlock, logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
@@ -408,7 +408,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", "Shadow Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->ShadowTempleClear, []{return logic->ShadowTempleClear || logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EVENT_ACCESS(ShadowTempleClear, logic->ShadowTempleClear || logic->CanKillEnemy(RE_BONGO_BONGO)),
     }, {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->ShadowTempleClear),

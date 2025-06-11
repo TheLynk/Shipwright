@@ -7,7 +7,7 @@ void RegionTable_Init_TempleOfTime() {
     // clang-format off
     areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", "ToT Entrance", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY,         logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
@@ -42,7 +42,7 @@ void RegionTable_Init_TempleOfTime() {
 
     areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Region("Beyond Door of Time", "Beyond Door of Time", {RA_TEMPLE_OF_TIME}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        //EventAccess(&logic->TimeTravel, []{return true;}),
+        //EVENT_ACCESS(TimeTravel, true),
     }, {
         //Locations
         LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),

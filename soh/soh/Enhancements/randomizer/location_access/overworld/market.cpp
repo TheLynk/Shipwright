@@ -51,7 +51,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", "Market Guard House", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CanEmptyBigPoes,   []{return logic->IsAdult;}),
+        EVENT_ACCESS(CanEmptyBigPoes,   logic->IsAdult),
     }, {
         //Locations
         LOCATION(RC_MARKET_10_BIG_POES,          logic->IsAdult && (logic->BigPoeKill || logic->BigPoes > ctx->GetOption(RSK_BIG_POE_COUNT).Get())),
@@ -141,11 +141,11 @@ void RegionTable_Init_Market() {
         //Currently, mask swap in menu doesn't need access to the mask shop
         //If it is forced on/a setting, a copy of these events should be added to root
         //it also doesn't need you to open kak gate, but that might be best treated as a bug
-        EventAccess(&logic->CanBorrowMasks,   []{return logic->HasItem(RG_ZELDAS_LETTER) && logic->KakarikoVillageGateOpen;}),
-        EventAccess(&logic->BorrowSkullMask,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
-        EventAccess(&logic->BorrowSpookyMask, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
-        EventAccess(&logic->BorrowBunnyHood,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
-        EventAccess(&logic->BorrowRightMasks, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
+        EVENT_ACCESS(CanBorrowMasks,   logic->HasItem(RG_ZELDAS_LETTER) && logic->KakarikoVillageGateOpen),
+        EVENT_ACCESS(BorrowSkullMask,  ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks),
+        EVENT_ACCESS(BorrowSpookyMask, ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks),
+        EVENT_ACCESS(BorrowBunnyHood,  ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks),
+        EVENT_ACCESS(BorrowRightMasks, ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks),
     }, {
         //Locations
         LOCATION(RC_MASK_SHOP_HINT, true),
@@ -164,7 +164,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_BOMBCHU_BOWLING] = Region("Market Bombchu Bowling", "Market Bombchu Bowling", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CouldPlayBowling, []{return (logic->HasItem(RG_CHILD_WALLET));}),
+        EVENT_ACCESS(CouldPlayBowling, (logic->HasItem(RG_CHILD_WALLET))),
     }, {
         //Locations
         LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->CouldPlayBowling && logic->BombchusEnabled()),

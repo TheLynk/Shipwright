@@ -151,7 +151,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Maze Center", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQGTGMazeSwitch, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(MQGTGMazeSwitch, logic->CanUse(RG_MEGATON_HAMMER)),
     }, 
     {   //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE, logic->CanBreakCrates()),
@@ -178,7 +178,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM] = Region("Gerudo Training Ground MQ Stalfos Room", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BlueFireAccess, []{return true;}),
+        EVENT_ACCESS(BlueFireAccess, true),
     }, {
         //Locations
         //implies logic->CanKillEnemy(RE_BIG_SKULLTULA)
@@ -233,8 +233,8 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_SWITCH_LEDGE] = Region("Gerudo Training Ground MQ Switch Ledge", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQGTGRightSideSwitch,    []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        EventAccess(&logic->GTGPlatformSilverRupees, []{return logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(MQGTGRightSideSwitch,    logic->CanUse(RG_MEGATON_HAMMER)),
+        EVENT_ACCESS(GTGPlatformSilverRupees, logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  []{return logic->CanUse(RG_FIRE_ARROWS);}),
@@ -263,7 +263,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH] = Region("Gerudo Training Ground MQ Platforms Unlit Torch", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GTGPlatformSilverRupees, []{return logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(GTGPlatformSilverRupees, logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_UNDERWATER,           []{return logic->GTGPlatformSilverRupees;}),
@@ -275,7 +275,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS] = Region("Gerudo Training Ground Torch Side Platforms", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //this torch shot is possible as child but tight and obtuse enough to be a trick
-        EventAccess(&logic->GTGPlatformSilverRupees, []{return ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(GTGPlatformSilverRupees, ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  []{return ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS);}),
@@ -296,7 +296,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT] = Region("Gerudo Training Ground MQ Maze Right", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GTGPlatformSilverRupees, []{return logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(GTGPlatformSilverRupees, logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, true),

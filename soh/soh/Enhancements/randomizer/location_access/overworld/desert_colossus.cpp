@@ -7,8 +7,8 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPond, []{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->BugRock,   []{return true;}),
+        EVENT_ACCESS(FairyPond, logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS)),
+        EVENT_ACCESS(BugRock,   true),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_FREESTANDING_POH,       logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS)),
@@ -34,7 +34,7 @@ void RegionTable_Init_DesertColossus() {
     //specifically the full oasis, after the fairies have spawned
     areaTable[RR_DESERT_COLOSSUS_OASIS] = Region("Desert Colossus Oasis", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPond, []{return true;}),
+        EVENT_ACCESS(FairyPond, true),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_OASIS_FAIRY_1, true),

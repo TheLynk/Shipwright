@@ -7,12 +7,12 @@ void RegionTable_Init_LakeHylia() {
     // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugShrub,         []{return logic->BugShrub         || (logic->IsChild && logic->CanCutShrubs());}),
-        EventAccess(&logic->ChildScarecrow,   []{return logic->ChildScarecrow   || (logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2);}),
-        EventAccess(&logic->AdultScarecrow,   []{return logic->AdultScarecrow   || (logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2);}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(BeanPlantFairy,   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        EVENT_ACCESS(ButterflyFairy,   logic->ButterflyFairy   || logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(BugShrub,         logic->BugShrub         || (logic->IsChild && logic->CanCutShrubs())),
+        EVENT_ACCESS(ChildScarecrow,   logic->ChildScarecrow   || (logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2)),
+        EVENT_ACCESS(AdultScarecrow,   logic->AdultScarecrow   || (logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2)),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),

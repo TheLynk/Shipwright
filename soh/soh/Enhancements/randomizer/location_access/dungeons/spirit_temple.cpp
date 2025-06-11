@@ -29,7 +29,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD] = Region("Child Spirit Temple", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutCrate, []{return true;}),
+        EVENT_ACCESS(NutCrate, true),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,               (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
@@ -172,7 +172,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_WEST] = Region("Spirit Temple MQ 1F West", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //not technically a rusted switch, but a boulder through a wall, but is part of the same trick on N64
-        EventAccess(&logic->MQSpiritCrawlBoulder, []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
+        EVENT_ACCESS(MQSpiritCrawlBoulder, logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER))),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, logic->MQSpiritTimeTravelChest),
@@ -203,7 +203,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM] = Region("Spirit Temple MQ Turntable Room", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //For non-fairy pot items, you can also get them with rang without killing the stalfos
-        EventAccess(&logic->FairyPot, []{return Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        EVENT_ACCESS(FairyPot, Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);})),
     }, {
         //Locations
         //implies logic->CanBreakPots()
@@ -219,7 +219,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH] = Region("Spirit Temple MQ Map Room North", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQSpiritMapRoomEnemies, []{return logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE);}),
+        EVENT_ACCESS(MQSpiritMapRoomEnemies, logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE)),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,  logic->MQSpiritMapRoomEnemies),
@@ -232,7 +232,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH] = Region("Spirit Temple MQ Map Room South", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //You can lure the keese over by aggroing them with dins if you use it as close to the torch keese as possible, but it's a trick as it's not intuitive and basically never comes up
-        EventAccess(&logic->MQSpiritMapRoomEnemies, []{return logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE, ED_BOOMERANG);}),
+        EVENT_ACCESS(MQSpiritMapRoomEnemies, logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE, ED_BOOMERANG)),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST, true),
@@ -245,8 +245,8 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH] = Region("Spirit Temple MQ West 1F Rusted Switch", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQSpiritTimeTravelChest, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        EventAccess(&logic->MQSpiritCrawlBoulder,    []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
+        EVENT_ACCESS(MQSpiritTimeTravelChest, logic->CanUse(RG_MEGATON_HAMMER)),
+        EVENT_ACCESS(MQSpiritCrawlBoulder,    logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER))),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->IsChild && logic->MQSpiritCrawlBoulder;}),
@@ -373,7 +373,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F] = Region("Spirit Temple MQ Three Suns Room 2F", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //implies logic->CanKillEnemy(RE_WALLMASTER). If we have lights, we can kill stalfos and wallmasters with bow
-        EventAccess(&logic->MQSpirit3SunsEnemies, []{return (logic->CanUse(RG_MIRROR_SHIELD) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS));}),
+        EVENT_ACCESS(MQSpirit3SunsEnemies, (logic->CanUse(RG_MIRROR_SHIELD) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   []{return true;}),
@@ -389,7 +389,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_EAST] = Region("Spirit Temple MQ 1F East", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         //Assumes RR_SPIRIT_TEMPLE_MQ_LOBBY access
-        EventAccess(&logic->Spirit1FSilverRupees, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(Spirit1FSilverRupees, logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_1, logic->CanBreakPots()),
@@ -556,7 +556,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ROOM] = Region("Spirit Temple Boss Room", "Spirit Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->SpiritTempleClear, []{return logic->SpiritTempleClear || logic->CanKillEnemy(RE_TWINROVA);}),
+        EVENT_ACCESS(SpiritTempleClear, logic->SpiritTempleClear || logic->CanKillEnemy(RE_TWINROVA)),
     }, {
         // Locations
         LOCATION(RC_SPIRIT_TEMPLE_TWINROVA_HEART, logic->SpiritTempleClear),

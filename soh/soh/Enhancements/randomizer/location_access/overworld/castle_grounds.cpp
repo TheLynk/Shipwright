@@ -16,9 +16,9 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", "Castle Grounds", {RA_HYRULE_CASTLE}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugRock,          []{return true;}),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(ButterflyFairy,   logic->ButterflyFairy   || logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(BugRock,          true),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
@@ -67,9 +67,9 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", "HC Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot,           []{return true;}),
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->WanderingBugs,    []{return true;}),
+        EVENT_ACCESS(NutPot,           true),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(WanderingBugs,    true),
     }, {
         //Locations
         LOCATION(RC_HC_GS_STORMS_GROTTO,                     logic->HookshotOrBoomerang()),
@@ -87,7 +87,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", "Castle Grounds", {RA_OUTSIDE_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BuiltRainbowBridge, []{return logic->CanBuildRainbowBridge();}),
+        EVENT_ACCESS(BuiltRainbowBridge, logic->CanBuildRainbowBridge()),
     }, {
         //Locations
         LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),

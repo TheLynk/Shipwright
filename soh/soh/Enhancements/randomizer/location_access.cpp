@@ -366,10 +366,10 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(&logic->GossipStoneFairy, [] { return logic->CallGossipFairy(); }),
-        EventAccess(&logic->ButterflyFairy, [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); }),
-        EventAccess(&logic->BugShrub, [] { return logic->CanCutShrubs(); }),
-        EventAccess(&logic->LoneFish, [] { return true; }),
+        EVENT_ACCESS(GossipStoneFairy, logic->CallGossipFairy()),
+        EVENT_ACCESS(ButterflyFairy, logic->ButterflyFairy || (logic->CanUse(RG_STICKS))),
+        EVENT_ACCESS(BugShrub, logic->CanCutShrubs()),
+        EVENT_ACCESS(LoneFish, true),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
@@ -378,10 +378,10 @@ void RegionTable_Init() {
     // clang-format off
     areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
+        EVENT_ACCESS(KakarikoVillageGateOpen, ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)),
         //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
         //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
-        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
+        EVENT_ACCESS(CouldEmptyBigPoes,       !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY)),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),

@@ -174,7 +174,7 @@ bool Region::UpdateEvents() {
 }
 
 void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, { condition });
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, { condition }, "");
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
@@ -389,59 +389,59 @@ void RegionTable_Init() {
         LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_ROOT_EXITS, []{return true;}),
+        ENTRANCE(RR_ROOT_EXITS, true),
     });
 
     areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
-        Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
-        Entrance(RR_MINUET_OF_FOREST_WARP,   []{return logic->CanUse(RG_MINUET_OF_FOREST);}),
-        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest();}),
-        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest();}),
-        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest();}),
-        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest();}),
-        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
+        ENTRANCE(RR_CHILD_SPAWN,             logic->IsChild),
+        ENTRANCE(RR_ADULT_SPAWN,             logic->IsAdult),
+        ENTRANCE(RR_MINUET_OF_FOREST_WARP,   logic->CanUse(RG_MINUET_OF_FOREST)),
+        ENTRANCE(RR_BOLERO_OF_FIRE_WARP,     logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest()),
+        ENTRANCE(RR_SERENADE_OF_WATER_WARP,  logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest()),
+        ENTRANCE(RR_NOCTURNE_OF_SHADOW_WARP, logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest()),
+        ENTRANCE(RR_REQUIEM_OF_SPIRIT_WARP,  logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest()),
+        ENTRANCE(RR_PRELUDE_OF_LIGHT_WARP,   logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest()),
     });
 
     areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
+        ENTRANCE(RR_KF_LINKS_HOUSE, true),
     });
 
     areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
+        ENTRANCE(RR_TEMPLE_OF_TIME, true),
     });
 
     areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, true),
     });
 
     areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
+        ENTRANCE(RR_DMC_CENTRAL_LOCAL, true),
     });
 
     areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
+        ENTRANCE(RR_LAKE_HYLIA, true),
     });
 
     areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
     areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
+        ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION, true),
     });
 
     areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
+        ENTRANCE(RR_TEMPLE_OF_TIME, true),
     });
 
     // clang-format on

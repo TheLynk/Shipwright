@@ -83,10 +83,10 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_KITCHEN_SUN_FAIRY,             (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_GV_FORTRESS_SIDE,                []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GATE,                 []{return logic->GF_GateOpen;}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
-        Entrance(RR_GF_STORMS_GROTTO,                []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
+        ENTRANCE(RR_GV_FORTRESS_SIDE,                true),
+        ENTRANCE(RR_GF_OUTSIDE_GATE,                 logic->GF_GateOpen),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES))),
+        ENTRANCE(RR_GF_STORMS_GROTTO,                logic->IsAdult && logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -94,8 +94,8 @@ void RegionTable_Init_GerudoFortress() {
         EVENT_ACCESS(GF_GateOpen, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/)),
     }, {}, {
         //Exits
-        Entrance(RR_GERUDO_FORTRESS,         []{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}),
-        Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
+        ENTRANCE(RR_GERUDO_FORTRESS,         (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen),
+        ENTRANCE(RR_WASTELAND_NEAR_FORTRESS, true),
     });
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
@@ -113,7 +113,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_GERUDO_FORTRESS, []{return true;}),
+        ENTRANCE(RR_GERUDO_FORTRESS, true),
     });
 
     // clang-format on

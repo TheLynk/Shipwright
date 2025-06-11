@@ -83,24 +83,24 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,          []{return true;}),
-        Entrance(RR_ZORAS_DOMAIN,          []{return logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
-        Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild;}),
-        Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->WaterTempleClear) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA)));}),
-        Entrance(RR_LH_LAB,                []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
-        Entrance(RR_WATER_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)));}),
-        Entrance(RR_LH_GROTTO,             []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD,          true),
+        ENTRANCE(RR_ZORAS_DOMAIN,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        ENTRANCE(RR_LH_OWL_FLIGHT,         logic->IsChild),
+        ENTRANCE(RR_LH_FISHING_ISLAND,     ((logic->IsChild || logic->WaterTempleClear) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA)))),
+        ENTRANCE(RR_LH_LAB,                logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY)),
+        ENTRANCE(RR_WATER_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)))),
+        ENTRANCE(RR_LH_GROTTO,             true),
     });
 
     areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_LAKE_HYLIA,      []{return logic->HasItem(RG_BRONZE_SCALE);}),
-        Entrance(RR_LH_FISHING_POND, []{return logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY);}),
+        ENTRANCE(RR_LAKE_HYLIA,      logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_LH_FISHING_POND, logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY)),
     });
 
     areaTable[RR_LH_OWL_FLIGHT] = Region("LH Owl Flight", "Lake Hylia", {RA_LAKE_HYLIA}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}, false),
+        ENTRANCE(RR_HYRULE_FIELD, true, false),
     });
 
     areaTable[RR_LH_LAB] = Region("LH Lab", "LH Lab", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -114,7 +114,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
+        ENTRANCE(RR_LAKE_HYLIA, true),
     });
 
     // TODO: should some of these helpers be done via events instead?
@@ -159,7 +159,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_FISHING_POLE_HINT, true),
     }, {
         //Exits
-        Entrance(RR_LH_FISHING_ISLAND, []{return true;}),
+        ENTRANCE(RR_LH_FISHING_ISLAND, true),
     });
 
     areaTable[RR_LH_GROTTO] = Region("LH Grotto", "LH Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -170,7 +170,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
+        ENTRANCE(RR_LAKE_HYLIA, true),
     });
 
     // clang-format on

@@ -26,11 +26,11 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_NEAR_TREE_CRATE, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,     []{return true;}),
-        Entrance(RR_LLR_TALONS_HOUSE, []{return logic->CanOpenOverworldDoor(RG_TALONS_HOUSE_KEY);}),
-        Entrance(RR_LLR_STABLES,      []{return logic->CanOpenOverworldDoor(RG_STABLES_KEY);}),
-        Entrance(RR_LLR_TOWER,        []{return logic->CanOpenOverworldDoor(RG_BACK_TOWER_KEY);}),
-        Entrance(RR_LLR_GROTTO,       []{return logic->IsChild;}),
+        ENTRANCE(RR_HYRULE_FIELD,     true),
+        ENTRANCE(RR_LLR_TALONS_HOUSE, logic->CanOpenOverworldDoor(RG_TALONS_HOUSE_KEY)),
+        ENTRANCE(RR_LLR_STABLES,      logic->CanOpenOverworldDoor(RG_STABLES_KEY)),
+        ENTRANCE(RR_LLR_TOWER,        logic->CanOpenOverworldDoor(RG_BACK_TOWER_KEY)),
+        ENTRANCE(RR_LLR_GROTTO,       logic->IsChild),
     });
 
     areaTable[RR_LLR_TALONS_HOUSE] = Region("LLR Talons House", "LLR Talons House", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -41,7 +41,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return true;}),
+        ENTRANCE(RR_LON_LON_RANCH, true),
     });
 
     areaTable[RR_LLR_STABLES] = Region("LLR Stables", "LLR Stables", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -50,7 +50,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_STABLES_RIGHT_COW, logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return true;}),
+        ENTRANCE(RR_LON_LON_RANCH, true),
     });
 
     areaTable[RR_LLR_TOWER] = Region("LLR Tower", "LLR Tower", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -60,7 +60,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TOWER_RIGHT_COW,  logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return true;}),
+        ENTRANCE(RR_LON_LON_RANCH, true),
     });
 
     areaTable[RR_LLR_GROTTO] = Region("LLR Grotto", "LLR Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -71,7 +71,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return true;}),
+        ENTRANCE(RR_LON_LON_RANCH, true),
     });
 
     // clang-format on

@@ -61,30 +61,30 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,             []{return true;}),
-        Entrance(RR_KAK_CARPENTER_BOSS_HOUSE, []{return logic->CanOpenOverworldDoor(RG_BOSS_HOUSE_KEY);}),
-        Entrance(RR_KAK_HOUSE_OF_SKULLTULA,   []{return logic->CanOpenOverworldDoor(RG_SKULLTULA_HOUSE_KEY);}),
-        Entrance(RR_KAK_IMPAS_HOUSE,          []{return logic->CanOpenOverworldDoor(RG_IMPAS_HOUSE_KEY);}),
-        Entrance(RR_KAK_WINDMILL,             []{return logic->CanOpenOverworldDoor(RG_WINDMILL_KEY);}),
-        Entrance(RR_KAK_BAZAAR,               []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_BAZAAR_KEY);}),
-        Entrance(RR_KAK_SHOOTING_GALLERY,     []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_GALLERY_KEY);}),
-        Entrance(RR_KAK_WELL,                 []{return logic->IsAdult || logic->DrainWell || logic->CanUse(RG_IRON_BOOTS);}),
-        Entrance(RR_KAK_POTION_SHOP_FRONT,    []{return (logic->AtDay || logic->IsChild) && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
-        Entrance(RR_KAK_REDEAD_GROTTO,        []{return logic->CanOpenBombGrotto();}),
-        Entrance(RR_KAK_IMPAS_LEDGE,          []{return (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION));}),
-        Entrance(RR_KAK_WATCHTOWER,           []{return logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer());}),
-        Entrance(RR_KAK_ROOFTOP,              []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult);}),
-        Entrance(RR_KAK_IMPAS_ROOFTOP,        []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS));}),
-        Entrance(RR_THE_GRAVEYARD,            []{return true;}),
-        Entrance(RR_KAK_BEHIND_GATE,          []{return logic->IsAdult || logic->KakarikoVillageGateOpen;}),
+        ENTRANCE(RR_HYRULE_FIELD,             true),
+        ENTRANCE(RR_KAK_CARPENTER_BOSS_HOUSE, logic->CanOpenOverworldDoor(RG_BOSS_HOUSE_KEY)),
+        ENTRANCE(RR_KAK_HOUSE_OF_SKULLTULA,   logic->CanOpenOverworldDoor(RG_SKULLTULA_HOUSE_KEY)),
+        ENTRANCE(RR_KAK_IMPAS_HOUSE,          logic->CanOpenOverworldDoor(RG_IMPAS_HOUSE_KEY)),
+        ENTRANCE(RR_KAK_WINDMILL,             logic->CanOpenOverworldDoor(RG_WINDMILL_KEY)),
+        ENTRANCE(RR_KAK_BAZAAR,               logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_BAZAAR_KEY)),
+        ENTRANCE(RR_KAK_SHOOTING_GALLERY,     logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_GALLERY_KEY)),
+        ENTRANCE(RR_KAK_WELL,                 logic->IsAdult || logic->DrainWell || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_KAK_POTION_SHOP_FRONT,    (logic->AtDay || logic->IsChild) && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY)),
+        ENTRANCE(RR_KAK_REDEAD_GROTTO,        logic->CanOpenBombGrotto()),
+        ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
+        ENTRANCE(RR_KAK_WATCHTOWER,           logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())),
+        ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult)),
+        ENTRANCE(RR_KAK_IMPAS_ROOFTOP,        logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_THE_GRAVEYARD,            true),
+        ENTRANCE(RR_KAK_BEHIND_GATE,          logic->IsAdult || logic->KakarikoVillageGateOpen),
         //adult can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
-        Entrance(RR_KAK_BACKYARD,             []{return logic->IsAdult || logic->AtDay;}),
+        ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || logic->AtDay),
     });
 
     areaTable[RR_KAK_IMPAS_LEDGE] = Region("Kak Impas Ledge", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_KAK_IMPAS_HOUSE_BACK, []{return true;}),
-        Entrance(RR_KAKARIKO_VILLAGE,     []{return true;}),
+        ENTRANCE(RR_KAK_IMPAS_HOUSE_BACK, true),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,     true),
     });
 
     areaTable[RR_KAK_IMPAS_ROOFTOP] = Region("Kak Impas Rooftop", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -92,8 +92,8 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_GS_ABOVE_IMPAS_HOUSE, logic->IsAdult && logic->CanGetNightTimeGS() && logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
     }, {
         //Exits
-        Entrance(RR_KAK_IMPAS_LEDGE,  []{return true;}),
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAK_IMPAS_LEDGE,  true),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_WATCHTOWER] = Region("Kak Watchtower", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -102,8 +102,8 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_GS_WATCHTOWER, logic->IsChild && logic->CanUse(RG_DINS_FIRE) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
-        Entrance(RR_KAK_ROOFTOP,      []{return ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsChild;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
+        ENTRANCE(RR_KAK_ROOFTOP,      ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsChild),
     });
 
     areaTable[RR_KAK_ROOFTOP] = Region("Kak Rooftop", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -111,8 +111,8 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_MAN_ON_ROOF, true),
     }, {
         //Exits
-        Entrance(RR_KAK_BACKYARD,     []{return true;}),
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAK_BACKYARD,     true),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_BACKYARD] = Region("Kak Backyard", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -122,10 +122,10 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_MEDICINE_SHOP_POT_2, logic->IsChild && logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,        []{return true;}),
-        Entrance(RR_KAK_OPEN_GROTTO,         []{return true;}),
-        Entrance(RR_KAK_ODD_POTION_BUILDING, []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_GRANNYS_POTION_SHOP_KEY);}),
-        Entrance(RR_KAK_POTION_SHOP_BACK,    []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,        true),
+        ENTRANCE(RR_KAK_OPEN_GROTTO,         true),
+        ENTRANCE(RR_KAK_ODD_POTION_BUILDING, logic->IsAdult && logic->CanOpenOverworldDoor(RG_GRANNYS_POTION_SHOP_KEY)),
+        ENTRANCE(RR_KAK_POTION_SHOP_BACK,    logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY)),
     });
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", "Kak Carpenter Boss House", {}, NO_DAY_NIGHT_CYCLE, {
@@ -133,7 +133,7 @@ void RegionTable_Init_Kakariko() {
         EVENT_ACCESS(WakeUpAdultTalon, logic->IsAdult && logic->CanUse(RG_POCKET_EGG)),
     }, {}, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_HOUSE_OF_SKULLTULA] = Region("Kak House of Skulltula", "Kak House of Skulltula", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -146,7 +146,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_100_GOLD_SKULLTULA_REWARD, logic->GetGSCount() >= 100),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_IMPAS_HOUSE] = Region("Kak Impas House", "Kak Impas House", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -154,7 +154,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_IMPAS_HOUSE_COW, logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_IMPAS_HOUSE_BACK] = Region("Kak Impas House Back", "Kak Impas House", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -163,7 +163,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_IMPAS_HOUSE_COW,              logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_KAK_IMPAS_LEDGE, []{return true;}),
+        ENTRANCE(RR_KAK_IMPAS_LEDGE, true),
     });
 
     areaTable[RR_KAK_WINDMILL] = Region("Kak Windmill", "Windmill and Dampes Grave", {}, NO_DAY_NIGHT_CYCLE, {
@@ -175,7 +175,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_BAZAAR] = Region("Kak Bazaar", "Kak Bazaar", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -190,7 +190,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_BAZAAR_ITEM_8, true),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", "Kak Shooting Gallery", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -198,7 +198,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD, logic->HasItem(RG_CHILD_WALLET) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_POTION_SHOP_FRONT] = Region("Kak Potion Shop Front", "Kak Potion Shop", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -213,14 +213,14 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,     []{return true;}),
-        Entrance(RR_KAK_POTION_SHOP_BACK, []{return logic->IsAdult;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,     true),
+        ENTRANCE(RR_KAK_POTION_SHOP_BACK, logic->IsAdult),
     });
 
     areaTable[RR_KAK_POTION_SHOP_BACK] = Region("Kak Potion Shop Back", "Kak Potion Shop", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_KAK_BACKYARD,          []{return logic->IsAdult;}),
-        Entrance(RR_KAK_POTION_SHOP_FRONT, []{return true;}),
+        ENTRANCE(RR_KAK_BACKYARD,          logic->IsAdult),
+        ENTRANCE(RR_KAK_POTION_SHOP_FRONT, true),
     });
 
     areaTable[RR_KAK_ODD_POTION_BUILDING] = Region("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", {}, NO_DAY_NIGHT_CYCLE, {
@@ -232,7 +232,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM))),
     }, {
         // Exits
-        Entrance(RR_KAK_BACKYARD, []{return true;}),
+        ENTRANCE(RR_KAK_BACKYARD, true),
     });
 
     areaTable[RR_KAK_REDEAD_GROTTO] = Region("Kak Redead Grotto", "Kak Redead Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -240,7 +240,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_REDEAD_GROTTO_CHEST, logic->CanKillEnemy(RE_REDEAD, ED_CLOSE, true, 2)),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE, true),
     });
 
     areaTable[RR_KAK_OPEN_GROTTO] = Region("Kak Open Grotto", "Kak Open Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
@@ -258,19 +258,19 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_OPEN_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_KAK_BACKYARD, []{return true;}),
+        ENTRANCE(RR_KAK_BACKYARD, true),
     });
 
     areaTable[RR_KAK_BEHIND_GATE] = Region("Kak Behind Gate", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,     []{return logic->IsAdult || ctx->GetTrickOption(RT_VISIBLE_COLLISION) || logic->KakarikoVillageGateOpen;}),
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,     logic->IsAdult || ctx->GetTrickOption(RT_VISIBLE_COLLISION) || logic->KakarikoVillageGateOpen),
+        ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL, true),
     });
 
     areaTable[RR_KAK_WELL] = Region("Kak Well", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell;}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, []{return logic->IsChild || (logic->DrainWell && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,            logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell),
+        ENTRANCE(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, logic->IsChild || (logic->DrainWell && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))),
     });
 
     // clang-format on

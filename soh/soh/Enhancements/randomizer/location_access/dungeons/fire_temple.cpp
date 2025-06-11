@@ -586,7 +586,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT_CAGE] = Region("Fire Temple MQ Maze Shortcut Cage", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST,    logic->OpenedUpperFireShortcut;),
+        LOCATION(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST,    logic->OpenedUpperFireShortcut),
         LOCATION(RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_1, logic->OpenedUpperFireShortcut && logic->CanBreakCrates()),
         LOCATION(RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_2, logic->OpenedUpperFireShortcut && logic->CanBreakCrates()),
         LOCATION(RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_3, logic->OpenedUpperFireShortcut && logic->CanBreakCrates()),

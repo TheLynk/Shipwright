@@ -233,6 +233,10 @@ bool Entrance::DoesSpreadAreas() {
     return spreadsAreasWithPriority;
 }
 
+std::string Entrance::GetConditionStr() const {
+    return condition_str;
+}
+
 EntranceShuffler::EntranceShuffler() {
     playthroughEntrances = {};
     entranceOverrides = {};

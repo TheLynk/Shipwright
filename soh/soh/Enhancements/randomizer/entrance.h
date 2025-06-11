@@ -82,6 +82,7 @@ class Entrance {
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
     bool DoesSpreadAreas();
+    std::string GetConditionStr() const;
 
   private:
     RandomizerRegion parentRegion;

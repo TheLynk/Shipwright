@@ -13,6 +13,7 @@
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
+#include <regex>
 extern "C" {
 extern PlayState* gPlayState;
 }
@@ -385,7 +386,7 @@ void RegionTable_Init() {
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
+        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1),
         LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
     }, {
         //Exits
@@ -494,6 +495,22 @@ void RegionTable_Init() {
             exit.GetConnectedRegion()->entrances.push_front(&exit);
         }
     }
+
+    std::ostringstream ss;
+
+    for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
+        for (EventAccess& eventAccess : areaTable[i].events) {
+            ss << eventAccess.GetConditionStr() << std::endl;
+        }
+        for (LocationAccess& locPair : areaTable[i].locations) {
+            ss << locPair.GetConditionStr() << std::endl;
+        }
+        for (Entrance& exit : areaTable[i].exits) {
+            ss << exit.GetConditionStr() << std::endl;
+        }
+    }
+
+    SPDLOG_INFO("All Conditions:\n{}", ss.str());
 }
 
 void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
@@ -526,11 +543,50 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
     s.swap(buf);
 }
 
+static void RemoveLambdaSyntax(std::string& s) {
+    std::regex lambdaIntro(R"(\[\s*.*?\s*\]\s*(?:\([^)]*\)\s*)?\{\s*return\s*(.*?);\s*\})");
+    s = std::regex_replace(s, lambdaIntro, "$1");
+}
+
+static void UpdateIsDungeonCondition(std::string& s) {
+    std::regex lambdaIntro(R"(GetDungeon\((\w+)\)->Is(\w+)\(\))");
+    s = std::regex_replace(s, lambdaIntro, "IsDungeon$2($1)");
+}
+
+static void UpdateIsTrialCondition(std::string& s) {
+    // GetTrial(TK_FOREST_TRIAL)->IsSkipped()
+    std::regex lambdaIntro(R"(GetTrial\((\w+)\)->Is(\w+)\(\))");
+    s = std::regex_replace(s, lambdaIntro, "IsTrial$2($1)");
+}
+
+static void ReplaceOptionIs(std::string& s) {
+    std::regex optionIs(R"(\.Is\((\w+)\))");
+    s = std::regex_replace(s, optionIs, " == $1");
+}
+
+static void ReplaceOptionIsNot(std::string& s) {
+    std::regex optionIs(R"(\.IsNot\((\w+)\))");
+    s = std::regex_replace(s, optionIs, " != $1");
+}
+
+static void ReplaceRegionAgeTime(std::string& s) {
+    std::regex optionIs(R"(RegionTable\((\w+)\)->(\w+))");
+    s = std::regex_replace(s, optionIs, "RegionAgeTimeAccess($1, RegionAgeTime::$2)");
+}
+
 std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");
     ReplaceAllInString(condition, "GetSaveContext()->", "");
+    ReplaceAllInString(condition, "(bool)", "");
+    RemoveLambdaSyntax(condition);
+    ReplaceAllInString(condition, "ship.quest.data.randomizer.triforcePiecesCollected", "TriforcePiecesCollected()");
+    UpdateIsDungeonCondition(condition);
+    UpdateIsTrialCondition(condition);
+    ReplaceOptionIs(condition);
+    ReplaceOptionIsNot(condition);
+    ReplaceRegionAgeTime(condition);
     return condition;
 }
 

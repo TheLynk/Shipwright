@@ -57,6 +57,14 @@ class EventAccess {
         return *event;
     }
 
+    std::string GetEventStr() const {
+        return event_str;
+    }
+
+    std::string GetConditionStr() const {
+        return condition_str;
+    }
+
   private:
     bool* event;
     std::string event_str;

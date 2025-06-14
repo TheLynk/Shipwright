@@ -20,7 +20,7 @@ void RegionTable_Init_HauntedWasteland() {
         //Events
         EVENT_ACCESS(FairyPot,       true),
         EVENT_ACCESS(NutPot,         true),
-        EVENT_ACCESS(CarpetMerchant, logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS))),
+        EVENT_ACCESS(CarpetMerchant, logic->HasItem(RG_ADULT_WALLET) && CanBuyCheck(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
         LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),

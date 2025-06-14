@@ -107,7 +107,7 @@ bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
     return true;
 }
 
-bool CanBuyAnother(RandomizerCheck rc) {
+bool CanBuyCheck(RandomizerCheck rc) {
     return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
 }
 

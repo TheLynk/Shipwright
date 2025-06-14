@@ -9,7 +9,7 @@
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/Enhancements/randomizer/logic.h"
 
-typedef bool (*ConditionFn)();
+using ConditionFn = std::function<bool()>;
 
 // I hate this but every alternative I can think of right now is worse
 extern Rando::Context* ctx;
@@ -120,12 +120,19 @@ class LocationAccess {
 };
 
 bool CanBuyAnother(uint16_t price);
-bool CanBuyAnother(RandomizerCheck rc);
+bool CanBuyCheck(RandomizerCheck rc);
 
 namespace Rando {
 class Entrance;
 enum class EntranceType;
 } // namespace Rando
+
+enum class RegionAgeTime {
+    childDay,
+    childNight,
+    adultDay,
+    adultNight,
+};
 
 class Region {
   public:

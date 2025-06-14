@@ -1366,13 +1366,12 @@ bool Logic::CanTriggerLACS() {
            (ctx->LACSCondition() == RO_LACS_TOKENS && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
 }
 
-bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
-    return SmallKeys(dungeon, requiredAmount, requiredAmount);
-}
-
 bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;
+    }
+    if (requiredAmountGlitched == 255) {
+        requiredAmountGlitched = requiredAmountGlitchless;
     }
     switch (dungeon) {
         case RR_FOREST_TEMPLE:

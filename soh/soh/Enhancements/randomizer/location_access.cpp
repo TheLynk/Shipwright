@@ -496,6 +496,8 @@ void RegionTable_Init() {
         }
     }
 
+    #if 0 // Print all conditions for debugging
+    // RANDOTODO: Remove before merging
     std::ostringstream ss;
 
     for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
@@ -511,6 +513,7 @@ void RegionTable_Init() {
     }
 
     SPDLOG_INFO("All Conditions:\n{}", ss.str());
+    #endif
 }
 
 void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {

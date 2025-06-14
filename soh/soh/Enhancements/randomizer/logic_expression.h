@@ -22,7 +22,34 @@ class LogicExpression {
 
     // Add optional callback parameter to Evaluate
     template <typename T> T Evaluate(const EvaluationCallback& callback = nullptr) const {
-        return Impl::GetValue<T>(impl->Evaluate("0", 0, callback));
+        return GetValue<T>(impl->Evaluate("0", 0, callback));
+    }
+
+    template <typename T> static T GetValue(const ValueVariant& value) {
+        if constexpr (std::is_same_v<T, bool>) {
+            if (std::holds_alternative<bool>(value))
+                return std::get<bool>(value);
+            if (std::holds_alternative<int>(value))
+                return std::get<int>(value) != 0;
+            if (std::holds_alternative<uint8_t>(value))
+                return std::get<uint8_t>(value) != 0;
+            if (std::holds_alternative<uint16_t>(value))
+                return std::get<uint16_t>(value) != 0;
+            throw std::bad_variant_access();
+        } else if constexpr (std::is_same_v<T, int>)
+            return std::get<int>(value);
+        else if constexpr (std::is_same_v<T, uint8_t>)
+            return std::holds_alternative<uint8_t>(value) ? std::get<uint8_t>(value)
+                                                          : static_cast<uint8_t>(std::get<int>(value));
+        else if constexpr (std::is_same_v<T, uint16_t>)
+            return std::holds_alternative<uint16_t>(value) ? std::get<uint16_t>(value)
+                                                           : static_cast<uint16_t>(std::get<int>(value));
+        else if constexpr (std::is_enum_v<T>)
+            return static_cast<T>(std::get<int>(value));
+        else if constexpr (std::is_same_v<T, ValueVariant>)
+            return value;
+        else
+            static_assert(sizeof(T) == 0, "Unsupported function parameter type");
     }
 
   private:
@@ -47,33 +74,6 @@ class LogicExpression {
 
         // Helper to get a string representation of the type
         std::string GetTypeString() const;
-
-        template <typename T> static T GetValue(const ValueVariant& value) {
-            if constexpr (std::is_same_v<T, bool>) {
-                if (std::holds_alternative<bool>(value))
-                    return std::get<bool>(value);
-                if (std::holds_alternative<int>(value))
-                    return std::get<int>(value) != 0;
-                if (std::holds_alternative<uint8_t>(value))
-                    return std::get<uint8_t>(value) != 0;
-                if (std::holds_alternative<uint16_t>(value))
-                    return std::get<uint16_t>(value) != 0;
-                throw std::bad_variant_access();
-            } else if constexpr (std::is_same_v<T, int>)
-                return std::get<int>(value);
-            else if constexpr (std::is_same_v<T, uint8_t>)
-                return std::holds_alternative<uint8_t>(value) ? std::get<uint8_t>(value)
-                                                              : static_cast<uint8_t>(std::get<int>(value));
-            else if constexpr (std::is_same_v<T, uint16_t>)
-                return std::holds_alternative<uint16_t>(value) ? std::get<uint16_t>(value)
-                                                               : static_cast<uint16_t>(std::get<int>(value));
-            else if constexpr (std::is_enum_v<T>)
-                return static_cast<T>(std::get<int>(value));
-            else if constexpr (std::is_same_v<T, ValueVariant>)
-                return value;
-            else
-                static_assert(sizeof(T) == 0, "Unsupported function parameter type");
-        }
 
       private:
         std::string GetExprErrorContext() const;
@@ -298,3 +298,15 @@ class LogicExpression {
     friend class Parser;
     friend bool IsEnumConstant(const std::string& s);
 };
+
+struct ExpressionEvaluation {
+    std::string Expression;
+    int Depth;
+    std::string Type;
+    LogicExpression::ValueVariant Result;
+    std::vector<ExpressionEvaluation> Children;
+};
+
+ExpressionEvaluation EvaluateExpression(std::string condition);
+
+std::string ToString(const LogicExpression::ValueVariant& value);

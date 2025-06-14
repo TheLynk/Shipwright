@@ -70,7 +70,6 @@ typedef enum {
 
 #define DEFINE_TRIAL_KEY(enum) enum,
 typedef enum {
-    TK_NONE,
 #include "randomizer_types/trialKey.h"
     TK_MAX,
 } TrialKey;

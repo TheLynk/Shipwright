@@ -1,6 +1,7 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
+#include "randomizer_logic_tracker.h"
 #include "randomizerTypes.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
@@ -1907,6 +1908,13 @@ void DrawLocation(RandomizerCheck rc) {
                 break;
             }
         }
+
+        ImGui::SameLine();
+        ImGui::PushID((std::to_string(rc) + "_SHOW_LOGIC").c_str());
+        if (ImGui::Button("Show Logic")) {
+            LogicTrackerWindow::ShowRandomizerCheck(rc);
+        }
+        ImGui::PopID();
     }
 }
 

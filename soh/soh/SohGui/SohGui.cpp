@@ -98,6 +98,7 @@ std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
 std::shared_ptr<Notification::Window> mNotificationWindow;
 std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
+std::shared_ptr<LogicTrackerWindow> mLogicTrackerWindow;
 
 UIWidgets::Colors GetMenuThemeColor() {
     return mSohMenu->GetMenuThemeColor();
@@ -203,6 +204,8 @@ void SetupGuiElements() {
     mNotificationWindow->Show();
     mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
     gui->AddGuiWindow(mTimeDisplayWindow);
+    mLogicTrackerWindow = std::make_shared<LogicTrackerWindow>(CVAR_WINDOW("LogicTrackerEnabled"), "Logic Tracker");
+    gui->AddGuiWindow(mLogicTrackerWindow);
 }
 
 void Destroy() {

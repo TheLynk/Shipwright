@@ -5,6 +5,7 @@
 #include "variables.h"
 
 #include <sstream>
+#include <stack>
 #include <unordered_map>
 #include <variant>
 
@@ -1031,4 +1032,107 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
     }
     
     return false;
+}
+
+ExpressionEvaluation EvaluateExpression(std::string condition) {
+    const auto& expression = LogicExpression::Parse(condition);
+
+    // Create a vector to store the evaluation sequence
+    std::vector<std::tuple<std::string, std::string, int, std::string, LogicExpression::ValueVariant>>
+        evaluationSequence;
+
+    // Define a callback that records each evaluation step
+    auto recordCallback = [&evaluationSequence](const std::string& exprStr, const std::string& path, int depth,
+                                                const std::string& type, const LogicExpression::ValueVariant& result) {
+        evaluationSequence.emplace_back(exprStr, path, depth, type, result);
+    };
+
+    // Evaluate the expression with the callback
+    auto finalResult = expression->Evaluate<LogicExpression::ValueVariant>(recordCallback);
+
+    // Helper function to convert path string to a vector of integers for sorting
+    auto pathToVector = [](const std::string& path) {
+        std::vector<int> result;
+        std::stringstream ss(path);
+        std::string segment;
+
+        while (std::getline(ss, segment, '.')) {
+            try {
+                result.push_back(std::stoi(segment));
+            } catch (const std::exception&) {
+                // If it's not a valid integer, just skip it
+                result.push_back(0);
+            }
+        }
+
+        return result;
+    };
+
+    // Sort the evaluation sequence by path
+    std::sort(evaluationSequence.begin(), evaluationSequence.end(), [&pathToVector](const auto& a, const auto& b) {
+        const auto& pathA = std::get<1>(a);
+        const auto& pathB = std::get<1>(b);
+
+        auto vecA = pathToVector(pathA);
+        auto vecB = pathToVector(pathB);
+
+        // Compare each component of the path
+        size_t i = 0;
+        while (i < vecA.size() && i < vecB.size()) {
+            if (vecA[i] != vecB[i]) {
+                return vecA[i] < vecB[i];
+            }
+            i++;
+        }
+
+        // If one path is a prefix of the other, the shorter one comes first
+        return vecA.size() < vecB.size();
+    });
+
+    ExpressionEvaluation evaluation;
+    evaluation.Expression = std::get<0>(evaluationSequence[0]);
+    evaluation.Depth = std::get<2>(evaluationSequence[0]);
+    evaluation.Type = std::get<3>(evaluationSequence[0]);
+    evaluation.Result = std::get<4>(evaluationSequence[0]);
+
+    // Stack to keep track of parent nodes at each depth
+    std::stack<ExpressionEvaluation*> parentStack;
+    parentStack.push(&evaluation);
+
+    // Process remaining evaluations to build the tree
+    for (size_t i = 1; i < evaluationSequence.size(); ++i) {
+        ExpressionEvaluation child;
+        child.Expression = std::get<0>(evaluationSequence[i]);
+        child.Depth = std::get<2>(evaluationSequence[i]);
+        child.Type = std::get<3>(evaluationSequence[i]);
+        child.Result = std::get<4>(evaluationSequence[i]);
+
+        // Pop parents from stack if we're at a shallower depth
+        while (!parentStack.empty() && parentStack.top()->Depth >= child.Depth) {
+            parentStack.pop();
+        }
+
+        // Add child to current parent
+        if (!parentStack.empty()) {
+            parentStack.top()->Children.push_back(std::move(child));
+            // If this child might have children, push it onto the stack
+            parentStack.push(&(parentStack.top()->Children.back()));
+        }
+    }
+
+    return evaluation;
+}
+
+std::string ToString(const LogicExpression::ValueVariant& value) {
+    if (std::holds_alternative<bool>(value)) {
+        return std::get<bool>(value) ? "true" : "false";
+    } else if (std::holds_alternative<int>(value)) {
+        return std::to_string(std::get<int>(value));
+    } else if (std::holds_alternative<uint8_t>(value)) {
+        return std::to_string(std::get<uint8_t>(value));
+    } else if (std::holds_alternative<uint16_t>(value)) {
+        return std::to_string(std::get<uint16_t>(value));
+    } else {
+        return "unknown";
+    }
 }

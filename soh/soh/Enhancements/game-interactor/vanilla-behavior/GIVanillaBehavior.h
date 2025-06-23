@@ -2174,6 +2174,22 @@ typedef enum {
     // - `*EnWood02`
     VB_TREE_DROP_COLLECTIBLE,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_DROP_ITEM,
+    
     // ```c
     // true
     // ```

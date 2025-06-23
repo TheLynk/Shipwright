@@ -270,6 +270,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+        case RG_CRAWL:
+            return CheckRandoInf(RAND_INF_CAN_CRAWL);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
         case RG_COJIRO:
@@ -423,7 +425,8 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
         case RG_EPONA:
             return IsAdult && CanUse(RG_EPONAS_SONG);
-
+        case RG_CRAWL:
+            return IsChild;
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
             return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
@@ -1773,6 +1776,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                     break;
+                case RG_CRAWL:
+                    SetRandoInf(RAND_INF_CAN_CRAWL, state);
+                    break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
                     for (i = 0; i < 3; i++) {
@@ -2585,6 +2591,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling crawl, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CRAWL, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

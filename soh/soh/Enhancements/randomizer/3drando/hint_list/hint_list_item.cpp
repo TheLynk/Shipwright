@@ -2122,6 +2122,15 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")});
                                                           // /*spanish*/un tono hacia la derecha
 
+    hintTextTable[RHT_MASK_KEATON] = HintText(CustomMessage("a keaton mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_SKULL] = HintText(CustomMessage("a skull mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_SPOOKY] = HintText(CustomMessage("a spooky mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_BUNNY] = HintText(CustomMessage("a bunny hood", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_GORON] = HintText(CustomMessage("a goron mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_ZORA] = HintText(CustomMessage("a zora mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_GERUDO] = HintText(CustomMessage("a gerudo mask", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MASK_TRUTH] = HintText(CustomMessage("a mask of truth", /*german*/"!!!", /*french*/"!!!"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"!!!")});
+
     hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
                                                // /*spanish*/caña de pescar
                                                {

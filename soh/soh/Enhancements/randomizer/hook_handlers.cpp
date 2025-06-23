@@ -2036,6 +2036,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
+    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK &&
+        RAND_GET_OPTION(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE) {
+        Actor_Kill(actor);
+    }
+
     if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT &&
         RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
         (RAND_GET_OPTION(RSK_FOREST) == RO_CLOSED_FOREST_OFF ||

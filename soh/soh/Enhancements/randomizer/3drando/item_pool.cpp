@@ -587,6 +587,17 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_SKELETON_KEY);
     }
 
+    if (ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
+        AddItemToMainPool(RG_MASK_KEATON);
+        AddItemToMainPool(RG_MASK_SKULL);
+        AddItemToMainPool(RG_MASK_SPOOKY);
+        AddItemToMainPool(RG_MASK_BUNNY);
+        AddItemToMainPool(RG_MASK_GORON);
+        AddItemToMainPool(RG_MASK_ZORA);
+        AddItemToMainPool(RG_MASK_GERUDO);
+        AddItemToMainPool(RG_MASK_TRUTH);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
         AddItemToMainPool(RG_PROGRESSIVE_SCALE);
     }

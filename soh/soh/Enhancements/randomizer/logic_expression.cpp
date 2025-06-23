@@ -647,8 +647,11 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
 std::unordered_map<std::string, LogicExpression::Impl::FunctionAdapter> LogicExpression::Impl::variableAdapters;
 void LogicExpression::Impl::PopulateVariableAdapters() {
     variableAdapters = {
-        REGISTER_LOGIC_VARIABLE(SkullMask),
-        REGISTER_LOGIC_VARIABLE(MaskOfTruth),
+        REGISTER_LOGIC_VARIABLE(CanBorrowMasks),
+        REGISTER_LOGIC_VARIABLE(BorrowSkullMask),
+        REGISTER_LOGIC_VARIABLE(BorrowSpookyMask),
+        REGISTER_LOGIC_VARIABLE(BorrowBunnyHood),
+        REGISTER_LOGIC_VARIABLE(BorrowRightMasks),
         REGISTER_LOGIC_VARIABLE(FreedEpona),
         REGISTER_LOGIC_VARIABLE(WakeUpAdultTalon),
         REGISTER_LOGIC_VARIABLE(DekuTreeClear),

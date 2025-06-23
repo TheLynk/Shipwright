@@ -261,10 +261,6 @@ const char* constCameraStrings[] = {
 };
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
-}
-
-void OTRGlobals::Initialize() {
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) {
@@ -303,6 +299,8 @@ void OTRGlobals::Initialize() {
         OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
         OOT_NTSC_JP_GC, OOT_NTSC_US_GC, OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2,
     };
+
+    context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     context->InitLogging();
     context->InitGfxDebugger();
@@ -1102,7 +1100,7 @@ void CheckAndCreateModFolder() {
 }
 
 extern "C" void InitOTR() {
-    OTRGlobals::Instance = new OTRGlobals();
+
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
@@ -1209,7 +1207,7 @@ extern "C" void InitOTR() {
     DetectOTRVersion("oot.otr", false);
     DetectOTRVersion("oot-mq.otr", true);
 
-    OTRGlobals::Instance->Initialize();
+    OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();

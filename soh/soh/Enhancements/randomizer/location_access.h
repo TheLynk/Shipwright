@@ -17,7 +17,7 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class Region;
 
-std::string CleanCheckConditionString(std::string condition);
+constexpr std::string CleanCheckConditionString(std::string condition);
 
 #define EVENT_ACCESS(event, condition) \
     EventAccess(&logic->event, #event, [] { return condition; }, CleanCheckConditionString(#condition))
@@ -71,8 +71,6 @@ class EventAccess {
     ConditionFn condition_function;
     std::string condition_str;
 };
-
-std::string CleanCheckConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
     LocationAccess(                \

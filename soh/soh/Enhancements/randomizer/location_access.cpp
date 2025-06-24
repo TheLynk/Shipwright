@@ -516,7 +516,7 @@ void RegionTable_Init() {
     #endif
 }
 
-void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+constexpr void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
     size_t pos = s.find(toReplace);
     if (pos == std::string::npos) {
         return;
@@ -524,7 +524,7 @@ void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::str
     s.replace(pos, toReplace.length(), replaceWith);
 }
 
-void ReplaceAllInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+constexpr void ReplaceAllInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
     std::string buf;
     size_t pos = 0;
     size_t prevPos;
@@ -546,38 +546,355 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
     s.swap(buf);
 }
 
-static void RemoveLambdaSyntax(std::string& s) {
-    std::regex lambdaIntro(R"(\[\s*.*?\s*\]\s*(?:\([^)]*\)\s*)?\{\s*return\s*(.*?);\s*\})");
-    s = std::regex_replace(s, lambdaIntro, "$1");
+constexpr bool isWhitespace(char c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v';
 }
 
-static void UpdateIsDungeonCondition(std::string& s) {
-    std::regex lambdaIntro(R"(GetDungeon\((\w+)\)->Is(\w+)\(\))");
-    s = std::regex_replace(s, lambdaIntro, "IsDungeon$2($1)");
+constexpr void RemoveLambdaSyntax(std::string& s) {
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.length()) {
+        // Find lambda start '['
+        size_t lambdaStart = s.find('[', pos);
+        if (lambdaStart == std::string::npos) {
+            // No more lambdas found, append remaining text and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Copy text up to lambda
+        buf.append(s, pos, lambdaStart - pos);
+
+        // Find closing bracket ']'
+        size_t closeBracket = s.find(']', lambdaStart);
+        if (closeBracket == std::string::npos) {
+            buf.append(s, pos);
+            break;
+        }
+
+        // Look for optional parentheses
+        size_t curPos = closeBracket + 1;
+        while (curPos < s.length() && isWhitespace(s[curPos])) {
+            ++curPos;
+        }
+
+        if (curPos < s.length() && s[curPos] == '(') {
+            curPos = s.find(')', curPos);
+            if (curPos == std::string::npos) {
+                buf.append(s, pos);
+                break;
+            }
+            ++curPos;
+        }
+
+        // Find opening brace '{'
+        while (curPos < s.length() && isWhitespace(s[curPos])) {
+            ++curPos;
+        }
+
+        if (curPos >= s.length() || s[curPos] != '{') {
+            buf.append(s, pos);
+            break;
+        }
+
+        // Find "return" keyword
+        size_t returnPos = s.find("return", curPos);
+        if (returnPos == std::string::npos) {
+            buf.append(s, pos);
+            break;
+        }
+
+        // Skip past "return" and any whitespace
+        size_t expressionStart = returnPos + 6;
+        while (expressionStart < s.length() && isWhitespace(s[expressionStart])) {
+            ++expressionStart;
+        }
+
+        // Find the semicolon
+        size_t semicolon = s.find(';', expressionStart);
+        if (semicolon == std::string::npos) {
+            buf.append(s, pos);
+            break;
+        }
+
+        // Extract the return expression
+        std::string returnExpr = s.substr(expressionStart, semicolon - expressionStart);
+
+        // Find closing brace
+        size_t closeBrace = s.find('}', semicolon);
+        if (closeBrace == std::string::npos) {
+            buf.append(s, pos);
+            break;
+        }
+
+        // Append the return expression
+        buf += returnExpr;
+
+        // Move past this lambda
+        pos = closeBrace + 1;
+    }
+
+    s = std::move(buf);
 }
 
-static void UpdateIsTrialCondition(std::string& s) {
-    // GetTrial(TK_FOREST_TRIAL)->IsSkipped()
-    std::regex lambdaIntro(R"(GetTrial\((\w+)\)->Is(\w+)\(\))");
-    s = std::regex_replace(s, lambdaIntro, "IsTrial$2($1)");
+constexpr void UpdateIsDungeonCondition(std::string& s) {
+    std::string const pattern = "GetDungeon(";
+    std::string const arrowIs = "->Is";
+    std::string const endParen = "()";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.length()) {
+        // Find start of pattern
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            // No more patterns found, append remaining text and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Copy text up to pattern
+        buf.append(s, pos, start - pos);
+
+        // Extract content between GetDungeon( and )
+        size_t dungeonStart = start + pattern.length();
+        size_t closeParen = s.find(')', dungeonStart);
+        if (closeParen == std::string::npos) {
+            // Invalid pattern, copy rest and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Look for ->Is after the close parenthesis
+        size_t arrowStart = s.find(arrowIs, closeParen);
+        if (arrowStart != closeParen + 1) {
+            // Not the pattern we're looking for, copy up to close paren and continue
+            buf.append(s, pos, closeParen + 1 - pos);
+            pos = closeParen + 1;
+            continue;
+        }
+
+        // Look for () after the method name
+        size_t methodStart = arrowStart + arrowIs.length();
+        size_t methodEnd = s.find(endParen, methodStart);
+        if (methodEnd == std::string::npos) {
+            // Invalid pattern, copy rest and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Extract the pieces we need
+        std::string dungeonName = s.substr(dungeonStart, closeParen - dungeonStart);
+        std::string methodName = s.substr(methodStart, methodEnd - methodStart);
+
+        // Build the replacement
+        buf += "IsDungeon" + methodName + "(" + dungeonName + ")";
+
+        // Move past this pattern
+        pos = methodEnd + endParen.length();
+    }
+
+    // Update the original string
+    s = std::move(buf);
 }
 
-static void ReplaceOptionIs(std::string& s) {
-    std::regex optionIs(R"(\.Is\((\w+)\))");
-    s = std::regex_replace(s, optionIs, " == $1");
+constexpr void UpdateIsTrialCondition(std::string& s) {
+    std::string const pattern = "GetTrial(";
+    std::string const arrowIs = "->Is";
+    std::string const endParen = "()";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.length()) {
+        // Find start of pattern
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            // No more patterns found, append remaining text and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Copy text up to pattern
+        buf.append(s, pos, start - pos);
+
+        // Extract content between GetTrial( and )
+        size_t trialStart = start + pattern.length();
+        size_t closeParen = s.find(')', trialStart);
+        if (closeParen == std::string::npos) {
+            // Invalid pattern, copy rest and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Look for ->Is after the close parenthesis
+        size_t arrowStart = s.find(arrowIs, closeParen);
+        if (arrowStart != closeParen + 1) {
+            // Not the pattern we're looking for, copy up to close paren and continue
+            buf.append(s, pos, closeParen + 1 - pos);
+            pos = closeParen + 1;
+            continue;
+        }
+
+        // Look for () after the method name
+        size_t methodStart = arrowStart + arrowIs.length();
+        size_t methodEnd = s.find(endParen, methodStart);
+        if (methodEnd == std::string::npos) {
+            // Invalid pattern, copy rest and exit
+            buf.append(s, pos);
+            break;
+        }
+
+        // Extract the pieces we need
+        std::string trialName = s.substr(trialStart, closeParen - trialStart);
+        std::string methodName = s.substr(methodStart, methodEnd - methodStart);
+
+        // Build the replacement
+        buf += "IsTrial" + methodName + "(" + trialName + ")";
+
+        // Move past this pattern
+        pos = methodEnd + endParen.length();
+    }
+
+    // Update the original string
+    s = std::move(buf);
 }
 
-static void ReplaceOptionIsNot(std::string& s) {
-    std::regex optionIs(R"(\.IsNot\((\w+)\))");
-    s = std::regex_replace(s, optionIs, " != $1");
+constexpr void ReplaceOptionIs(std::string& s) {
+    std::string const pattern = ".Is(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (true) {
+        // Find start of pattern
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            break;
+        }
+
+        // Append everything up to pattern
+        buf.append(s, pos, start - pos);
+
+        // Find closing parenthesis
+        size_t end = s.find(')', start + pattern.length());
+        if (end == std::string::npos) {
+            break;
+        }
+
+        // Extract parameter name
+        std::string param = s.substr(start + pattern.length(), end - (start + pattern.length()));
+
+        // Append replacement
+        buf += " == " + param;
+
+        pos = end + 1;
+    }
+
+    // Append remaining text
+    buf.append(s, pos);
+    s = std::move(buf);
 }
 
-static void ReplaceRegionAgeTime(std::string& s) {
-    std::regex optionIs(R"(RegionTable\((\w+)\)->(\w+))");
-    s = std::regex_replace(s, optionIs, "RegionAgeTimeAccess($1, RegionAgeTime::$2)");
+constexpr void ReplaceOptionIsNot(std::string& s) {
+    std::string const pattern = ".IsNot(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (true) {
+        // Find start of pattern
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            break;
+        }
+
+        // Append everything up to pattern
+        buf.append(s, pos, start - pos);
+
+        // Find closing parenthesis
+        size_t end = s.find(')', start + pattern.length());
+        if (end == std::string::npos) {
+            break;
+        }
+
+        // Extract parameter name
+        std::string param = s.substr(start + pattern.length(), end - (start + pattern.length()));
+
+        // Append replacement
+        buf += " != " + param;
+
+        pos = end + 1;
+    }
+
+    // Append remaining text
+    buf.append(s, pos);
+    s = std::move(buf);
 }
 
-std::string CleanCheckConditionString(std::string condition) {
+constexpr bool isIdentifierChar(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
+}
+
+constexpr void ReplaceRegionAgeTime(std::string& s) {
+    std::string const pattern = "RegionTable(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (true) {
+        // Find start of pattern
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            break;
+        }
+
+        // Append everything up to pattern
+        buf.append(s, pos, start - pos);
+
+        // Find closing parenthesis and arrow operator
+        size_t closeParen = s.find(')', start + pattern.length());
+        if (closeParen == std::string::npos) {
+            break;
+        }
+
+        size_t arrow = s.find("->", closeParen);
+        if (arrow == std::string::npos || arrow != closeParen + 1) {
+            break;
+        }
+
+        // Extract region name (between parentheses)
+        std::string region = s.substr(start + pattern.length(), closeParen - (start + pattern.length()));
+
+        // Find the property name after the arrow
+        size_t propStart = arrow + 2;
+        size_t propEnd = propStart;
+        while (propEnd < s.length() && isIdentifierChar(s[propEnd])) {
+            ++propEnd;
+        }
+
+        if (propEnd <= propStart) {
+            break;
+        }
+
+        // Extract property name
+        std::string property = s.substr(propStart, propEnd - propStart);
+
+        // Append replacement format
+        buf += "RegionAgeTimeAccess(" + region + ", RegionAgeTime::" + property + ")";
+
+        pos = propEnd;
+    }
+
+    // Append remaining text
+    buf.append(s, pos);
+    s = std::move(buf);
+}
+
+constexpr std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");

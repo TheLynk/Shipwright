@@ -369,12 +369,6 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                                 this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
                     this->actor.home.rot.z = 0;
                 }
-            } else if (this->actor.home.rot.z != 0) {
-                this->actor.home.rot.z &= 0x1FFF;
-                this->actor.home.rot.z |= 0xE000;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z, 0,
-                            this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
-                this->actor.home.rot.z = 0;
             }
 
             // Spawn falling leaves

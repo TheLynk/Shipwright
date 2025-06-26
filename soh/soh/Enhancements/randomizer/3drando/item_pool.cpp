@@ -638,7 +638,7 @@ void GenerateItemPool() {
     PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive);
     PlaceItemsForType(RCTYPE_SMALL_CRATE, overworldCratesActive, dungeonCratesActive);
 
-        if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
         PlaceItemsForType(RCTYPE_NLCRATE, overworldCratesActive, dungeonCratesActive);
     }
 

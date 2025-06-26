@@ -459,6 +459,9 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE] =                        Item(RG_BRONZE_SCALE,                     Text{ "Bronze Scale", "Écaille de Bronze", "Bronzene Schuppe" },                                                                     ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_PROGRESSIVE_WALLET,           RHT_BRONZE_SCALE,                      RG_BRONZE_SCALE,                      OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
+    itemTable[RG_CLIMB] =                               Item(RG_CLIMB,                            Text{ "Climb", "", "" },                                                                                   ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_PROGRESSIVE_WALLET,           RHT_CLIMB,                      RG_CLIMB,                      OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+    itemTable[RG_CLIMB].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
+
     itemTable[RG_CRAWL] =                               Item(RG_CRAWL,                            Text{ "Crawl", "Ramper", "Kriechen" },                                                                                                ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_PROGRESSIVE_WALLET,           RHT_CRAWL,                      RG_CRAWL,                      OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_CRAWL].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 

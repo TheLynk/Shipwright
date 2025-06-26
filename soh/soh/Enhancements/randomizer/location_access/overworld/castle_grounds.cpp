@@ -12,43 +12,61 @@ void RegionTable_Init_CastleGrounds() {
     areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,            []{return true;}),
-        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->IsChild;}),
+        Entrance(RR_HC_GATE,               []{return logic->IsChild;}),
         Entrance(RR_GANONS_CASTLE_GROUNDS, []{return logic->IsAdult;}),
+    });
+
+    areaTable[RR_HC_GATE] = Region("Hyrule Castle Gate", SCENE_HYRULE_CASTLE, {
+        //Events
+        EventAccess(&logic->BugRock, []{return true;}),
+    }, {
+        //Locations
+        LOCATION(RC_HC_MALON_EGG, logic->HasSoul(RG_MALON_SOUL)),
+        LOCATION(RC_HC_GS_TREE,   logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+    }, {
+        //Exits
+        Entrance(RR_HYRULE_CASTLE_GROUNDS,        []{return true;}),
+        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->HasItem(RG_ZELDAS_LETTER) || logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
         EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugRock,          []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_HC_MALON_EGG,                        logic->HasSoul(RG_MALON_SOUL)),
-        LOCATION(RC_HC_GS_TREE,                          logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
-        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
-        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        // jumping past guard would be a trick
+        LOCATION(RC_HC_MALON_GOSSIP_STONE,           logic->HasItem(RG_CLIMB)),
+    }, {
+        //Exits
+        Entrance(RR_HC_MOAT,                 []{return logic->HasItem(RG_CLIMB);}),
+        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_CRAWL)  && logic->BlastOrSmash();}),
+    });
+
+    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
+        //Locations
+        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_HC_MALON_GOSSIP_STONE,               true),
-        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
         LOCATION(RC_HC_GRASS_1,                          logic->CanCutShrubs()),
         LOCATION(RC_HC_GRASS_2,                          logic->CanCutShrubs()),
-        LOCATION(RC_HC_GROTTO_TREE,                      logic->CanBonkTrees()),
+        LOCATION(RC_HC_GROTTO_TREE,                      logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_HC_NL_TREE_1,                        false),
         LOCATION(RC_HC_NL_TREE_2,                        false),
         LOCATION(RC_HC_SKULLTULA_TREE,                   logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,               logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,               logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,               logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,               logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,               logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,               logic->CanBonkTrees() && logic->HasItem(RG_CLIMB)),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
-        Entrance(RR_HC_GARDEN,               []{return logic->CanUse(RG_CRAWL) && (logic->CanUse(RG_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash()));}),
-        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_CRAWL) && logic->BlastOrSmash();}),
-        Entrance(RR_HC_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
+        Entrance(RR_HC_GATE,          []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO, []{return logic->CanOpenStormsGrotto();}),
+        Entrance(RR_HC_GARDEN,        []{return logic->CanUse(RG_CRAWL) && logic->CanUse(RG_WEIRD_EGG) || !ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
     });
 
     areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {

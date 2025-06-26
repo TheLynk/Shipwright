@@ -469,6 +469,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
     { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
+    { RG_CLIMB, RAND_INF_CAN_CLIMB },
     { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
     { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
     { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
@@ -5504,7 +5505,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 169> getItemMessages = { {
+    const std::array<GetItemMessage, 170> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5937,6 +5938,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
                   "Du hast die %rBronzene Schuppe%w&erhalten! Die Fähigkeit zu&Schwimmen ist nun dein!",
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
+        GIMESSAGE_NO_GERMAN(RG_CLIMB, ITEM_SCALE_SILVER, "You got the %rAbility to Climb Ladders%w!&", "!!!"),
         GIMESSAGE_NO_GERMAN(RG_CRAWL, ITEM_SCALE_SILVER,
                             "You got the %rAbility to Crawl%w!&The power of kneecaps is yours!",
                             "Vous obtenez la %rCapacité à Ramper%w!"),

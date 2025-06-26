@@ -295,6 +295,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+        case RG_CLIMB:
+            return CheckRandoInf(RAND_INF_CAN_CLIMB);
         case RG_CRAWL:
             return CheckRandoInf(RAND_INF_CAN_CRAWL);
         case RG_POCKET_EGG:
@@ -1816,6 +1818,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                     break;
+                case RG_CLIMB:
+                    SetRandoInf(RAND_INF_CAN_CLIMB, state);
+                    break;
                 case RG_CRAWL:
                     SetRandoInf(RAND_INF_CAN_CRAWL, state);
                     break;
@@ -2640,6 +2645,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling climb, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CLIMB).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CLIMB, true);
         }
 
         // If we're not shuffling crawl, we start with it

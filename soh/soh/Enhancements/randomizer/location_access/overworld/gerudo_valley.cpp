@@ -11,6 +11,7 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild), //can use cucco as child
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,     []{return true;}),
@@ -27,7 +28,7 @@ void RegionTable_Init_GerudoValley() {
         EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
     }, {
         //Locations
-        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE)),//can use cucco as child
+        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_GV_GS_BEAN_PATCH,              logic->CanSpawnSoilSkull() && logic->CanAttack()),
         LOCATION(RC_GV_COW,                        logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
         LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,        logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),

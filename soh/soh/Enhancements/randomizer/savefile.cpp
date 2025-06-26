@@ -258,6 +258,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CLIMB) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_CLIMB);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CRAWL) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_CRAWL);
     }

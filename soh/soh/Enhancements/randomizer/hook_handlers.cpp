@@ -782,6 +782,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CRAWL:
             *should = !RAND_GET_OPTION(RSK_SHUFFLE_CRAWL) || Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
+        case VB_CLIMB:
+            *should = !RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) || Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB);
+            break;
         case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
             s32 entranceIndex = va_arg(args, s32);
 

@@ -112,12 +112,12 @@ void RegionTable_Init_HyruleField() {
     }, {
         //Exits
         Entrance(RR_LW_BRIDGE,              []{return true;}),
-        Entrance(RR_LAKE_HYLIA,             []{return true;}),
         Entrance(RR_GERUDO_VALLEY,          []{return true;}),
         Entrance(RR_MARKET_ENTRANCE,        []{return true;}),
         Entrance(RR_KAKARIKO_VILLAGE,       []{return true;}),
         Entrance(RR_ZR_FRONT,               []{return true;}),
         Entrance(RR_LON_LON_RANCH,          []{return true;}),
+        Entrance(RR_HF_TO_LAKE_HYLIA,       []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_EPONA);}),
         Entrance(RR_HF_SOUTHEAST_GROTTO,    []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
         Entrance(RR_HF_OPEN_GROTTO,         []{return true;}),
         Entrance(RR_HF_INSIDE_FENCE_GROTTO, []{return logic->CanOpenBombGrotto();}),
@@ -126,6 +126,12 @@ void RegionTable_Init_HyruleField() {
         Entrance(RR_HF_FAIRY_GROTTO,        []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
         Entrance(RR_HF_NEAR_KAK_GROTTO,     []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_HF_TEKTITE_GROTTO,      []{return logic->CanOpenBombGrotto();}),
+    });
+
+    areaTable[RR_HF_TO_LAKE_HYLIA] = Region("HF to Lake Hylia", SCENE_HYRULE_FIELD, {}, {}, {
+        //Exits
+        Entrance(RR_LAKE_HYLIA,   []{return true;}),
+        Entrance(RR_HYRULE_FIELD, []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_EPONA);}),
     });
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {

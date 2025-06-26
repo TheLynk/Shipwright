@@ -13,7 +13,7 @@ void RegionTable_Init_GerudoFortress() {
     areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
-        EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasSoul(RG_HW_GATEKEEPER_SOUL);}),
+        EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasSoul(RG_HW_GATEKEEPER_SOUL) && logic->HasItem(RG_CLIMB);}),
         EventAccess(&logic->GtG_GateOpen,    []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasSoul(RG_GTG_GATEKEEPER_SOUL);}),
     }, {
         //Locations

@@ -13,7 +13,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                          logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION) && logic->HasSoul(RG_ZELDA_SOUL)),
-        LOCATION(RC_KAK_ANJU_AS_CHILD,                          logic->IsChild && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL)),
+        LOCATION(RC_KAK_ANJU_AS_CHILD,                          logic->IsChild && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL) && logic->HasItem(RG_CLIMB)), // RANDOTODO only require climb if all 7 cuccos required
         LOCATION(RC_KAK_ANJU_AS_ADULT,                          logic->IsAdult && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL)),
         LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                     logic->IsAdult && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL) && (logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon)),
         //Can kill lower kak skulls with pots
@@ -21,7 +21,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,                logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_GUARDS_HOUSE,                   logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_TREE,                           logic->IsChild && logic->CanGetNightTimeGS() && logic->CanBonkTrees()),
-        LOCATION(RC_KAK_GS_WATCHTOWER,                     logic->IsChild && (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KAK_GS_WATCHTOWER,                     logic->IsChild && logic->HasItem(RG_CLIMB) && (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_1,            logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_2,            logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_3,            logic->IsChild && logic->CanBreakPots()),
@@ -71,7 +71,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_POTION_SHOP_FRONT,    []{return (logic->AtDay || logic->IsChild) && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
         Entrance(RR_KAK_REDEAD_GROTTO,        []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_KAK_IMPAS_LEDGE,          []{return (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION));}),
-        Entrance(RR_KAK_WATCHTOWER,           []{return logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer());}),
+        Entrance(RR_KAK_WATCHTOWER,           []{return logic->HasItem(RG_CLIMB) && (logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer()));}),
         Entrance(RR_KAK_ROOFTOP,              []{return logic->HasSoul(RG_MAN_ON_ROOF_SOUL) && (logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult));}),
         Entrance(RR_KAK_IMPAS_ROOFTOP,        []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS));}),
         Entrance(RR_THE_GRAVEYARD,            []{return true;}),
@@ -268,7 +268,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_WELL] = Region("Kak Well", SCENE_KAKARIKO_VILLAGE, {}, {}, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell;}),
+        Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->HasItem(RG_CLIMB) && (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, []{return logic->IsChild || (logic->DrainWell && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
     });
 

@@ -108,7 +108,6 @@ void Rando::StaticData::RegisterPotLocations() {
     registered = true;
     // clang-format off
     // Overworld Pots
-    //            Randomizer Check                              Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                          Hint Text Key                     Vanilla             Spoiler Collection Check
     //            Randomizer Check                                 	Randomizer Check                  Quest         Area                          Scene ID                           Params                          Short Name                    	     Hint Text Key                  Vanilla             Spoiler Collection Check
     locationTable[RC_KF_LINKS_HOUSE_POT]            = Location::Pot(RC_KF_LINKS_HOUSE_POT,            RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_LINKS_HOUSE,                 TWO_ACTOR_PARAMS(-118, 51),     "Links House Pot",                  RHT_POT_KOKIRI_FOREST,	            RG_RECOVERY_HEART,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_LINKS_HOUSE_POT));
     locationTable[RC_KF_TWINS_HOUSE_POT_2]          = Location::Pot(RC_KF_TWINS_HOUSE_POT_2,          RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_TWINS_HOUSE,                 TWO_ACTOR_PARAMS(35, 57),       "Twins House Pot 2",                RHT_POT_KOKIRI_FOREST,	            RG_BLUE_RUPEE,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_TWINS_HOUSE_POT_2));

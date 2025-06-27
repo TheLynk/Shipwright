@@ -666,7 +666,10 @@ void Settings::CreateOptions() {
               "Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots",
               "The jump is Adult Link only. Applies to both Vanilla and MQ.");
     OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Smash the Boss Lobby Floor");
+              "Dodongo\'s Cavern Smash the Boss Lobby Floor",
+              "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is "
+              "only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of "
+              "\"Dodongo's Cavern MQ Light the Eyes with Strength\" is on.");
     OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
               "Dodongo\'s Cavern Dodongo without Bombchus",
               "With precise timing you can feed King Dodongo a bombchu during a backflip");

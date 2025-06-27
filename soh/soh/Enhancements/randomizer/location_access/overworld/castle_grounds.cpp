@@ -22,7 +22,7 @@ void RegionTable_Init_CastleGrounds() {
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG, logic->HasSoul(RG_MALON_SOUL)),
-        LOCATION(RC_HC_GS_TREE,   logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_HC_GS_TREE,   logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_HYRULE_CASTLE_GROUNDS,        []{return true;}),

@@ -115,7 +115,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
             break;
     }
-    
+
     Matrix_Pop();
     CLOSE_DISPS(gfxCtx);
 }

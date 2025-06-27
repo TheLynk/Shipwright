@@ -605,7 +605,7 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
         AddItemToMainPool(RG_CLIMB);
     }
-    
+
     if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
         AddItemToMainPool(RG_CRAWL);
     }

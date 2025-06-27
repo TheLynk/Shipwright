@@ -336,7 +336,7 @@ typedef enum {
     // - None
 
     VB_CRAWL,
-    
+
     // #### `result`
     // ```c
     // true
@@ -2197,7 +2197,7 @@ typedef enum {
     // #### `args`
     // - `*ObjWood02`
     VB_TREE_DROP_ITEM,
-    
+
     // ```c
     // true
     // ```

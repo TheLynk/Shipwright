@@ -1340,10 +1340,11 @@ void Settings::CreateOptions() {
                                                                      &mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI],
                                                                  },
                                                                  WidgetContainerType::TABLE);
-    mOptionGroups[RSG_TIMESAVERS_IMGUI] = OptionGroup::SubGroup(
-        "Timesavers",
-        { &mOptions[RSK_BIG_POE_COUNT], &mOptions[RSK_SKIP_CHILD_ZELDA], &mOptions[RSK_SKIP_EPONA_RACE], &mOptions[RSK_SKIP_SCARECROWS_SONG] },
-        WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_TIMESAVERS_IMGUI] =
+        OptionGroup::SubGroup("Timesavers",
+                              { &mOptions[RSK_BIG_POE_COUNT], &mOptions[RSK_SKIP_CHILD_ZELDA],
+                                &mOptions[RSK_SKIP_EPONA_RACE], &mOptions[RSK_SKIP_SCARECROWS_SONG] },
+                              WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("",
                                                                      {
                                                                          &mOptions[RSK_ITEM_POOL],

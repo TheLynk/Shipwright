@@ -7,7 +7,7 @@ void RegionTable_Init_LostWoods() {
     // clang-format off
     areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", SCENE_LOST_WOODS, {}, {}, {
         //Exits
-        Entrance(RR_KOKIRI_FOREST, []{return true;})
+        Entrance(RR_KF_OUTSIDE_LOST_WOODS, []{return true;})
     });
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
@@ -18,9 +18,9 @@ void RegionTable_Init_LostWoods() {
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->CanUse(RG_COJIRO)),
+        LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->HasSoul(RG_GROG_SOUL) && logic->CanUse(RG_COJIRO)),
         //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
-        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
+        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->HasSoul(RG_FADO_SOUL) && logic->CanUse(RG_ODD_POTION)),
                                                                                                               //all 5 buttons are logically required for memory game
                                                                                                               //because the chances of being able to beat it
                                                                                                               //every time you attempt it are as follows:
@@ -110,8 +110,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_DEKU_THEATER] = Region("Deku Theater", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->SkullMask),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->MaskOfTruth),
+        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_MASK_SKULL)),
+        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_TRUTH)),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),
@@ -130,7 +130,7 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BRIDGE_FROM_FOREST] = Region("LW Bridge From Forest", SCENE_LOST_WOODS, {}, {
         //Locations
-        LOCATION(RC_LW_GIFT_FROM_SARIA, true),
+        LOCATION(RC_LW_GIFT_FROM_SARIA, logic->HasSoul(RG_SARIA_SOUL)),
     }, {
         //Exits
         Entrance(RR_LW_BRIDGE, []{return true;}),

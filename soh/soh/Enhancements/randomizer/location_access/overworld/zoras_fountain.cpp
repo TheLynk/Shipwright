@@ -11,7 +11,7 @@ void RegionTable_Init_ZorasFountain() {
         EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
     }, {
         //Locations
-        LOCATION(RC_ZF_GS_TREE,                      logic->IsChild),
+        LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_ZF_GS_ABOVE_THE_LOG,             logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -23,6 +23,7 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_NEAR_JABU_POT_2,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_3,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_4,              logic->IsChild && logic->CanBreakPots()),
+        LOCATION(RC_ZF_TREE,                         logic->IsChild && logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_ZD_BEHIND_KING_ZORA,       []{return true;}),
@@ -89,7 +90,7 @@ void RegionTable_Init_ZorasFountain() {
         //Exits
         //There are invisible big skultullas here as adult but they do not block the path and can be "seen" with Z-target
         //Lens is not currently needed for this either, implying they are not considered blocking, but it's open for discussion long-term
-        Entrance(RR_ZF_HIDDEN_LEDGE, []{return true;}),
+        Entrance(RR_ZF_HIDDEN_LEDGE, []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT);}),
     });
 
     areaTable[RR_ZF_HIDDEN_LEDGE] = Region("ZF Hidden Ledge", SCENE_ZORAS_FOUNTAIN, {}, {
@@ -112,7 +113,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->HasSoul(RG_GREAT_FAIRY_SOUL) && logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),

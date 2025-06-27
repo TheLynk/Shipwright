@@ -211,11 +211,14 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_OCARINA, "Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
+    OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
+    OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     OPT_U8(RSK_SHUFFLE_POTS, "Shuffle Pots", {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), mOptionDescriptions[RSK_SHUFFLE_POTS], WidgetType::Combobox, RO_SHUFFLE_POTS_OFF);
     OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WidgetType::Combobox, RO_SHUFFLE_GRASS_OFF);
     OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WidgetType::Combobox, RO_SHUFFLE_CRATES_OFF);
+    OPT_BOOL(RSK_SHUFFLE_TREES, "Shuffle Trees", CVAR_RANDOMIZER_SETTING("ShuffleTrees"), mOptionDescriptions[RSK_SHUFFLE_TREES]);
     OPT_BOOL(RSK_SHUFFLE_FISHING_POLE, "Shuffle Fishing Pole", CVAR_RANDOMIZER_SETTING("ShuffleFishingPole"), mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE]);
     OPT_U8(RSK_SHUFFLE_MERCHANTS, "Shuffle Merchants", {"Off", "Bean Merchant Only", "All But Beans", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), mOptionDescriptions[RSK_SHUFFLE_MERCHANTS], WidgetType::Combobox, RO_SHUFFLE_MERCHANTS_OFF, IMFLAG_NONE);
     OPT_U8(RSK_MERCHANT_PRICES, "Merchant Prices", {"Vanilla", "Cheap Balanced", "Balanced", "Fixed", "Range", "Set By Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MerchantPrices"), mOptionDescriptions[RSK_MERCHANT_PRICES], WidgetType::Combobox, RO_PRICE_VANILLA, false, IMFLAG_NONE);
@@ -233,6 +236,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_CHEST_MINIGAME, "Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     OPT_BOOL(RSK_SHUFFLE_100_GS_REWARD, "Shuffle 100 GS Reward", CVAR_RANDOMIZER_SETTING("Shuffle100GSReward"), mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     OPT_U8(RSK_SHUFFLE_BOSS_SOULS, "Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
+    OPT_U8(RSK_SHUFFLE_NPC_SOULS, "Shuffle NPC Souls", {"Off", "On", "On + Sages"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), mOptionDescriptions[RSK_SHUFFLE_NPC_SOULS], WidgetType::Combobox);
     OPT_BOOL(RSK_SHUFFLE_DEKU_STICK_BAG, "Shuffle Deku Stick Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     OPT_BOOL(RSK_SHUFFLE_DEKU_NUT_BAG, "Shuffle Deku Nut Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuNutBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     OPT_U8(RSK_SHUFFLE_FREESTANDING, "Shuffle Freestanding Items", {"Off", "Dungeons", "Overworld", "All Items"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), mOptionDescriptions[RSK_SHUFFLE_FREESTANDING], WidgetType::Combobox, RO_SHUFFLE_FREESTANDING_OFF);
@@ -269,7 +273,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SKIP_EPONA_RACE, "Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     OPT_BOOL(RSK_SKIP_SCARECROWS_SONG, "Skip Scarecrow's Song", CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"), mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG]);
     OPT_U8(RSK_BIG_POE_COUNT, "Big Poe Target Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), mOptionDescriptions[RSK_BIG_POE_COUNT], WidgetType::Slider, 10);
-    OPT_BOOL(RSK_COMPLETE_MASK_QUEST, "Complete Mask Quest", CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), mOptionDescriptions[RSK_COMPLETE_MASK_QUEST]);
+    OPT_U8(RSK_MASK_QUEST, "Mask Quest", {"Vanilla", "Completed", "Shuffle"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), mOptionDescriptions[RSK_MASK_QUEST], WidgetType::Combobox, 0);
     OPT_U8(RSK_GOSSIP_STONE_HINTS, "Gossip Stone Hints", {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GossipStoneHints"), mOptionDescriptions[RSK_GOSSIP_STONE_HINTS], WidgetType::Combobox, RO_GOSSIP_STONES_NEED_NOTHING, false, IMFLAG_NONE);
     OPT_U8(RSK_HINT_CLARITY, "Hint Clarity", {"Obscure", "Ambiguous", "Clear"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("HintClarity"), mOptionDescriptions[RSK_HINT_CLARITY], WidgetType::Combobox, RO_HINT_CLARITY_CLEAR, true, IMFLAG_INDENT);
     OPT_U8(RSK_HINT_DISTRIBUTION, "Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("HintDistribution"), mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED, true, IMFLAG_UNINDENT);
@@ -1236,12 +1240,15 @@ void Settings::CreateOptions() {
                                                                        &mOptions[RSK_SHUFFLE_OCARINA],
                                                                        &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                        &mOptions[RSK_SHUFFLE_SWIM],
+                                                                       &mOptions[RSK_SHUFFLE_CLIMB],
+                                                                       &mOptions[RSK_SHUFFLE_CRAWL],
                                                                        &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                                                        &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
                                                                        &mOptions[RSK_SHUFFLE_FISHING_POLE],
                                                                        &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                                                        &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
                                                                        &mOptions[RSK_SHUFFLE_FREESTANDING],
+                                                                       &mOptions[RSK_MASK_QUEST],
                                                                    },
                                                                    WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] =
@@ -1277,6 +1284,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_SHUFFLE_COWS],
                                   &mOptions[RSK_SHUFFLE_POTS],
                                   &mOptions[RSK_SHUFFLE_CRATES],
+                                  &mOptions[RSK_SHUFFLE_TREES],
                                   &mOptions[RSK_SHUFFLE_MERCHANTS],
                                   &mOptions[RSK_MERCHANT_PRICES],
                                   &mOptions[RSK_MERCHANT_PRICES_FIXED_PRICE],
@@ -1292,6 +1300,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_SHUFFLE_ADULT_TRADE],
                                   &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                   &mOptions[RSK_SHUFFLE_BOSS_SOULS],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS],
                                   &mOptions[RSK_SHUFFLE_FAIRIES],
                                   &mOptions[RSK_SHUFFLE_GRASS],
                               },
@@ -1333,8 +1342,7 @@ void Settings::CreateOptions() {
                                                                  WidgetContainerType::TABLE);
     mOptionGroups[RSG_TIMESAVERS_IMGUI] = OptionGroup::SubGroup(
         "Timesavers",
-        { &mOptions[RSK_BIG_POE_COUNT], &mOptions[RSK_SKIP_CHILD_ZELDA], &mOptions[RSK_SKIP_EPONA_RACE],
-          &mOptions[RSK_COMPLETE_MASK_QUEST], &mOptions[RSK_SKIP_SCARECROWS_SONG] },
+        { &mOptions[RSK_BIG_POE_COUNT], &mOptions[RSK_SKIP_CHILD_ZELDA], &mOptions[RSK_SKIP_EPONA_RACE], &mOptions[RSK_SKIP_SCARECROWS_SONG] },
         WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("",
                                                                      {
@@ -1509,10 +1517,13 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_COWS],
                                             &mOptions[RSK_SHUFFLE_POTS],
                                             &mOptions[RSK_SHUFFLE_CRATES],
+                                            &mOptions[RSK_SHUFFLE_TREES],
                                             &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
                                             &mOptions[RSK_SHUFFLE_OCARINA],
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                             &mOptions[RSK_SHUFFLE_SWIM],
+                                            &mOptions[RSK_SHUFFLE_CLIMB],
+                                            &mOptions[RSK_SHUFFLE_CRAWL],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                             &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
                                             &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -1531,6 +1542,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
                                             &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
                                             &mOptions[RSK_SHUFFLE_FREESTANDING],
@@ -1599,7 +1611,6 @@ void Settings::CreateOptions() {
                                                                           &mOptions[RSK_SKIP_EPONA_RACE],
                                                                           &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                           &mOptions[RSK_BIG_POE_COUNT],
-                                                                          &mOptions[RSK_COMPLETE_MASK_QUEST],
                                                                       });
     mOptionGroups[RSG_MISC] = OptionGroup("Miscellaneous Settings",
                                           {

@@ -465,6 +465,93 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
+// used for items that only set a rand inf when obtained
+std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
+    { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
+    { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
+    { RG_CLIMB, RAND_INF_CAN_CLIMB },
+    { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
+    { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
+    { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
+    { RG_STICK_UPGRADE_INF, RAND_INF_HAS_INFINITE_STICK_UPGRADE },
+    { RG_NUT_UPGRADE_INF, RAND_INF_HAS_INFINITE_NUT_UPGRADE },
+    { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
+    { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
+    { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
+    { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
+    { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
+    { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
+    { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
+    { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
+    { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_MASK_KEATON, RAND_INF_CHILD_TRADES_HAS_MASK_KEATON },
+    { RG_MASK_SKULL, RAND_INF_CHILD_TRADES_HAS_MASK_SKULL },
+    { RG_MASK_SPOOKY, RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY },
+    { RG_MASK_BUNNY, RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY },
+    { RG_MASK_GORON, RAND_INF_CHILD_TRADES_HAS_MASK_GORON },
+    { RG_MASK_ZORA, RAND_INF_CHILD_TRADES_HAS_MASK_ZORA },
+    { RG_MASK_GERUDO, RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO },
+    { RG_MASK_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH },
+    { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
+    { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
+    { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
+    { RG_PHANTOM_GANON_SOUL, RAND_INF_PHANTOM_GANON_SOUL },
+    { RG_VOLVAGIA_SOUL, RAND_INF_VOLVAGIA_SOUL },
+    { RG_MORPHA_SOUL, RAND_INF_MORPHA_SOUL },
+    { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
+    { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
+    { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
+    { RG_CRAWL, RAND_INF_CAN_CRAWL },
+    { RG_ANJU_SOUL, RAND_INF_ANJU_SOUL },
+    { RG_TALON_SOUL, RAND_INF_TALON_SOUL },
+    { RG_GROG_SOUL, RAND_INF_GROG_SOUL },
+    { RG_GRANNY_SOUL, RAND_INF_GRANNY_SOUL },
+    { RG_FADO_SOUL, RAND_INF_FADO_SOUL },
+    { RG_LINK_SOUL, RAND_INF_LINK_SOUL },
+    { RG_BIGGORON_SOUL, RAND_INF_BIGGORON_SOUL },
+    { RG_HOT_RODDER_SOUL, RAND_INF_HOT_RODDER_SOUL },
+    { RG_MEDIGORON_SOUL, RAND_INF_MEDIGORON_SOUL },
+    { RG_CARPENTER_BOSS_SOUL, RAND_INF_CARPENTER_BOSS_SOUL },
+    { RG_ICHIRO_SOUL, RAND_INF_ICHIRO_SOUL },
+    { RG_SABOORO_SOUL, RAND_INF_SABOORO_SOUL },
+    { RG_JIRO_SOUL, RAND_INF_JIRO_SOUL },
+    { RG_SHIRO_SOUL, RAND_INF_SHIRO_SOUL },
+    { RG_HW_GATEKEEPER_SOUL, RAND_INF_HW_GATEKEEPER_SOUL },
+    { RG_GTG_GATEKEEPER_SOUL, RAND_INF_GTG_GATEKEEPER_SOUL },
+    { RG_ARCHER_SOUL, RAND_INF_ARCHER_SOUL },
+    { RG_GREAT_FAIRY_SOUL, RAND_INF_GREAT_FAIRY_SOUL },
+    { RG_POE_COLLECTOR_SOUL, RAND_INF_POE_COLLECTOR_SOUL },
+    { RG_DAMPE_SOUL, RAND_INF_DAMPE_SOUL },
+    { RG_WINDMILL_MAN_SOUL, RAND_INF_WINDMILL_MAN_SOUL },
+    { RG_MAN_ON_ROOF_SOUL, RAND_INF_MAN_ON_ROOF_SOUL },
+    { RG_KAKARIKO_GATEKEEPER_SOUL, RAND_INF_KAKARIKO_GATEKEEPER_SOUL },
+    { RG_MALON_SOUL, RAND_INF_MALON_SOUL },
+    { RG_RAURU_SOUL, RAND_INF_RAURU_SOUL },
+    { RG_SARIA_SOUL, RAND_INF_SARIA_SOUL },
+    { RG_DARUNIA_SOUL, RAND_INF_DARUNIA_SOUL },
+    { RG_RUTO_SOUL, RAND_INF_RUTO_SOUL },
+    { RG_NABOORU_SOUL, RAND_INF_NABOORU_SOUL },
+    { RG_IMPA_SOUL, RAND_INF_IMPA_SOUL },
+    { RG_ZELDA_SOUL, RAND_INF_ZELDA_SOUL },
+    { RG_BEGGAR_SOUL, RAND_INF_BEGGAR_SOUL },
+    { RG_DOG_LADY_SOUL, RAND_INF_DOG_LADY_SOUL },
+    { RG_ARMS_DEALER_SOUL, RAND_INF_ARMS_DEALER_SOUL },
+    { RG_BEAN_SALESMAN_SOUL, RAND_INF_BEAN_SALESMAN_SOUL },
+    { RG_SHOOTING_SOUL, RAND_INF_SHOOTING_SOUL },
+    { RG_KOKIRI_SHOPKEEPER_SOUL, RAND_INF_KOKIRI_SHOPKEEPER_SOUL },
+    { RG_POTION_SHOPKEEPER_SOUL, RAND_INF_POTION_SHOPKEEPER_SOUL },
+    { RG_BAZAAR_SHOPKEEPER_SOUL, RAND_INF_BAZAAR_SHOPKEEPER_SOUL },
+    { RG_GORON_SHOPKEEPER_SOUL, RAND_INF_GORON_SHOPKEEPER_SOUL },
+    { RG_ZORA_SHOPKEEPER_SOUL, RAND_INF_ZORA_SHOPKEEPER_SOUL },
+    { RG_BOMBCHU_SHOPKEEPER_SOUL, RAND_INF_BOMBCHU_SHOPKEEPER_SOUL },
+    { RG_MASK_SALESMAN_SOUL, RAND_INF_MASK_SALESMAN_SOUL },
+    { RG_TREASURE_MAN_SOUL, RAND_INF_TREASURE_MAN_SOUL },
+    { RG_BOMBCHU_LADY_SOUL, RAND_INF_BOMBCHU_LADY_SOUL },
+    { RG_DIVING_SOUL, RAND_INF_DIVING_SOUL },
+    { RG_SCIENTIST_SOUL, RAND_INF_SCIENTIST_SOUL },
+    { RG_KAEPORA_SOUL, RAND_INF_KAEPORA_SOUL },
+};
+
 #ifdef _MSC_VER
 #pragma optimize("", off)
 #else
@@ -728,7 +815,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
-
+    if (randomizerGetToRandInf.find(randoGet) != randomizerGetToRandInf.end()) {
+        return Flags_GetRandomizerInf(randomizerGetToRandInf.find(randoGet)->second) ? CANT_OBTAIN_ALREADY_HAVE
+                                                                                     : CAN_OBTAIN;
+    }
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should not get Tycoon's Wallet from it if it is off.
     bool tycoonWallet = GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
@@ -1097,18 +1187,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-
-        // Ocarina Buttons
-        case RG_OCARINA_A_BUTTON:
-            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-        case RG_OCARINA_C_LEFT_BUTTON:
-            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-        case RG_OCARINA_C_RIGHT_BUTTON:
-            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-        case RG_OCARINA_C_UP_BUTTON:
-            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-        case RG_OCARINA_C_DOWN_BUTTON:
-            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
@@ -3258,6 +3336,69 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
         RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
     },
+    { RC_MARKET_TREE, RAND_INF_MARKET_TREE },
+    { RC_HC_NEAR_GUARDS_TREE_1, RAND_INF_HC_NEAR_GUARDS_TREE_1 },
+    { RC_HC_NEAR_GUARDS_TREE_2, RAND_INF_HC_NEAR_GUARDS_TREE_2 },
+    { RC_HC_NEAR_GUARDS_TREE_3, RAND_INF_HC_NEAR_GUARDS_TREE_3 },
+    { RC_HC_NEAR_GUARDS_TREE_4, RAND_INF_HC_NEAR_GUARDS_TREE_4 },
+    { RC_HC_NEAR_GUARDS_TREE_5, RAND_INF_HC_NEAR_GUARDS_TREE_5 },
+    { RC_HC_NEAR_GUARDS_TREE_6, RAND_INF_HC_NEAR_GUARDS_TREE_6 },
+    { RC_HC_SKULLTULA_TREE, RAND_INF_HC_SKULLTULA_TREE },
+    { RC_HC_GROTTO_TREE, RAND_INF_HC_GROTTO_TREE },
+    { RC_HC_NL_TREE_1, RAND_INF_HC_NL_TREE_1 },
+    { RC_HC_NL_TREE_2, RAND_INF_HC_NL_TREE_2 },
+    { RC_HF_NEAR_KAK_TREE, RAND_INF_HF_NEAR_KAK_TREE },
+    { RC_HF_NEAR_KAK_SMALL_TREE, RAND_INF_HF_NEAR_KAK_SMALL_TREE },
+    { RC_HF_NEAR_MARKET_TREE_1, RAND_INF_HF_NEAR_MARKET_TREE_1 },
+    { RC_HF_NEAR_MARKET_TREE_2, RAND_INF_HF_NEAR_MARKET_TREE_2 },
+    { RC_HF_NEAR_MARKET_TREE_3, RAND_INF_HF_NEAR_MARKET_TREE_3 },
+    { RC_HF_NEAR_LLR_TREE, RAND_INF_HF_NEAR_LLR_TREE },
+    { RC_HF_NEAR_LH_TREE, RAND_INF_HF_NEAR_LH_TREE },
+    { RC_HF_CHILD_NEAR_GV_TREE, RAND_INF_HF_CHILD_NEAR_GV_TREE },
+    { RC_HF_ADULT_NEAR_GV_TREE, RAND_INF_HF_ADULT_NEAR_GV_TREE },
+    { RC_HF_NEAR_ZR_TREE, RAND_INF_HF_NEAR_ZR_TREE },
+    { RC_HF_NORTHWEST_TREE_1, RAND_INF_HF_NORTHWEST_TREE_1 },
+    { RC_HF_NORTHWEST_TREE_2, RAND_INF_HF_NORTHWEST_TREE_2 },
+    { RC_HF_NORTHWEST_TREE_3, RAND_INF_HF_NORTHWEST_TREE_3 },
+    { RC_HF_NORTHWEST_TREE_4, RAND_INF_HF_NORTHWEST_TREE_4 },
+    { RC_HF_NORTHWEST_TREE_5, RAND_INF_HF_NORTHWEST_TREE_5 },
+    { RC_HF_NORTHWEST_TREE_6, RAND_INF_HF_NORTHWEST_TREE_6 },
+    { RC_HF_EAST_TREE_1, RAND_INF_HF_EAST_TREE_1 },
+    { RC_HF_EAST_TREE_2, RAND_INF_HF_EAST_TREE_2 },
+    { RC_HF_EAST_TREE_3, RAND_INF_HF_EAST_TREE_3 },
+    { RC_HF_EAST_TREE_4, RAND_INF_HF_EAST_TREE_4 },
+    { RC_HF_EAST_TREE_5, RAND_INF_HF_EAST_TREE_5 },
+    { RC_HF_EAST_TREE_6, RAND_INF_HF_EAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_1, RAND_INF_HF_SOUTHEAST_TREE_1 },
+    { RC_HF_SOUTHEAST_TREE_2, RAND_INF_HF_SOUTHEAST_TREE_2 },
+    { RC_HF_SOUTHEAST_TREE_3, RAND_INF_HF_SOUTHEAST_TREE_3 },
+    { RC_HF_SOUTHEAST_TREE_4, RAND_INF_HF_SOUTHEAST_TREE_4 },
+    { RC_HF_SOUTHEAST_TREE_5, RAND_INF_HF_SOUTHEAST_TREE_5 },
+    { RC_HF_SOUTHEAST_TREE_6, RAND_INF_HF_SOUTHEAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_7, RAND_INF_HF_SOUTHEAST_TREE_7 },
+    { RC_HF_SOUTHEAST_TREE_8, RAND_INF_HF_SOUTHEAST_TREE_8 },
+    { RC_HF_SOUTHEAST_TREE_9, RAND_INF_HF_SOUTHEAST_TREE_9 },
+    { RC_HF_SOUTHEAST_TREE_10, RAND_INF_HF_SOUTHEAST_TREE_10 },
+    { RC_HF_SOUTHEAST_TREE_11, RAND_INF_HF_SOUTHEAST_TREE_11 },
+    { RC_HF_SOUTHEAST_TREE_12, RAND_INF_HF_SOUTHEAST_TREE_12 },
+    { RC_HF_SOUTHEAST_TREE_13, RAND_INF_HF_SOUTHEAST_TREE_13 },
+    { RC_HF_SOUTHEAST_TREE_14, RAND_INF_HF_SOUTHEAST_TREE_14 },
+    { RC_HF_SOUTHEAST_TREE_15, RAND_INF_HF_SOUTHEAST_TREE_15 },
+    { RC_HF_SOUTHEAST_TREE_16, RAND_INF_HF_SOUTHEAST_TREE_16 },
+    { RC_HF_SOUTHEAST_TREE_17, RAND_INF_HF_SOUTHEAST_TREE_17 },
+    { RC_HF_SOUTHEAST_TREE_18, RAND_INF_HF_SOUTHEAST_TREE_18 },
+    { RC_HF_SOUTHEAST_TREE_19, RAND_INF_HF_SOUTHEAST_TREE_19 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_1, RAND_INF_HF_CHILD_SOUTHEAST_TREE_1 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_2, RAND_INF_HF_CHILD_SOUTHEAST_TREE_2 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_3, RAND_INF_HF_CHILD_SOUTHEAST_TREE_3 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_4, RAND_INF_HF_CHILD_SOUTHEAST_TREE_4 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_5, RAND_INF_HF_CHILD_SOUTHEAST_TREE_5 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_6, RAND_INF_HF_CHILD_SOUTHEAST_TREE_6 },
+    { RC_HF_TEKTITE_GROTTO_TREE, RAND_INF_HF_TEKTITE_GROTTO_TREE },
+    { RC_ZF_TREE, RAND_INF_ZF_TREE },
+    { RC_ZR_TREE, RAND_INF_ZR_TREE },
+    { RC_KAK_TREE, RAND_INF_KAK_TREE },
+    { RC_LLR_TREE, RAND_INF_LLR_TREE },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -3677,6 +3818,27 @@ SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 po
     }
 
     return smallCrateIdentity;
+}
+
+TreeIdentity Randomizer::IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
+    struct TreeIdentity treeIdentity;
+
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        sceneNum = SCENE_MARKET_DAY;
+    }
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+        (location->GetRCType() != RCTYPE_NLTREE || GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+        return treeIdentity;
+    }
+
+    treeIdentity.randomizerInf = RAND_INF_MAX;
+    treeIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    return treeIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -5343,7 +5505,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 112> getItemMessages = { {
+    const std::array<GetItemMessage, 170> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5638,6 +5800,106 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!",
                   "Du hast die Seele von&%cGanon%w gefunden!", "Vous obtenez l'âme de %cGanon%w!"),
 
+        GIMESSAGE_NO_GERMAN(RG_ANJU_SOUL, ITEM_BIG_POE, "You found the soul for %bAnju%w!",
+                            "Vous obtenez l'âme de %bAnju%w!"),
+        GIMESSAGE_NO_GERMAN(RG_TALON_SOUL, ITEM_BIG_POE, "You found the soul for %bTalon%w!",
+                            "Vous obtenez l'âme de %bTalon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GROG_SOUL, ITEM_BIG_POE, "You found the soul for %bGrog%w!",
+                            "Vous obtenez l'âme de %bGrog%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GRANNY_SOUL, ITEM_BIG_POE, "You found the soul for %bGranny%w!",
+                            "Vous obtenez l'âme de %bGranny%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FADO_SOUL, ITEM_BIG_POE, "You found the soul for %bFado%w!",
+                            "Vous obtenez l'âme de %bFado%w!"),
+        GIMESSAGE_NO_GERMAN(RG_LINK_SOUL, ITEM_BIG_POE, "You found the soul for %bDarunia's Son%w!",
+                            "Vous obtenez l'âme de %ble fils de Darunia%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BIGGORON_SOUL, ITEM_BIG_POE, "You found the soul for %bBiggoron%w!",
+                            "Vous obtenez l'âme de %bBiggoron%w!"),
+        GIMESSAGE_NO_GERMAN(RG_HOT_RODDER_SOUL, ITEM_BIG_POE, "You found the soul for %bHot Rodder%w!",
+                            "Vous obtenez l'âme de %bHot Rodder%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MEDIGORON_SOUL, ITEM_BIG_POE, "You found the soul for %bMedigoron%w!",
+                            "Vous obtenez l'âme de %bMedigoron%w!"),
+        GIMESSAGE_NO_GERMAN(RG_CARPENTER_BOSS_SOUL, ITEM_BIG_POE, "You found the soul for %bCarpenter Boss%w!",
+                            "Vous obtenez l'âme de %bCarpenter Boss%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICHIRO_SOUL, ITEM_BIG_POE, "You found the soul for %bIchiro%w!",
+                            "Vous obtenez l'âme de %bIchiro%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SABOORO_SOUL, ITEM_BIG_POE, "You found the soul for %bSabooro%w!",
+                            "Vous obtenez l'âme de %bSabooro%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JIRO_SOUL, ITEM_BIG_POE, "You found the soul for %bJiro%w!",
+                            "Vous obtenez l'âme de %bJiro%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHIRO_SOUL, ITEM_BIG_POE, "You found the soul for %bShiro%w!",
+                            "Vous obtenez l'âme de %bShiro%w!"),
+        GIMESSAGE_NO_GERMAN(RG_HW_GATEKEEPER_SOUL, ITEM_BIG_POE,
+                            "You found the soul for %bHaunted Wasteland Gate Operator%w!",
+                            "Vous obtenez l'âme de %bHaunted Wasteland Gate Operator%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GTG_GATEKEEPER_SOUL, ITEM_BIG_POE,
+                            "You found the soul for %bTraining Ground Gate Operator%w!",
+                            "Vous obtenez l'âme de %bTraining Ground Gate Operator%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ARCHER_SOUL, ITEM_BIG_POE, "You found the soul for %bHorseback Archer%w!",
+                            "Vous obtenez l'âme de %bHorseback Archer%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GREAT_FAIRY_SOUL, ITEM_BIG_POE, "You found the soul for %bGreat Fairy%w!",
+                            "Vous obtenez l'âme de %bGreat Fairy%w!"),
+        GIMESSAGE_NO_GERMAN(RG_POE_COLLECTOR_SOUL, ITEM_BIG_POE, "You found the soul for %bPoe Collector%w!",
+                            "Vous obtenez l'âme de %bPoe Collector%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DAMPE_SOUL, ITEM_BIG_POE, "You found the soul for %bDampe%w!",
+                            "Vous obtenez l'âme de %bDampe%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WINDMILL_MAN_SOUL, ITEM_BIG_POE, "You found the soul for %bWindmill Man%w!",
+                            "Vous obtenez l'âme de %bWindmill Man%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MAN_ON_ROOF_SOUL, ITEM_BIG_POE, "You found the soul for %bMan on Roof%w!",
+                            "Vous obtenez l'âme de %bMan on Roof%w!"),
+        GIMESSAGE_NO_GERMAN(RG_KAKARIKO_GATEKEEPER_SOUL, ITEM_BIG_POE,
+                            "You found the soul for %bKakariko Gatekeeper%w!",
+                            "Vous obtenez l'âme de %bKakariko Gatekeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MALON_SOUL, ITEM_BIG_POE, "You found the soul for %bMalon%w!",
+                            "Vous obtenez l'âme de %bMalon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BEGGAR_SOUL, ITEM_BIG_POE, "You found the soul for %bBeggar%w!",
+                            "Vous obtenez l'âme de %bBeggar%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DOG_LADY_SOUL, ITEM_BIG_POE, "You found the soul for %bDog Lady%w!",
+                            "Vous obtenez l'âme de %bDog Lady%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ARMS_DEALER_SOUL, ITEM_BIG_POE, "You found the soul for %bArms Dealer%w!",
+                            "Vous obtenez l'âme de %bArms Dealer%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BEAN_SALESMAN_SOUL, ITEM_BIG_POE, "You found the soul for %bBean Salesman%w!",
+                            "Vous obtenez l'âme de %bBean Salesman%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHOOTING_SOUL, ITEM_BIG_POE, "You found the soul for %bShooter%w!",
+                            "Vous obtenez l'âme de %bShooter%w!"),
+        GIMESSAGE_NO_GERMAN(RG_KOKIRI_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bKokiri Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bKokiri Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_POTION_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bPotion Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bPotion Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BAZAAR_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bBazaar Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bBazaar Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GORON_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bGoron Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bGoron Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ZORA_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bZora Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bZora Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_SHOPKEEPER_SOUL, ITEM_BIG_POE, "You found the soul for %bBombchu Shopkeeper%w!",
+                            "Vous obtenez l'âme de %bBombchu Shopkeeper%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MASK_SALESMAN_SOUL, ITEM_BIG_POE, "You found the soul for %bMask Salesman%w!",
+                            "Vous obtenez l'âme de %bMask Salesman%w!"),
+        GIMESSAGE_NO_GERMAN(RG_TREASURE_MAN_SOUL, ITEM_BIG_POE, "You found the soul for %bTreasure Man%w!",
+                            "Vous obtenez l'âme de %bTreasure Man%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_LADY_SOUL, ITEM_BIG_POE, "You found the soul for %bBombchu Lady%w!",
+                            "Vous obtenez l'âme de %bBombchu Lady%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DIVING_SOUL, ITEM_BIG_POE, "You found the soul for %bDiver%w!",
+                            "Vous obtenez l'âme de %bDiver%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SCIENTIST_SOUL, ITEM_BIG_POE, "You found the soul for %bScientist%w!",
+                            "Vous obtenez l'âme de %bScientifique%w!"),
+        GIMESSAGE_NO_GERMAN(RG_KAEPORA_SOUL, ITEM_BIG_POE, "You found the soul for %bKaepora%w!",
+                            "Vous obtenez l'âme de %bKaepora%w!"),
+        GIMESSAGE_NO_GERMAN(RG_RAURU_SOUL, ITEM_BIG_POE, "You found the soul for %bRauru%w!",
+                            "Vous obtenez l'âme de %bRauru%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SARIA_SOUL, ITEM_BIG_POE, "You found the soul for %bSaria%w!",
+                            "Vous obtenez l'âme de %bSaria%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DARUNIA_SOUL, ITEM_BIG_POE, "You found the soul for %bDarunia%w!",
+                            "Vous obtenez l'âme de %bDarunia%w!"),
+        GIMESSAGE_NO_GERMAN(RG_RUTO_SOUL, ITEM_BIG_POE, "You found the soul for %bRuto%w!",
+                            "Vous obtenez l'âme de %bRuto%w!"),
+        GIMESSAGE_NO_GERMAN(RG_NABOORU_SOUL, ITEM_BIG_POE, "You found the soul for %bNabooru%w!",
+                            "Vous obtenez l'âme de %bNabooru%w!"),
+        GIMESSAGE_NO_GERMAN(RG_IMPA_SOUL, ITEM_BIG_POE, "You found the soul for %bImpa%w!",
+                            "Vous obtenez l'âme de %bImpa%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ZELDA_SOUL, ITEM_BIG_POE, "You found the soul for %bZelda%w!",
+                            "Vous obtenez l'âme de %bZelda%w!"),
+
         GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
                   "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
                   "Der %b\x9f%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
@@ -5664,9 +5926,22 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en "
                   "jouez!"),
 
+        GIMESSAGE(RG_MASK_KEATON, ITEM_MASK_KEATON, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_SKULL, ITEM_MASK_SKULL, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_SPOOKY, ITEM_MASK_SPOOKY, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_BUNNY, ITEM_MASK_BUNNY, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_GORON, ITEM_MASK_GORON, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_ZORA, ITEM_MASK_ZORA, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_GERUDO, ITEM_MASK_GERUDO, "!!!", "!!!", "!!!"),
+        GIMESSAGE(RG_MASK_TRUTH, ITEM_MASK_TRUTH, "!!!", "!!!", "!!!"),
+
         GIMESSAGE(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
                   "Du hast die %rBronzene Schuppe%w&erhalten! Die Fähigkeit zu&Schwimmen ist nun dein!",
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
+        GIMESSAGE_NO_GERMAN(RG_CLIMB, ITEM_SCALE_SILVER, "You got the %rAbility to Climb Ladders%w!&", "!!!"),
+        GIMESSAGE_NO_GERMAN(RG_CRAWL, ITEM_SCALE_SILVER,
+                            "You got the %rAbility to Crawl%w!&The power of kneecaps is yours!",
+                            "Vous obtenez la %rCapacité à Ramper%w!"),
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
@@ -5774,35 +6049,6 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 }
 
 extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
-
-// used for items that only set a rand inf when obtained
-std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
-    { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
-    { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
-    { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
-    { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
-    { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
-    { RG_STICK_UPGRADE_INF, RAND_INF_HAS_INFINITE_STICK_UPGRADE },
-    { RG_NUT_UPGRADE_INF, RAND_INF_HAS_INFINITE_NUT_UPGRADE },
-    { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
-    { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
-    { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
-    { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
-    { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
-    { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
-    { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
-    { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
-    { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
-    { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
-    { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
-    { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
-    { RG_PHANTOM_GANON_SOUL, RAND_INF_PHANTOM_GANON_SOUL },
-    { RG_VOLVAGIA_SOUL, RAND_INF_VOLVAGIA_SOUL },
-    { RG_MORPHA_SOUL, RAND_INF_MORPHA_SOUL },
-    { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
-    { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
-    { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
-};
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (giEntry.modIndex != MOD_RANDOMIZER) {

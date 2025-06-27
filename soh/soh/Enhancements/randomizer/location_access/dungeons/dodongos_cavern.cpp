@@ -124,7 +124,7 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_STAIRS_UPPER] = Region("Dodongos Cavern Stairs Upper", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS, Here(RR_DODONGOS_CAVERN_FAR_BRIDGE, []{return logic->HookshotOrBoomerang();}) || logic->CanUse(RG_LONGSHOT)),
-        LOCATION(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  logic->IsAdult || logic->CanAttack() || (HasAccessTo(RR_DODONGOS_CAVERN_STAIRS_LOWER) && logic->CanUse(RG_LONGSHOT) && ctx->GetTrickOption(RT_DC_VINES_GS))),
+        LOCATION(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  logic->HasItem(RG_CLIMB) ? (logic->IsAdult || logic->CanAttack() || (HasAccessTo(RR_DODONGOS_CAVERN_STAIRS_LOWER) && logic->CanUse(RG_LONGSHOT) && ctx->GetTrickOption(RT_DC_VINES_GS))) : logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_1,        logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_2,        logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_3,        logic->CanBreakPots()),
@@ -157,7 +157,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_BLADE_GRASS,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DODONGOS_CAVERN_ARMOS_ROOM,           []{return true;}),
+        Entrance(RR_DODONGOS_CAVERN_ARMOS_ROOM,           []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_DODONGOS_CAVERN_2F_SIDE_ROOM,         []{return Here(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return logic->CanBreakMudWalls() || (ctx->GetTrickOption(RT_DC_SCRUB_ROOM) && logic->HasItem(RG_GORONS_BRACELET));});}),
         Entrance(RR_DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM, []{return Here(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER,      []{return (logic->IsAdult && ctx->GetTrickOption(RT_DC_JUMP)) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
@@ -573,19 +573,20 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
         // Events
         // Blue Fire Arrows need similar accuracy as hammer trick, only put in logic when both hammer & blue fire tricks enabled
-        EventAccess(&logic->DodongosCavernClear, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
+        EventAccess(&logic->DodongosCavernWin, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
                                                                                                          (ctx->GetTrickOption(RT_DC_HAMMER_FLOOR) ? logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->BlueFire()) :
                                                                                                                                                     ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE));})
                                                                                                          && logic->CanKillEnemy(RE_KING_DODONGO);}),
+        EventAccess(&logic->DodongosCavernClear, []{return logic->DodongosCavernWin && logic->HasSage(RG_DARUNIA_SOUL);}),
     }, {
         // Locations
         LOCATION(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,    true),
-        LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->DodongosCavernClear),
+        LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->DodongosCavernWin),
         LOCATION(RC_KING_DODONGO,                       logic->DodongosCavernClear),
     }, {
         // Exits
         Entrance(RR_DODONGOS_CAVERN_BOSS_EXIT, []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernClear;}, false),
+        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernWin;}, false),
     });
 
     // clang-format on

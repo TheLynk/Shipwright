@@ -7635,6 +7635,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
     s32 i;
 
     if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
+        if (!GameInteractor_Should(VB_CRAWL, true)) {
+            return false;
+        }
+
         wallPoly = this->actor.wallPoly;
         CollisionPoly_GetVerticesByBgId(wallPoly, this->actor.wallBgId, &play->colCtx, wallVertices);
 
@@ -13375,6 +13379,13 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
 
     this->fallStartHeight = this->actor.world.pos.y;
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
+
+    if (!GameInteractor_Should(VB_CLIMB, true)) {
+        sp80 = 0;
+        if (sp84 > 0) {
+            sp84 = 0;
+        }
+    }
 
     if ((this->av1.actionVar1 != 0) && (ABS(sp84) < ABS(sp80))) {
         phi_f0 = ABS(sp80) * 0.0325f;

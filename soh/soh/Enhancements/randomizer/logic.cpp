@@ -123,6 +123,31 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckQuestItem(RandoGetToQuestItem.at(itemName));
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
+            // Masks
+        case RG_MASK_SKULL:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return SkullMask;
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return HasItem(RG_ZELDAS_LETTER) && CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
+                default:
+                    assert(false);
+                    return false;
+            }
+        case RG_MASK_TRUTH:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return MaskOfTruth;
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return HasItem(RG_ZELDAS_LETTER) && CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+                default:
+                    assert(false);
+                    return false;
+            }
         case RG_FISHING_POLE:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
@@ -143,8 +168,57 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BONGO_BONGO_SOUL:
         case RG_TWINROVA_SOUL:
         case RG_GANON_SOUL:
+            // NPC Souls
+        case RG_ANJU_SOUL:
+        case RG_TALON_SOUL:
+        case RG_GROG_SOUL:
+        case RG_GRANNY_SOUL:
+        case RG_FADO_SOUL:
+        case RG_LINK_SOUL:
+        case RG_BIGGORON_SOUL:
+        case RG_HOT_RODDER_SOUL:
+        case RG_MEDIGORON_SOUL:
+        case RG_CARPENTER_BOSS_SOUL:
+        case RG_ICHIRO_SOUL:
+        case RG_SABOORO_SOUL:
+        case RG_JIRO_SOUL:
+        case RG_SHIRO_SOUL:
+        case RG_HW_GATEKEEPER_SOUL:
+        case RG_GTG_GATEKEEPER_SOUL:
+        case RG_ARCHER_SOUL:
+        case RG_GREAT_FAIRY_SOUL:
+        case RG_POE_COLLECTOR_SOUL:
+        case RG_DAMPE_SOUL:
+        case RG_WINDMILL_MAN_SOUL:
+        case RG_MAN_ON_ROOF_SOUL:
+        case RG_KAKARIKO_GATEKEEPER_SOUL:
+        case RG_MALON_SOUL:
+        case RG_BEGGAR_SOUL:
+        case RG_DOG_LADY_SOUL:
+        case RG_ARMS_DEALER_SOUL:
+        case RG_BEAN_SALESMAN_SOUL:
+        case RG_SHOOTING_SOUL:
+        case RG_KOKIRI_SHOPKEEPER_SOUL:
+        case RG_POTION_SHOPKEEPER_SOUL:
+        case RG_BAZAAR_SHOPKEEPER_SOUL:
+        case RG_GORON_SHOPKEEPER_SOUL:
+        case RG_ZORA_SHOPKEEPER_SOUL:
+        case RG_BOMBCHU_SHOPKEEPER_SOUL:
+        case RG_MASK_SALESMAN_SOUL:
+        case RG_TREASURE_MAN_SOUL:
+        case RG_BOMBCHU_LADY_SOUL:
+        case RG_DIVING_SOUL:
+        case RG_SCIENTIST_SOUL:
+        case RG_KAEPORA_SOUL:
+        case RG_RAURU_SOUL:
+        case RG_SARIA_SOUL:
+        case RG_DARUNIA_SOUL:
+        case RG_RUTO_SOUL:
+        case RG_NABOORU_SOUL:
+        case RG_IMPA_SOUL:
+        case RG_ZELDA_SOUL:
+        // Overworld Keys
         case RG_SKELETON_KEY:
-            // Overworld Keys
         case RG_GUARD_HOUSE_KEY:
         case RG_MARKET_BAZAAR_KEY:
         case RG_MARKET_POTION_SHOP_KEY:
@@ -221,6 +295,10 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+        case RG_CLIMB:
+            return CheckRandoInf(RAND_INF_CAN_CLIMB);
+        case RG_CRAWL:
+            return CheckRandoInf(RAND_INF_CAN_CRAWL);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
         case RG_COJIRO:
@@ -340,6 +418,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsChild;
         case RG_MAGIC_BEAN:
             return IsChild;
+        case RG_MASK_SKULL:
+        case RG_MASK_TRUTH:
+            return IsChild;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -374,7 +455,8 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
         case RG_EPONA:
             return IsAdult && CanUse(RG_EPONAS_SONG);
-
+        case RG_CRAWL:
+            return IsChild;
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
             return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
@@ -406,10 +488,7 @@ bool Logic::HasProjectile(HasProjectileAge age) {
             (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW)));
 }
 
-bool Logic::HasBossSoul(RandomizerGet itemName) {
-    if (!ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
-        return true;
-    }
+bool Logic::HasSoul(RandomizerGet itemName) {
     switch (itemName) {
         case RG_GOHMA_SOUL:
         case RG_KING_DODONGO_SOUL:
@@ -419,13 +498,65 @@ bool Logic::HasBossSoul(RandomizerGet itemName) {
         case RG_MORPHA_SOUL:
         case RG_BONGO_BONGO_SOUL:
         case RG_TWINROVA_SOUL:
-            return HasItem(itemName);
+            return !ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS) || HasItem(itemName);
         case RG_GANON_SOUL:
-            return ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? HasItem(RG_GANON_SOUL)
-                                                                                          : true;
+            return !ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) || HasItem(RG_GANON_SOUL);
+        case RG_ANJU_SOUL:
+        case RG_TALON_SOUL:
+        case RG_GROG_SOUL:
+        case RG_GRANNY_SOUL:
+        case RG_FADO_SOUL:
+        case RG_LINK_SOUL:
+        case RG_BIGGORON_SOUL:
+        case RG_HOT_RODDER_SOUL:
+        case RG_MEDIGORON_SOUL:
+        case RG_CARPENTER_BOSS_SOUL:
+        case RG_ICHIRO_SOUL:
+        case RG_SABOORO_SOUL:
+        case RG_JIRO_SOUL:
+        case RG_SHIRO_SOUL:
+        case RG_HW_GATEKEEPER_SOUL:
+        case RG_GTG_GATEKEEPER_SOUL:
+        case RG_ARCHER_SOUL:
+        case RG_GREAT_FAIRY_SOUL:
+        case RG_POE_COLLECTOR_SOUL:
+        case RG_DAMPE_SOUL:
+        case RG_WINDMILL_MAN_SOUL:
+        case RG_MAN_ON_ROOF_SOUL:
+        case RG_KAKARIKO_GATEKEEPER_SOUL:
+        case RG_MALON_SOUL:
+        case RG_BEGGAR_SOUL:
+        case RG_DOG_LADY_SOUL:
+        case RG_ARMS_DEALER_SOUL:
+        case RG_BEAN_SALESMAN_SOUL:
+        case RG_SHOOTING_SOUL:
+        case RG_KOKIRI_SHOPKEEPER_SOUL:
+        case RG_POTION_SHOPKEEPER_SOUL:
+        case RG_BAZAAR_SHOPKEEPER_SOUL:
+        case RG_GORON_SHOPKEEPER_SOUL:
+        case RG_ZORA_SHOPKEEPER_SOUL:
+        case RG_BOMBCHU_SHOPKEEPER_SOUL:
+        case RG_MASK_SALESMAN_SOUL:
+        case RG_TREASURE_MAN_SOUL:
+        case RG_BOMBCHU_LADY_SOUL:
+        case RG_DIVING_SOUL:
+        case RG_SCIENTIST_SOUL:
+        case RG_KAEPORA_SOUL:
+        case RG_RAURU_SOUL:
+        case RG_SARIA_SOUL:
+        case RG_DARUNIA_SOUL:
+        case RG_RUTO_SOUL:
+        case RG_NABOORU_SOUL:
+        case RG_IMPA_SOUL:
+        case RG_ZELDA_SOUL:
+            return !ctx->GetOption(RSK_SHUFFLE_NPC_SOULS) || HasItem(itemName);
         default:
             return false;
     }
+}
+
+bool Logic::HasSage(RandomizerGet itemName) {
+    return !ctx->GetOption(RSK_SHUFFLE_NPC_SOULS).Is(RO_NPC_SOULS_ON_PLUS_SAGES) || HasItem(itemName);
 }
 
 // RANDOMISERTODO intergrate into HasItem
@@ -735,31 +866,31 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // without shenanigans anyway. Bunny makes it free
             return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
         case RE_GOHMA:
-            return HasBossSoul(RG_GOHMA_SOUL) && CanJumpslash() &&
+            return HasSoul(RG_GOHMA_SOUL) && CanJumpslash() &&
                    (CanUse(RG_NUTS) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HookshotOrBoomerang());
         case RE_KING_DODONGO:
-            return HasBossSoul(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
+            return HasSoul(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
                    (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET) ||
                     (ctx->GetTrickOption(RT_DC_DODONGO_CHU) && IsAdult && CanUse(RG_BOMBCHU_5)));
         case RE_BARINADE:
-            return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
+            return HasSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
         case RE_PHANTOM_GANON:
-            return HasBossSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
+            return HasSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
         case RE_VOLVAGIA:
-            return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
+            return HasSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) &&
+            return HasSoul(RG_MORPHA_SOUL) &&
                    (CanUse(RG_HOOKSHOT) ||
                     (ctx->GetTrickOption(RT_WATER_MORPHA_WITHOUT_HOOKSHOT) && HasItem(RG_BRONZE_SCALE))) &&
                    (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_BONGO_BONGO:
-            return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
-                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) && CanUseSword() &&
+            return HasSoul(RG_BONGO_BONGO_SOUL) && (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) &&
+                   CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
                     ctx->GetTrickOption(RT_SHADOW_BONGO));
         case RE_TWINROVA:
-            return HasBossSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
+            return HasSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
                    (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_GANONDORF:
             // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the
@@ -769,9 +900,9 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // for killing ganondorf and all of those can reflect the energy ball
             // This will not be the case once ammo logic in taken into account as
             // sticks are limited and using a bottle might become a requirement in that case
-            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && CanUseSword();
+            return HasSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && CanUseSword();
         case RE_GANON:
-            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
+            return HasSoul(RG_GANON_SOUL) && HasSage(RG_ZELDA_SOUL) && CanUse(RG_MASTER_SWORD);
         case RE_DARK_LINK:
             // RANDOTODO Dark link is buggy right now, retest when he is not
             return CanJumpslash() || CanUse(RG_FAIRY_BOW);
@@ -1152,6 +1283,10 @@ bool Logic::CanBreakSmallCrates() {
     return true;
 }
 
+bool Logic::CanBonkTrees() {
+    return true;
+}
+
 bool Logic::HasExplosives() {
     return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
 }
@@ -1470,11 +1605,67 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
     { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
+    { RG_ANJU_SOUL, RAND_INF_ANJU_SOUL },
+    { RG_TALON_SOUL, RAND_INF_TALON_SOUL },
+    { RG_GROG_SOUL, RAND_INF_GROG_SOUL },
+    { RG_GRANNY_SOUL, RAND_INF_GRANNY_SOUL },
+    { RG_FADO_SOUL, RAND_INF_FADO_SOUL },
+    { RG_ICHIRO_SOUL, RAND_INF_ICHIRO_SOUL },
+    { RG_SABOORO_SOUL, RAND_INF_SABOORO_SOUL },
+    { RG_JIRO_SOUL, RAND_INF_JIRO_SOUL },
+    { RG_SHIRO_SOUL, RAND_INF_SHIRO_SOUL },
+    { RG_HW_GATEKEEPER_SOUL, RAND_INF_HW_GATEKEEPER_SOUL },
+    { RG_GTG_GATEKEEPER_SOUL, RAND_INF_GTG_GATEKEEPER_SOUL },
+    { RG_ARCHER_SOUL, RAND_INF_ARCHER_SOUL },
+    { RG_LINK_SOUL, RAND_INF_LINK_SOUL },
+    { RG_BIGGORON_SOUL, RAND_INF_BIGGORON_SOUL },
+    { RG_HOT_RODDER_SOUL, RAND_INF_HOT_RODDER_SOUL },
+    { RG_MEDIGORON_SOUL, RAND_INF_MEDIGORON_SOUL },
+    { RG_CARPENTER_BOSS_SOUL, RAND_INF_CARPENTER_BOSS_SOUL },
+    { RG_GREAT_FAIRY_SOUL, RAND_INF_GREAT_FAIRY_SOUL },
+    { RG_POE_COLLECTOR_SOUL, RAND_INF_POE_COLLECTOR_SOUL },
+    { RG_DAMPE_SOUL, RAND_INF_DAMPE_SOUL },
+    { RG_WINDMILL_MAN_SOUL, RAND_INF_WINDMILL_MAN_SOUL },
+    { RG_MAN_ON_ROOF_SOUL, RAND_INF_MAN_ON_ROOF_SOUL },
+    { RG_KAKARIKO_GATEKEEPER_SOUL, RAND_INF_KAKARIKO_GATEKEEPER_SOUL },
+    { RG_MALON_SOUL, RAND_INF_MALON_SOUL },
+    { RG_RAURU_SOUL, RAND_INF_RAURU_SOUL },
+    { RG_SARIA_SOUL, RAND_INF_SARIA_SOUL },
+    { RG_DARUNIA_SOUL, RAND_INF_DARUNIA_SOUL },
+    { RG_RUTO_SOUL, RAND_INF_RUTO_SOUL },
+    { RG_NABOORU_SOUL, RAND_INF_NABOORU_SOUL },
+    { RG_IMPA_SOUL, RAND_INF_IMPA_SOUL },
+    { RG_ZELDA_SOUL, RAND_INF_ZELDA_SOUL },
+    { RG_BEGGAR_SOUL, RAND_INF_BEGGAR_SOUL },
+    { RG_DOG_LADY_SOUL, RAND_INF_DOG_LADY_SOUL },
+    { RG_ARMS_DEALER_SOUL, RAND_INF_ARMS_DEALER_SOUL },
+    { RG_BEAN_SALESMAN_SOUL, RAND_INF_BEAN_SALESMAN_SOUL },
+    { RG_SHOOTING_SOUL, RAND_INF_SHOOTING_SOUL },
+    { RG_KOKIRI_SHOPKEEPER_SOUL, RAND_INF_KOKIRI_SHOPKEEPER_SOUL },
+    { RG_POTION_SHOPKEEPER_SOUL, RAND_INF_POTION_SHOPKEEPER_SOUL },
+    { RG_BAZAAR_SHOPKEEPER_SOUL, RAND_INF_BAZAAR_SHOPKEEPER_SOUL },
+    { RG_GORON_SHOPKEEPER_SOUL, RAND_INF_GORON_SHOPKEEPER_SOUL },
+    { RG_ZORA_SHOPKEEPER_SOUL, RAND_INF_ZORA_SHOPKEEPER_SOUL },
+    { RG_BOMBCHU_SHOPKEEPER_SOUL, RAND_INF_BOMBCHU_SHOPKEEPER_SOUL },
+    { RG_MASK_SALESMAN_SOUL, RAND_INF_MASK_SALESMAN_SOUL },
+    { RG_TREASURE_MAN_SOUL, RAND_INF_TREASURE_MAN_SOUL },
+    { RG_BOMBCHU_LADY_SOUL, RAND_INF_BOMBCHU_LADY_SOUL },
+    { RG_DIVING_SOUL, RAND_INF_DIVING_SOUL },
+    { RG_SCIENTIST_SOUL, RAND_INF_SCIENTIST_SOUL },
+    { RG_KAEPORA_SOUL, RAND_INF_KAEPORA_SOUL },
     { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
     { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_MASK_KEATON, RAND_INF_CHILD_TRADES_HAS_MASK_KEATON },
+    { RG_MASK_SKULL, RAND_INF_CHILD_TRADES_HAS_MASK_SKULL },
+    { RG_MASK_SPOOKY, RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY },
+    { RG_MASK_BUNNY, RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY },
+    { RG_MASK_GORON, RAND_INF_CHILD_TRADES_HAS_MASK_GORON },
+    { RG_MASK_ZORA, RAND_INF_CHILD_TRADES_HAS_MASK_ZORA },
+    { RG_MASK_GERUDO, RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO },
+    { RG_MASK_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH },
     { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_GREG_RUPEE, RAND_INF_GREG_FOUND },
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
@@ -1630,6 +1821,12 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_EYEDROPS:
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
+                    break;
+                case RG_CLIMB:
+                    SetRandoInf(RAND_INF_CAN_CLIMB, state);
+                    break;
+                case RG_CRAWL:
+                    SetRandoInf(RAND_INF_CAN_CRAWL, state);
                     break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
@@ -1836,11 +2033,67 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BONGO_BONGO_SOUL:
                 case RG_TWINROVA_SOUL:
                 case RG_GANON_SOUL:
+                case RG_ANJU_SOUL:
+                case RG_TALON_SOUL:
+                case RG_GROG_SOUL:
+                case RG_GRANNY_SOUL:
+                case RG_FADO_SOUL:
+                case RG_LINK_SOUL:
+                case RG_BIGGORON_SOUL:
+                case RG_HOT_RODDER_SOUL:
+                case RG_MEDIGORON_SOUL:
+                case RG_CARPENTER_BOSS_SOUL:
+                case RG_ICHIRO_SOUL:
+                case RG_SABOORO_SOUL:
+                case RG_JIRO_SOUL:
+                case RG_SHIRO_SOUL:
+                case RG_HW_GATEKEEPER_SOUL:
+                case RG_GTG_GATEKEEPER_SOUL:
+                case RG_ARCHER_SOUL:
+                case RG_GREAT_FAIRY_SOUL:
+                case RG_POE_COLLECTOR_SOUL:
+                case RG_DAMPE_SOUL:
+                case RG_WINDMILL_MAN_SOUL:
+                case RG_MAN_ON_ROOF_SOUL:
+                case RG_KAKARIKO_GATEKEEPER_SOUL:
+                case RG_MALON_SOUL:
+                case RG_BEGGAR_SOUL:
+                case RG_DOG_LADY_SOUL:
+                case RG_ARMS_DEALER_SOUL:
+                case RG_BEAN_SALESMAN_SOUL:
+                case RG_SHOOTING_SOUL:
+                case RG_KOKIRI_SHOPKEEPER_SOUL:
+                case RG_POTION_SHOPKEEPER_SOUL:
+                case RG_BAZAAR_SHOPKEEPER_SOUL:
+                case RG_GORON_SHOPKEEPER_SOUL:
+                case RG_ZORA_SHOPKEEPER_SOUL:
+                case RG_BOMBCHU_SHOPKEEPER_SOUL:
+                case RG_MASK_SALESMAN_SOUL:
+                case RG_TREASURE_MAN_SOUL:
+                case RG_BOMBCHU_LADY_SOUL:
+                case RG_DIVING_SOUL:
+                case RG_SCIENTIST_SOUL:
+                case RG_KAEPORA_SOUL:
+                case RG_RAURU_SOUL:
+                case RG_SARIA_SOUL:
+                case RG_DARUNIA_SOUL:
+                case RG_RUTO_SOUL:
+                case RG_NABOORU_SOUL:
+                case RG_IMPA_SOUL:
+                case RG_ZELDA_SOUL:
                 case RG_OCARINA_A_BUTTON:
                 case RG_OCARINA_C_UP_BUTTON:
                 case RG_OCARINA_C_DOWN_BUTTON:
                 case RG_OCARINA_C_LEFT_BUTTON:
                 case RG_OCARINA_C_RIGHT_BUTTON:
+                case RG_MASK_KEATON:
+                case RG_MASK_SKULL:
+                case RG_MASK_SPOOKY:
+                case RG_MASK_BUNNY:
+                case RG_MASK_GORON:
+                case RG_MASK_ZORA:
+                case RG_MASK_GERUDO:
+                case RG_MASK_TRUTH:
                 case RG_GREG_RUPEE:
                 case RG_FISHING_POLE:
                 case RG_GUARD_HOUSE_KEY:
@@ -2351,8 +2604,9 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
     // Child item logic
-    SkullMask = false;
-    MaskOfTruth = false;
+    // Mask logic only used for vanilla mask quest, avoid computing outside that scenario
+    SkullMask = ctx->GetOption(RSK_MASK_QUEST).IsNot(RO_MASK_QUEST_VANILLA);
+    MaskOfTruth = ctx->GetOption(RSK_MASK_QUEST).IsNot(RO_MASK_QUEST_VANILLA);
 
     // Adult logic
     FreedEpona = false;
@@ -2395,6 +2649,16 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling climb, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CLIMB).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CLIMB, true);
+        }
+
+        // If we're not shuffling crawl, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CRAWL, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

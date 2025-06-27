@@ -249,6 +249,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
         "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
+    mOptionDescriptions[RSK_SHUFFLE_CLIMB] = "Shuffle the ability to climb ladders into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"
@@ -288,6 +290,10 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only shuffle crates that are outside of dungeons.\n"
         "\n"
         "All Crates - Shuffle all crates.";
+    mOptionDescriptions[RSK_SHUFFLE_TREES] =
+        "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
+        "Trees will have a special appearance when carrying randomized items.\n"
+        "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -602,8 +608,13 @@ void Settings::CreateOptionDescriptions() {
         "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
-    mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
-        "Once the Happy Mask Shop is opened, all masks will be available to be borrowed.";
+    mOptionDescriptions[RSK_MASK_QUEST] =
+        "How masks are acquired.\n"
+        "Vanilla - Mask trade quest.\n"
+        "\n"
+        "Completed - Once the Happy Mask Shop is opened, all masks will be available to be borrowed.\n"
+        "\n"
+        "Shuffle - Happy Mask Shop never opens, masks are shuffled with rest of items.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
@@ -758,5 +769,8 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."
         "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+    mOptionDescriptions[RSK_SHUFFLE_NPC_SOULS] =
+        "Shuffles souls of NPCs. An NPC will not appear until you collect its respective soul."
+        "\n\"On + Sages\" requires sage souls to receive blue warp reward. Zelda is required to defeat Ganon.";
 }
 } // namespace Rando

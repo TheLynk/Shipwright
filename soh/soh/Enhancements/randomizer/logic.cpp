@@ -880,7 +880,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_VOLVAGIA:
             return HasSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) &&
+            return HasSoul(RG_MORPHA_SOUL) &&
                    (CanUse(RG_HOOKSHOT) ||
                     (ctx->GetTrickOption(RT_WATER_MORPHA_WITHOUT_HOOKSHOT) && HasItem(RG_BRONZE_SCALE))) &&
                    (CanUseSword() || CanUse(RG_MEGATON_HAMMER));

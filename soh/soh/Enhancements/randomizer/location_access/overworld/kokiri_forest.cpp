@@ -75,6 +75,18 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_ADULT_GRASS_18,          logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_19,          logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_20,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CIRCLE_ROCK_1,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_2,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_3,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_4,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_5,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_6,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_7,           true),
+        LOCATION(RC_KF_CIRCLE_ROCK_8,           true),
+        LOCATION(RC_KF_ROCK_BY_SARIAS_HOUSE,    logic->IsChild),
+        LOCATION(RC_KF_ROCK_BEHIND_SARIAS_HOUSE,   logic->IsChild),
+        LOCATION(RC_KF_ROCK_BY_MIDOS_HOUSE,        logic->IsChild),
+        LOCATION(RC_KF_ROCK_BY_KNOW_IT_ALLS_HOUSE, logic->IsChild),
     }, {
         //Exits
         Entrance(RR_KF_LINKS_PORCH,        []{return logic->HasItem(RG_CLIMB);}),

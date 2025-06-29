@@ -247,6 +247,15 @@ typedef enum {
     VB_BOTTLE_ACTOR,
 
     // #### `result`
+    // Actor is ACTOR_OBJ_BOMBIWA, or ACTOR_OBJ_HAMISHI
+    // ```c
+    // Flags_GetSwitch(play, this->actor.params & 0x3F)
+    // ```
+    // #### `args`
+    // - `*Actor` (interactRangeActor)
+    VB_BOULDER_BREAK_FLAG,
+
+    // #### `result`
     // ```c
     // true
     // ```
@@ -1812,6 +1821,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_REVERT_SPOILING_ITEMS,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*EnIshi`
+    VB_ROCK_DROP_ITEM,
 
     // #### `result`
     // ```c

@@ -156,6 +156,12 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7, logic->CanCutShrubs() && logic->BlastOrSmash()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8, logic->CanCutShrubs() && logic->BlastOrSmash()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_1,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_2,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_3,                                   logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT))),
+        LOCATION(RC_BOTW_BOULDER_4,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_5,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_6,                                   logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               []{return logic->CanUse(RG_CRAWL) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
@@ -168,6 +174,12 @@ void RegionTable_Init_BottomOfTheWell() {
         //Locations
         //Assumes RR_BOTTOM_OF_THE_WELL_BASEMENT access
         LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_1,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_2,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_3,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_4,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_5,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_6,               logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT, []{return logic->CanDetonateUprightBombFlower();}),
@@ -203,6 +215,9 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
+        LOCATION(RC_BOTW_MQ_BOULDER_1, logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_2, logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_3, logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,            []{return logic->CanUse(RG_CRAWL)  && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT));}),

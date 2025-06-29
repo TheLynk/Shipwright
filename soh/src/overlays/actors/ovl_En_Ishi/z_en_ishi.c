@@ -8,6 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include "vt.h"
 
@@ -250,6 +251,10 @@ void EnIshi_SpawnDustLarge(EnIshi* this, PlayState* play) {
 
 void EnIshi_DropCollectible(EnIshi* this, PlayState* play) {
     s16 dropParams;
+
+    if (!GameInteractor_Should(VB_ROCK_DROP_ITEM, true, this)) {
+        return;
+    }
 
     if ((this->actor.params & 1) == ROCK_SMALL) {
         dropParams = (this->actor.params >> 8) & 0xF;

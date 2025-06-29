@@ -164,6 +164,10 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_2,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_3,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_4,             logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BOULDER_1,         logic->BlastOrSmash()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BOULDER_2,         logic->BlastOrSmash()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BOULDER_3,         logic->BlastOrSmash()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_CEILING_BOULDER,         logic->CanUse(RG_BOMBCHU_5)),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,                []{return true;}),
@@ -181,6 +185,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_SLUGMA_POT,          logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_LEFT_HEART,          logic->CanHitEyeTargets()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,         logic->CanHitEyeTargets()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, logic->MQSpiritTimeTravelChest),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
@@ -396,6 +401,7 @@ void RegionTable_Init_SpiritTemple() {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_1, logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_BOULDER, logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,              []{return logic->CanUse(RG_MEGATON_HAMMER);}),

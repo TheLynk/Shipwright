@@ -177,6 +177,7 @@ bool hideSeen = false;
 bool hideSkipped = false;
 bool hideSaved = false;
 bool hideCollected = false;
+bool hideJunk = false;
 bool showHidden = true;
 bool mystery = false;
 bool showLogicTooltip = false;
@@ -284,6 +285,9 @@ uint16_t GetTotalChecksGotten() {
 }
 
 bool IsCheckHidden(RandomizerCheck rc) {
+    if (showHidden) {
+        return false;
+    }
     Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLocation->GetCheckStatus();
     bool available = itemLocation->IsAvailable();
@@ -292,9 +296,11 @@ bool IsCheckHidden(RandomizerCheck rc) {
     bool seen = status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED;
     bool scummed = status == RCSHOW_SCUMMED;
     bool unchecked = status == RCSHOW_UNCHECKED;
+    bool isJunk = itemLocation->GetPlacedItem().GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK;
+    bool knownJunk = (seen || scummed) && isJunk;
 
-    return !showHidden &&
-           ((skipped && hideSkipped) || (seen && hideSeen) || (scummed && hideScummed) || (unchecked && hideUnchecked));
+    return (skipped && hideSkipped) || (seen && hideSeen) || (scummed && hideScummed) || (unchecked && hideUnchecked) ||
+           (knownJunk && hideJunk);
 }
 
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
@@ -993,6 +999,7 @@ void CheckTrackerWindow::DrawElement() {
     hideSkipped = CVarGetInteger(CVAR_TRACKER_CHECK("Skipped.Hide"), 0);
     hideSaved = CVarGetInteger(CVAR_TRACKER_CHECK("Saved.Hide"), 0);
     hideCollected = CVarGetInteger(CVAR_TRACKER_CHECK("Collected.Hide"), 0);
+    hideJunk = CVarGetInteger(CVAR_TRACKER_CHECK("Junk.Hide"), 0);
     showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
@@ -1269,7 +1276,14 @@ bool UpdateFilters() {
 }
 
 bool ShouldShowCheck(RandomizerCheck check) {
-    auto itemLoc = Rando::Context::GetInstance()->GetItemLocation(check);
+    Rando::ItemLocation* itemLoc = Rando::Context::GetInstance()->GetItemLocation(check);
+    RandomizerCheckStatus status = itemLoc->GetCheckStatus();
+
+    if (hideJunk && (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED) &&
+        itemLoc->GetPlacedItem().GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK) {
+        return false;
+    }
+
     std::string search = (Rando::StaticData::GetLocation(check)->GetShortName() + " " +
                           Rando::StaticData::GetLocation(check)->GetName() + " " +
                           RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()));
@@ -1635,7 +1649,15 @@ bool IsCheckShuffled(RandomizerCheck rc) {
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
-    auto loc = Rando::StaticData::GetLocation(rc);
+    Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = Rando::Context::GetInstance()->GetItemLocation(rc);
+    RandomizerCheckStatus status = itemLoc->GetCheckStatus();
+
+    if (hideJunk && (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED) &&
+        itemLoc->GetPlacedItem().GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK) {
+        return false;
+    }
+
     if (IS_RANDO) {
         return IsCheckShuffled(rc) ||
                (alwaysShowGS && loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
@@ -1750,6 +1772,11 @@ void DrawLocation(RandomizerCheck rc) {
     bool available = itemLoc->IsAvailable();
 
     if (enableAvailableChecks && onlyShowAvailable && !available) {
+        return;
+    }
+
+    if (!showHidden && hideJunk && (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED) &&
+        itemLoc->GetPlacedItem().GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK) {
         return;
     }
 
@@ -2182,6 +2209,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
         UIWidgets::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("If enabled, will show a check's logic when hovering over it.")
+                                    .Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Hide Junk", CVAR_TRACKER_CHECK("Junk.Hide"),
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("If enabled, checks that are known to be junk will be hidden.")
                                     .Color(THEME_COLOR));
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         if (UIWidgets::CVarCheckbox("Enable Available Checks", CVAR_TRACKER_CHECK("EnableAvailableChecks"),

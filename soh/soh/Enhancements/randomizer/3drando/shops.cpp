@@ -967,6 +967,10 @@ void InitTrickNames() {
         Text{ "Overworld C Right Button", "Trou Droit de l'Ocarina", "C-Rechts-Taste der E-Gitarre" },
     };
 
+    for (size_t i = 108; i < 241; ++i) {
+    trickNameTable[i].push_back(Text("Mysterious Ice Trap")); 
+    }
+
     /*
     //Names for individual upgrades, in case progressive names are replaced
     trickNameTable[GI_HOOKSHOT] = {
@@ -1162,11 +1166,11 @@ void InitTrickNames() {
 
 // Generate a fake name for the ice trap based on the item it's displayed as
 Text GetIceTrapName(uint8_t id) {
-    // If the trick names table has not been initialized, do so
-    if (!initTrickNames) {
-        InitTrickNames();
-        initTrickNames = true;
-    }
-    // Randomly get the easy, medium, or hard name for the given item id
-    return RandomElement(trickNameTable[id]);
+if (id < 0 || id >= trickNameTable.size()) {
+    return Text("Mysterious Ice Trap");
+}
+if (trickNameTable[id].empty()) {
+    return Text("Mysterious Ice Trap");
+}
+return trickNameTable[id][0];
 }

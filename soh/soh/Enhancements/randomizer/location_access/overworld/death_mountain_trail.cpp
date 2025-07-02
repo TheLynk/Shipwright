@@ -52,7 +52,7 @@ void RegionTable_Init_DeathMountainTrail() {
         //Exits
         Entrance(RR_KAK_BEHIND_GATE,          []{return true;}),
         Entrance(RR_GORON_CITY,               []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_AVALANCHE, []{return Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
+        Entrance(RR_DEATH_MOUNTAIN_AVALANCHE, []{return logic->BlastOrSmash() || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
         Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, []{return logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult;}),
         Entrance(RR_DMT_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
     });

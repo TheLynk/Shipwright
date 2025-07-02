@@ -968,7 +968,7 @@ void InitTrickNames() {
     };
 
     for (size_t i = 108; i < 241; ++i) {
-    trickNameTable[i].push_back(Text("Mysterious Ice Trap")); 
+        trickNameTable[i].push_back(Text("Mysterious Ice Trap"));
     }
 
     /*
@@ -1166,11 +1166,11 @@ void InitTrickNames() {
 
 // Generate a fake name for the ice trap based on the item it's displayed as
 Text GetIceTrapName(uint8_t id) {
-if (id < 0 || id >= trickNameTable.size()) {
-    return Text("Mysterious Ice Trap");
-}
-if (trickNameTable[id].empty()) {
-    return Text("Mysterious Ice Trap");
-}
-return trickNameTable[id][0];
+    if (id < 0 || id >= trickNameTable.size()) {
+        return Text("Mysterious Ice Trap");
+    }
+    if (trickNameTable[id].empty()) {
+        return Text("Mysterious Ice Trap");
+    }
+    return trickNameTable[id][0];
 }

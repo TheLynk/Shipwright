@@ -9,8 +9,8 @@ void RegionTable_Init_DekuTree() {
     // Vanilla/MQ Decider
     areaTable[RR_DEKU_TREE_ENTRYWAY] = Region("Deku Tree Entryway", SCENE_DEKU_TREE, {}, {}, {
         //Exits
-        Entrance(RR_DEKU_TREE_LOBBY,      []{return ctx->GetDungeon(DEKU_TREE)->IsVanilla();}),
-        Entrance(RR_DEKU_TREE_MQ_1F,      []{return ctx->GetDungeon(DEKU_TREE)->IsMQ();}),
+        Entrance(RR_DEKU_TREE_LOBBY,      []{return ctx->GetDungeon(DEKU_TREE)->IsVanilla() && logic->HasItem(RG_CLIMB);}),
+        Entrance(RR_DEKU_TREE_MQ_1F,      []{return ctx->GetDungeon(DEKU_TREE)->IsMQ() && logic->HasItem(RG_CLIMB);}),
         Entrance(RR_KF_OUTSIDE_DEKU_TREE, []{return true;}),
     });
 

@@ -56,7 +56,7 @@ void RegionTable_Init_GerudoValley() {
     // scale/boots logic is outside lower stream, as lower stream combines access to lake hylia for entrance randomizer's sake
     areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", SCENE_GERUDO_VALLEY, {}, {}, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
+        Entrance(RR_LAKE_HYLIA, []{logic->HasItem(RG_BRONZE_SCALE);}),
     });
 
     areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", SCENE_GERUDO_VALLEY, {}, {

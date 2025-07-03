@@ -2,6 +2,7 @@
 
 #include "location_access.h"
 #include "logic_expression.h"
+#include "../../OTRGlobals.h"
 
 #include <src/Context.h>
 
@@ -177,8 +178,9 @@ static std::string ToString(const std::optional<LogicExpression::ValueVariant>& 
 static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrackerCheck::Region::ExpressionRow& row,
                               int level) {
     ImGui::TableNextRow();
+    ImGui::PushFont(OTRGlobals::Instance->fontMono);
     if (level > 0) {
-        ImGui::Indent(10.0f);
+        ImGui::Indent(20.0f);
     }
 
     ImGui::TableNextColumn();
@@ -188,10 +190,11 @@ static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrac
             row.Expanded = !row.Expanded;
         }
     } else {
-        ImGui::Text("%d", level);
+        ImGui::BeginDisabled();
+        ImGui::Button(std::to_string(level).c_str());
+        ImGui::EndDisabled();
     }
     ImGui::PopID();
-
     ImGui::TableNextColumn();
     ImGui::TextWrapped("%s", row.Expression->ToString().c_str());
 
@@ -220,8 +223,9 @@ static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrac
     }
 
     if (level > 0) {
-        ImGui::Unindent(10.0f);
+        ImGui::Unindent(20.0f);
     }
+    ImGui::PopFont();
 }
 
 static void DrawCheckRegion(LogicTrackerCheck::Region& region) {
@@ -238,7 +242,7 @@ static void DrawCheckRegion(LogicTrackerCheck::Region& region) {
 
     if (ImGui::BeginTable(region.RegionName.c_str(), columnCount,
                           ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn("Level", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_WidthFixed);
         ImGui::TableSetupColumn("Expression", ImGuiTableColumnFlags_WidthStretch);
         if (region.CombineAll) {
             ImGui::TableSetupColumn("All", ImGuiTableColumnFlags_WidthFixed);

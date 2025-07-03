@@ -73,8 +73,9 @@ static void PopulateExpressionValues(LogicTrackerCheck::Region::ExpressionRow& r
 
     for (auto& rowChild : row.Children) {
         for (const auto& evalChild : eval.Children) {
-            if (row.Expression == eval.Expression) {
+            if (rowChild.Expression == evalChild.Expression) {
                 PopulateExpressionValues(rowChild, evalChild, ageTime);
+                break;
             }
         }
     }

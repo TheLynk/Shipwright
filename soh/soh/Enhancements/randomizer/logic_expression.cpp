@@ -230,37 +230,28 @@ class Parser {
     std::shared_ptr<LogicExpression::Impl>
     ParseBinaryOp(size_t& pos, const std::vector<Token>& tokens, LowerFunc lowerFunc,
                   const std::vector<std::pair<std::string, LogicExpression::Impl::Type>>& operators) {
-
         size_t initial_pos = pos;
         auto left = (this->*lowerFunc)();
 
-        while (pos < tokens.size() && tokens[pos].Type == LETokenType::Operator) {
-            bool matched = false;
+        if (pos < tokens.size() && tokens[pos].Type == LETokenType::Operator) {
             for (const auto& [op, exprType] : operators) {
                 if (tokens[pos].Text == op) {
                     ++pos; // consume operator
-                    auto right = (this->*lowerFunc)();
+                    auto right = ParseBinaryOp(pos, tokens, lowerFunc, operators);
                     auto expr = std::make_shared<LogicExpression::Impl>();
                     expr->type = exprType;
-
-                    // For comparison operators, store the operation
                     if (exprType == LogicExpression::Impl::Type::Comparison) {
                         expr->operation = op;
                     }
-
                     expr->children.emplace_back(left);
                     expr->children.back()->parent = expr.get();
                     expr->children.emplace_back(right);
                     expr->children.back()->parent = expr.get();
                     expr->startIndex = tokens[initial_pos].StartIndex;
                     expr->endIndex = tokens[pos - 1].EndIndex;
-                    left = expr;
-                    matched = true;
-                    break;
+                    return expr;
                 }
             }
-            if (!matched)
-                break;
         }
         return left;
     }

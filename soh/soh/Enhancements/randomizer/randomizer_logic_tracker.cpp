@@ -108,7 +108,6 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
                 LogicTrackerCheck::Region regionAgeTime;
                 regionAgeTime.RegionName = region.regionName;
                 regionAgeTime.Root = CreateExpressionRows(LogicExpression::Parse(locationAccess.GetConditionStr()));
-                regionAgeTime.Root.Expanded = true;
 
                 if (region.childDay) {
                     logic->IsChild = true;
@@ -183,7 +182,15 @@ static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrac
     }
 
     ImGui::TableNextColumn();
-    ImGui::Text("%d", level);
+    ImGui::PushID(&row);
+    if (!row.Children.empty()) {
+        if (ImGui::Button(std::to_string(level).c_str())) {
+            row.Expanded = !row.Expanded;
+        }
+    } else {
+        ImGui::Text("%d", level);
+    }
+    ImGui::PopID();
 
     ImGui::TableNextColumn();
     ImGui::TextWrapped("%s", row.Expression->ToString().c_str());
@@ -206,10 +213,10 @@ static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrac
         }
     }
 
-    for (auto& child : row.Children) {
-        //if (child.Expanded) {
+    if (row.Expanded) {
+        for (auto& child : row.Children) {
             DrawExpressionRow(region, child, level + 1);
-        //}
+        }
     }
 
     if (level > 0) {

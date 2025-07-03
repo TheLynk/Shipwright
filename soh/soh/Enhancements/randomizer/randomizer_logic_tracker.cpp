@@ -15,11 +15,21 @@ uint64_t GetUnixTimestamp();
 
 struct LogicTrackerCheck {
     struct Region {
+        struct ExpressionRow {
+            std::shared_ptr<LogicExpression> Expression;
+            std::vector<ExpressionRow> Children;
+            std::optional<LogicExpression::ValueVariant> ChildDay;
+            std::optional<LogicExpression::ValueVariant> ChildNight;
+            std::optional<LogicExpression::ValueVariant> AdultDay;
+            std::optional<LogicExpression::ValueVariant> AdultNight;
+            bool Expanded;
+        };
+
         std::string RegionName;
-        std::unique_ptr<ExpressionEvaluation> ChildDay;
-        std::unique_ptr<ExpressionEvaluation> ChildNight;
-        std::unique_ptr<ExpressionEvaluation> AdultDay;
-        std::unique_ptr<ExpressionEvaluation> AdultNight;
+        ExpressionRow Root;
+        bool CombineAll = false;
+        bool CombineChild = false;
+        bool CombineAdult = false;
     };
 
     std::string CheckName;
@@ -27,6 +37,61 @@ struct LogicTrackerCheck {
 };
 
 static std::vector<LogicTrackerCheck> checks;
+
+LogicTrackerCheck::Region::ExpressionRow CreateExpressionRows(const std::shared_ptr<LogicExpression>& expression) {
+    LogicTrackerCheck::Region::ExpressionRow row;
+    row.Expression = expression;
+    row.Expanded = false;
+
+    const auto& children = expression->GetChildren();
+    row.Children.reserve(children.size());
+    for (const auto& child : children) {
+        row.Children.emplace_back(CreateExpressionRows(child));
+    }
+
+    return row;
+}
+
+enum class AgeTime {
+    ChildDay,
+    ChildNight,
+    AdultDay,
+    AdultNight
+};
+
+
+static void PopulateExpressionValues(LogicTrackerCheck::Region::ExpressionRow& row, const ExpressionEvaluation& eval, AgeTime ageTime) {
+    if (ageTime == AgeTime::ChildDay) {
+        row.ChildDay = eval.Result;
+    } else if (ageTime == AgeTime::ChildNight) {
+        row.ChildNight = eval.Result;
+    } else if (ageTime == AgeTime::AdultDay) {
+        row.AdultDay = eval.Result;
+    } else if (ageTime == AgeTime::AdultNight) {
+        row.AdultNight = eval.Result;
+    }
+
+    for (auto& rowChild : row.Children) {
+        for (const auto& evalChild : eval.Children) {
+            if (row.Expression == eval.Expression) {
+                PopulateExpressionValues(rowChild, evalChild, ageTime);
+            }
+        }
+    }
+}
+
+static std::tuple<bool, bool, bool> CalculateCombines(const LogicTrackerCheck::Region::ExpressionRow& row) {
+    bool combineChild = row.ChildDay == row.ChildNight;
+    bool combineAdult = row.AdultDay == row.AdultNight;
+    bool combineAll = combineChild && combineAdult && row.ChildDay == row.AdultDay;
+    for (const auto& child : row.Children) {
+        auto [childCombineAll, childCombineChild, childCombineAdult] = CalculateCombines(child);
+        combineAll &= childCombineAll;
+        combineChild &= childCombineChild;
+        combineAdult &= childCombineAdult;
+    }
+    return {combineAll, combineChild, combineAdult};
+}
 
 void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
     checks.clear();
@@ -41,13 +106,15 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
             if (locationAccess.GetLocation() == check) {
                 LogicTrackerCheck::Region regionAgeTime;
                 regionAgeTime.RegionName = region.regionName;
+                regionAgeTime.Root = CreateExpressionRows(LogicExpression::Parse(locationAccess.GetConditionStr()));
+                regionAgeTime.Root.Expanded = true;
 
                 if (region.childDay) {
                     logic->IsChild = true;
                     logic->AtDay = true;
 
-                    regionAgeTime.ChildDay =
-                        std::make_unique<ExpressionEvaluation>(EvaluateExpression(locationAccess.GetConditionStr()));
+                    const auto& eval = EvaluateExpression(regionAgeTime.Root.Expression);
+                    PopulateExpressionValues(regionAgeTime.Root, eval, AgeTime::ChildDay);
 
                     logic->IsChild = false;
                     logic->AtDay = false;
@@ -56,8 +123,8 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
                     logic->IsChild = true;
                     logic->AtNight = true;
 
-                    regionAgeTime.ChildNight =
-                        std::make_unique<ExpressionEvaluation>(EvaluateExpression(locationAccess.GetConditionStr()));
+                    const auto& eval = EvaluateExpression(regionAgeTime.Root.Expression);
+                    PopulateExpressionValues(regionAgeTime.Root, eval, AgeTime::ChildNight);
 
                     logic->IsChild = false;
                     logic->AtNight = false;
@@ -66,8 +133,8 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
                     logic->IsAdult = true;
                     logic->AtDay = true;
 
-                    regionAgeTime.AdultDay =
-                        std::make_unique<ExpressionEvaluation>(EvaluateExpression(locationAccess.GetConditionStr()));
+                    const auto& eval = EvaluateExpression(regionAgeTime.Root.Expression);
+                    PopulateExpressionValues(regionAgeTime.Root, eval, AgeTime::AdultDay);
 
                     logic->IsAdult = false;
                     logic->AtDay = false;
@@ -76,12 +143,17 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
                     logic->IsAdult = true;
                     logic->AtNight = true;
 
-                    regionAgeTime.AdultNight =
-                        std::make_unique<ExpressionEvaluation>(EvaluateExpression(locationAccess.GetConditionStr()));
+                    const auto& eval = EvaluateExpression(regionAgeTime.Root.Expression);
+                    PopulateExpressionValues(regionAgeTime.Root, eval, AgeTime::AdultNight);
 
                     logic->IsAdult = false;
                     logic->AtNight = false;
                 }
+
+                auto [combineAll, combineChild, combineAdult] = CalculateCombines(regionAgeTime.Root);
+                regionAgeTime.CombineAll = combineAll;
+                regionAgeTime.CombineChild = combineChild;
+                regionAgeTime.CombineAdult = combineAdult;
 
                 logicTrackerCheck.Regions.emplace_back(std::move(regionAgeTime));
             }
@@ -90,110 +162,113 @@ void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck check) {
 
     checks.emplace_back(std::move(logicTrackerCheck));
     
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker")->Show();
+    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
+    window->Show();
+    ImGui::SetWindowFocus(window->GetName().c_str());
 }
 
-std::string TruncateText(const std::string& text, float maxWidth) {
-    ImVec2 textSize = ImGui::CalcTextSize(text.c_str());
-    if (textSize.x <= maxWidth)
-        return text;
-
-    std::string truncated = text;
-    // Remove characters until the text fits with the ellipsis appended
-    while (!truncated.empty() && ImGui::CalcTextSize((truncated + "...").c_str()).x > maxWidth) {
-        truncated.pop_back();
+static std::string ToString(const std::optional<LogicExpression::ValueVariant>& value) {
+    if (!value.has_value()) {
+        return "";
     }
-    return truncated + "...";
+    return ToString(value.value());
 }
 
-static void DrawExpression(const ExpressionEvaluation& expression) {
-    ImGuiTreeNodeFlags treeNodeFlags =
-        expression.Children.empty() ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_DefaultOpen;
-
-    float availableWidth = ImGui::GetContentRegionAvail().x - ImGui::GetTreeNodeToLabelSpacing();
-    auto text = TruncateText(ToString(expression.Result) + " = " + expression.Expression, availableWidth);
-
-    if (ImGui::TreeNodeEx(&expression, treeNodeFlags, "%s", text.c_str())) {
-        if (!expression.Children.empty()) {
-            for (const auto& child : expression.Children) {
-                DrawExpression(child);
-            }
-        }
-        ImGui::TreePop();
+static void DrawExpressionRow(const LogicTrackerCheck::Region& region, LogicTrackerCheck::Region::ExpressionRow& row,
+                              int level) {
+    ImGui::TableNextRow();
+    if (level > 0) {
+        ImGui::Indent(10.0f);
     }
-}
 
-static void DrawCheckRegion(const LogicTrackerCheck::Region& region) {
-    if (ImGui::TreeNodeEx(region.RegionName.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
-        if (region.ChildDay != nullptr) {
-            bool resultString = LogicExpression::GetValue<bool>(region.ChildDay->Result);
-            if (ImGui::TreeNodeEx(region.ChildDay.get(), ImGuiTreeNodeFlags_DefaultOpen, "Child-Day Result: %s",
-                                  resultString ? "true" : "false")) {
-                DrawExpression(*region.ChildDay);
-                ImGui::TreePop();
-            }
-        } else {
-            if (ImGui::TreeNodeEx("Child-Day Inaccessible", ImGuiTreeNodeFlags_Leaf)) {
-                ImGui::TreePop();
-            }
+    ImGui::TableNextColumn();
+    ImGui::Text("%d", level);
+
+    ImGui::TableNextColumn();
+    ImGui::TextWrapped("%s", row.Expression->ToString().c_str());
+
+    ImGui::TableNextColumn();
+    ImGui::TextUnformatted(ToString(row.ChildDay).c_str());
+
+    if (!region.CombineAll) {
+        if (!region.CombineChild) {
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(ToString(row.ChildNight).c_str());
         }
 
-        if (region.ChildNight != nullptr) {
-            bool resultString = LogicExpression::GetValue<bool>(region.ChildNight->Result);
-            if (ImGui::TreeNodeEx(region.ChildNight.get(), ImGuiTreeNodeFlags_DefaultOpen, "Child-Night Result: %s",
-                                  resultString ? "true" : "false")) {
-                DrawExpression(*region.ChildNight);
-                ImGui::TreePop();
-            }
-        } else {
-            if (ImGui::TreeNodeEx("Child-Night Inaccessible", ImGuiTreeNodeFlags_Leaf)) {
-                ImGui::TreePop();
-            }
-        }
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(ToString(row.AdultDay).c_str());
 
-        if (region.AdultDay != nullptr) {
-            bool resultString = LogicExpression::GetValue<bool>(region.AdultDay->Result);
-            if (ImGui::TreeNodeEx(region.AdultDay.get(), ImGuiTreeNodeFlags_DefaultOpen, "Adult-Day Result: %s",
-                                  resultString ? "true" : "false")) {
-                DrawExpression(*region.AdultDay);
-                ImGui::TreePop();
-            }
-        } else {
-            if (ImGui::TreeNodeEx("Adult-Day Inaccessible", ImGuiTreeNodeFlags_Leaf)) {
-                ImGui::TreePop();
-            }
+        if (!region.CombineAdult) {
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(ToString(row.AdultNight).c_str());
         }
+    }
 
-        if (region.AdultNight != nullptr) {
-            bool resultString = LogicExpression::GetValue<bool>(region.AdultNight->Result);
-            if (ImGui::TreeNodeEx(region.AdultNight.get(), ImGuiTreeNodeFlags_DefaultOpen, "Adult-Night Result: %s",
-                                  resultString ? "true" : "false")) {
-                DrawExpression(*region.AdultNight);
-                ImGui::TreePop();
-            }
-        } else {
-            if (ImGui::TreeNodeEx("Adult-Night Inaccessible", ImGuiTreeNodeFlags_Leaf)) {
-                ImGui::TreePop();
-            }
-        }
+    for (auto& child : row.Children) {
+        //if (child.Expanded) {
+            DrawExpressionRow(region, child, level + 1);
+        //}
+    }
 
-        ImGui::TreePop();
+    if (level > 0) {
+        ImGui::Unindent(10.0f);
     }
 }
 
-static void DrawCheck(const LogicTrackerCheck& check) {
+static void DrawCheckRegion(LogicTrackerCheck::Region& region) {
+    int columnCount = 3;
+    if (!region.CombineAll) {
+        if (!region.CombineChild) {
+            columnCount += 1;
+        }
+        columnCount += 1;
+        if (!region.CombineAdult) {
+            columnCount += 1;
+        }
+    }
+
+    if (ImGui::BeginTable(region.RegionName.c_str(), columnCount,
+                          ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn("Expression", ImGuiTableColumnFlags_WidthStretch);
+        if (region.CombineAll) {
+            ImGui::TableSetupColumn("All", ImGuiTableColumnFlags_WidthFixed);
+        } else {
+            if (region.CombineChild) {
+                ImGui::TableSetupColumn("Child", ImGuiTableColumnFlags_WidthFixed);
+            } else {
+                ImGui::TableSetupColumn("Child Day", ImGuiTableColumnFlags_WidthFixed);
+                ImGui::TableSetupColumn("Child Night", ImGuiTableColumnFlags_WidthFixed);
+            }
+            if (region.CombineAdult) {
+                ImGui::TableSetupColumn("Adult", ImGuiTableColumnFlags_WidthFixed);
+            } else {
+                ImGui::TableSetupColumn("Adult Day", ImGuiTableColumnFlags_WidthFixed);
+                ImGui::TableSetupColumn("Adult Night", ImGuiTableColumnFlags_WidthFixed);
+            }
+        }
+        ImGui::TableHeadersRow();
+    }
+
+    DrawExpressionRow(region, region.Root, 0);
+
+    ImGui::EndTable();
+}
+
+static void DrawCheck(LogicTrackerCheck& check) {
     ImGui::SeparatorText(("Check: " + check.CheckName).c_str());
     if (check.Regions.empty()) {
         ImGui::Text("No regions found for this check.");
         return;
     }
-    for (const auto& region : check.Regions) {
+    for (auto& region : check.Regions) {
         DrawCheckRegion(region);
     }
 }
 
 void LogicTrackerWindow::DrawElement() {
-    for (const auto& check : checks) {
+    for (auto& check : checks) {
         DrawCheck(check);
     }
 }

@@ -355,14 +355,15 @@ class Parser {
 
 #pragma endregion
 
-std::unique_ptr<LogicExpression> LogicExpression::Parse(const std::string& exprStr) {
+std::shared_ptr<LogicExpression> LogicExpression::Parse(const std::string& exprStr) {
     Parser parser(exprStr);
     std::shared_ptr<LogicExpression::Impl> impl = parser.Parse();
 
-    std::function<std::unique_ptr<LogicExpression>(const std::shared_ptr<LogicExpression::Impl>&)> populateChildren;
+    std::function<std::shared_ptr<LogicExpression>(const std::shared_ptr<LogicExpression::Impl>&)> populateChildren;
     populateChildren = [&](const std::shared_ptr<LogicExpression::Impl>& impl) {
-        auto expr = std::make_unique<LogicExpression>();
+        auto expr = std::make_shared<LogicExpression>();
         expr->impl = impl;
+        impl->expression = expr;
         for (const auto& child : impl->children) {
             expr->children.emplace_back(populateChildren(child));
         }
@@ -372,7 +373,7 @@ std::unique_ptr<LogicExpression> LogicExpression::Parse(const std::string& exprS
     return populateChildren(impl);
 }
 
-const std::vector<std::unique_ptr<LogicExpression>>& LogicExpression::GetChildren() const {
+const std::vector<std::shared_ptr<LogicExpression>>& LogicExpression::GetChildren() const {
     return children;
 }
 
@@ -561,8 +562,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std:
             
             // If callback is provided, call it with function info
             if (callback) {
-                std::string exprStr = functionName + "(" + (children.empty() ? "" : "...") + ")";
-                callback(exprStr, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString(), result);
             }
             
             return result;
@@ -854,7 +854,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op,
                 exprStr = "Unknown expression";
             }
             
-            callback(exprStr, path, depth, opStr, result);
+            callback(expression, path, depth, opStr, result);
         }
         
         return result;
@@ -902,7 +902,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
             
             if (callback) {
-                callback(exprText, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString(), result);
             }
             return result;
             
@@ -913,7 +913,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             auto childResult = children[0]->Evaluate(path + ".0", depth + 1, callback);
             result = !GetValue<bool>(childResult);
             if (callback) {
-                callback(exprText, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString(), result);
             }
             return result;
         }
@@ -924,7 +924,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             if (!GetValue<bool>(leftResult)) {
                 result = false;
                 if (callback) {
-                    callback(exprText, path, depth, GetTypeString() + " (short-circuit)", result);
+                    callback(expression, path, depth, GetTypeString() + " (short-circuit)", result);
                 }
                 return result;
             }
@@ -932,7 +932,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             auto rightResult = children[1]->Evaluate(path + ".1", depth + 1, callback);
             result = GetValue<bool>(rightResult);
             if (callback) {
-                callback(exprText, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString(), result);
             }
             return result;
         }
@@ -943,7 +943,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             if (GetValue<bool>(leftResult)) {
                 result = true;
                 if (callback) {
-                    callback(exprText, path, depth, GetTypeString() + " (short-circuit)", result);
+                    callback(expression, path, depth, GetTypeString() + " (short-circuit)", result);
                 }
                 return result;
             }
@@ -951,7 +951,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             auto rightResult = children[1]->Evaluate(path + ".1", depth + 1, callback);
             result = GetValue<bool>(rightResult);
             if (callback) {
-                callback(exprText, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString(), result);
             }
             return result;
         }
@@ -997,7 +997,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             try {
                 result = std::visit(compare, leftResult, rightResult);
                 if (callback) {
-                    callback(exprText, path, depth, GetTypeString(), result);
+                    callback(expression, path, depth, GetTypeString(), result);
                 }
                 return result;
             } catch (const std::bad_variant_access&) {
@@ -1025,7 +1025,8 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
             
             if (callback) {
-                callback(exprText, path, depth, GetTypeString() + (cond ? " (true branch)" : " (false branch)"), result);
+                callback(expression, path, depth, GetTypeString() + (cond ? " (true branch)" : " (false branch)"),
+                         result);
             }
             return result;
         }
@@ -1038,16 +1039,19 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
 }
 
 ExpressionEvaluation EvaluateExpression(std::string condition) {
-    const auto& expression = LogicExpression::Parse(condition);
+    return EvaluateExpression(LogicExpression::Parse(condition));
+}
 
+ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> expression) {
     // Create a vector to store the evaluation sequence
-    std::vector<std::tuple<std::string, std::string, int, std::string, LogicExpression::ValueVariant>>
+    std::vector<std::tuple<std::shared_ptr<LogicExpression>, std::string, int, std::string, LogicExpression::ValueVariant>>
         evaluationSequence;
 
     // Define a callback that records each evaluation step
-    auto recordCallback = [&evaluationSequence](const std::string& exprStr, const std::string& path, int depth,
+    auto recordCallback = [&evaluationSequence](const std::shared_ptr<LogicExpression>& expr,
+                                                const std::string& path, int depth,
                                                 const std::string& type, const LogicExpression::ValueVariant& result) {
-        evaluationSequence.emplace_back(exprStr, path, depth, type, result);
+        evaluationSequence.emplace_back(expr, path, depth, type, result);
     };
 
     // Evaluate the expression with the callback

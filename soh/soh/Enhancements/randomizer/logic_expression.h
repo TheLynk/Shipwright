@@ -14,11 +14,11 @@ class LogicExpression {
   public:
     using ValueVariant = std::variant<bool, int, uint8_t, uint16_t>;
     // Define callback type for evaluation tracing
-    using EvaluationCallback = std::function<void(const std::string&, const std::string&, int, const std::string&, const ValueVariant&)>;
+    using EvaluationCallback = std::function<void(const std::shared_ptr<LogicExpression>&, const std::string&, int, const std::string&, const ValueVariant&)>;
 
-    static std::unique_ptr<LogicExpression> Parse(const std::string& exprStr);
+    static std::shared_ptr<LogicExpression> Parse(const std::string& exprStr);
     std::string ToString() const;
-    const std::vector<std::unique_ptr<LogicExpression>>& GetChildren() const;
+    const std::vector<std::shared_ptr<LogicExpression>>& GetChildren() const;
 
     // Add optional callback parameter to Evaluate
     template <typename T> T Evaluate(const EvaluationCallback& callback = nullptr) const {
@@ -68,6 +68,7 @@ class LogicExpression {
         Impl* parent;
         size_t startIndex;
         size_t endIndex;
+        std::shared_ptr<LogicExpression> expression;
 
         // Modified to accept path and depth
         ValueVariant Evaluate(const std::string& path = "0", int depth = 0, const EvaluationCallback& callback = nullptr) const;
@@ -293,14 +294,14 @@ class LogicExpression {
     };
 
     std::shared_ptr<Impl> impl;
-    std::vector<std::unique_ptr<LogicExpression>> children;
+    std::vector<std::shared_ptr<LogicExpression>> children;
 
     friend class Parser;
     friend bool IsEnumConstant(const std::string& s);
 };
 
 struct ExpressionEvaluation {
-    std::string Expression;
+    std::shared_ptr<LogicExpression> Expression;
     int Depth;
     std::string Type;
     LogicExpression::ValueVariant Result;
@@ -308,5 +309,7 @@ struct ExpressionEvaluation {
 };
 
 ExpressionEvaluation EvaluateExpression(std::string condition);
+
+ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> expression);
 
 std::string ToString(const LogicExpression::ValueVariant& value);

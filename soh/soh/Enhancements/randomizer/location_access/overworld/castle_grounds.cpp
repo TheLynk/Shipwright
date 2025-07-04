@@ -25,7 +25,6 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GS_TREE,   logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_CASTLE_GROUNDS,        []{return true;}),
         Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->HasItem(RG_ZELDAS_LETTER) || logic->HasItem(RG_CLIMB);}),
     });
 

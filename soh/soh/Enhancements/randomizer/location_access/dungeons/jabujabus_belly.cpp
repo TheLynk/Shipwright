@@ -90,7 +90,7 @@ void RegionTable_Init_JabuJabusBelly() {
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_B1_NORTH,                []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
-        Entrance(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_HOVER_BOOTS);}),
+        Entrance(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE, []{return logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CLIMB) || logic->HasItem(RG_HOVER_BOOTS);}),
         Entrance(RR_JABU_JABUS_BELLY_MAIN,                    []{return logic->CanUseProjectile();}),
     });
 

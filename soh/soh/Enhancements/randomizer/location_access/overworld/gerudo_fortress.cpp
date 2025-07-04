@@ -9,7 +9,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSKIRTS] = Region("Gerudo Fortress Outskirts", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(&logic->GF_GateOpen,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}), //needs climb
+        EventAccess(&logic->GF_GateOpen,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_CLIMB) && logic->HasSoul(RG_HW_GATEKEEPER_SOUL);}),
     }, {
         //Locations
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
@@ -49,7 +49,7 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult  && logic->HasSoul(RG_GTG_GATEKEEPER_SOUL) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
         //Jail
         Entrance(RR_GF_JAIL_WINDOW,                  []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_OUTSKIRTS,                    []{return true;}),
@@ -81,7 +81,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_TH_STEEP_SLOPE_CELL,   []{return true;}),
         Entrance(RR_GF_NEAR_GROTTO,        []{return true;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return logic->CanUse(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_ABOVE_GTG,          []{return true;}),
     });
 
@@ -122,7 +122,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_OUTSIDE_GTG,        []{return true;}),
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
         Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->CanUse(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
     });
 
     areaTable[RR_GF_TOP_OF_UPPER_VINES] = Region("GF Top of Upper Vines", SCENE_GERUDOS_FORTRESS, {}, {
@@ -196,8 +196,8 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_HBA_RANGE] = Region("GF HBA Range", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay) && logic->HasSoul(RG_ARCHER_SOUL),
+        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay) && logic->HasSoul(RG_ARCHER_SOUL),
         LOCATION(RC_GF_HBA_RANGE_GS,             logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_1,        logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_2,        logic->CanBreakCrates()),
@@ -221,7 +221,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasSoul(RG_HW_GATEKEEPER_SOUL);}),
     }, {}, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,            []{return logic->GF_GateOpen;}),

@@ -17,7 +17,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_1_TORCH_CELL_MID_POT,   logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_LEFT_POT,  logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_CRATE,     logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,       logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,       logic->THRescuedAllCarpenters && logic->HasSoul(RG_ICHIRO_SOUL)),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
@@ -40,7 +40,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_LEFTMOST_JAILED_POT,        logic->CanBreakPots()),
         LOCATION(RC_TH_DOUBLE_CELL_LEFT_CRATE,     logic->CanBreakCrates()),
         LOCATION(RC_TH_DOUBLE_CELL_RIGHT_CRATE,    logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,           logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,           logic->THRescuedAllCarpenters && logic->HasSoul(RG_SABOORO_SOUL)),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
@@ -55,7 +55,7 @@ void RegionTable_Init_ThievesHideout() {
         //Locations
         LOCATION(RC_TH_DEAD_END_CARPENTER,  logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_DEAD_END_CELL_CRATE, logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,    logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,    logic->THRescuedAllCarpenters && logic->HasSoul(RG_JIRO_SOUL)),
     }, {
         //Exits
         Entrance(RR_GF_BELOW_GS, []{return true;}),
@@ -70,7 +70,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_STEEP_SLOPE_CARPENTER, logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_STEEP_SLOPE_RIGHT_POT, logic->CanBreakPots()),
         LOCATION(RC_TH_STEEP_SLOPE_LEFT_POT,  logic->CanBreakPots()),
-        LOCATION(RC_TH_FREED_CARPENTERS,      logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,      logic->THRescuedAllCarpenters && logic->HasSoul(RG_SHIRO_SOUL)),
     }, {
         //Exits
         Entrance(RR_GF_ABOVE_GTG,          []{return true;}),

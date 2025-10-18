@@ -21,7 +21,7 @@
 #define M_SQRT1_2f 0.70710678118654752440f /* 1/sqrt(2) */
 
 #ifdef __cplusplus
-#include <Context.h>
+#include <ship/Context.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
@@ -87,7 +87,7 @@ class OTRGlobals {
 #endif
 
 #ifndef __cplusplus
-void InitOTR(void);
+void InitOTR(int argc, char* argv[]);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
@@ -156,8 +156,6 @@ void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
 uint8_t Randomizer_GenerateRandomizer();
 void Randomizer_ShowRandomizerMenu();
 int CustomMessage_RetrieveIfExists(PlayState* play);
-void Overlay_DisplayText(float duration, const char* text);
-void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);

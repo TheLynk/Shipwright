@@ -2242,7 +2242,23 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnRr`
+    VB_LIKE_LIKE_DROP_COLLECTIBLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
     VB_LIKE_LIKE_GRAB_PLAYER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
+    VB_LIKE_LIKE_STEAL_EQUIPMENT,
 
     // #### `result`
     // ```c

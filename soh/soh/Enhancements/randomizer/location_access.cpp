@@ -511,8 +511,25 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
     return nullptr;
 }
 
-bool Region::CanPlantBeanCheck() const {
-    return Rando::Context::GetInstance()->GetLogic()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
+bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
+    auto ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
+
+    if (!logic->HasItem(bean)) {
+        // Never available without soul
+        return false;
+    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) &&
+               !ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) &&
+               !ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+        // All planted when skip enabled & bean pack not shuffled
+        return true;
+    } else if (logic->GetAmmo(ITEM_BEAN) <= 0) {
+        // Need bean pack
+        return false;
+    } else {
+        // BothAgesCheck necessary when planting
+        return ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck();
+    }
 }
 
 bool Region::AllAccountedFor() const {
@@ -681,49 +698,49 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
     return areaTable[region].MQSpiritShared(condition, true, anyAge);
 }
 
-bool BeanPlanted(const RandomizerRegion region) {
+bool BeanPlanted(const RandomizerGet bean) {
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
     // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
     uint8_t swchFlag;
-    switch (region) {
-        case RR_ZORAS_RIVER:
+    switch (bean) {
+        case RG_ZORAS_RIVER_BEAN_SOUL:
             sceneID = SceneID::SCENE_ZORAS_RIVER;
             swchFlag = 3;
             break;
-        case RR_THE_GRAVEYARD:
+        case RG_GRAVEYARD_BEAN_SOUL:
             sceneID = SceneID::SCENE_GRAVEYARD;
             swchFlag = 3;
             break;
-        case RR_KOKIRI_FOREST:
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
             sceneID = SceneID::SCENE_KOKIRI_FOREST;
             swchFlag = 9;
             break;
-        case RR_THE_LOST_WOODS:
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 4;
             break;
-        case RR_LW_BEYOND_MIDO:
+        case RG_LOST_WOODS_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 18;
             break;
-        case RR_DEATH_MOUNTAIN_TRAIL:
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
             swchFlag = 6;
             break;
-        case RR_LAKE_HYLIA:
+        case RG_LAKE_HYLIA_BEAN_SOUL:
             sceneID = SceneID::SCENE_LAKE_HYLIA;
             swchFlag = 1;
             break;
-        case RR_GERUDO_VALLEY:
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
             sceneID = SceneID::SCENE_GERUDO_VALLEY;
             swchFlag = 3;
             break;
-        case RR_DMC_CENTRAL_LOCAL:
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
             swchFlag = 3;
             break;
-        case RR_DESERT_COLOSSUS:
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
             sceneID = SceneID::SCENE_DESERT_COLOSSUS;
             swchFlag = 24;
             break;
@@ -747,8 +764,8 @@ bool BeanPlanted(const RandomizerRegion region) {
     return swch >> swchFlag & 1;
 }
 
-bool CanPlantBean(const RandomizerRegion region) {
-    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
+bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
+    return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
 }
 
 bool BothAges(const RandomizerRegion region) {

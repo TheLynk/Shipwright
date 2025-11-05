@@ -2306,6 +2306,27 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_COLLECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_COUNT_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_SETUP_DRAW,
     // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
     // ```
     // #### `args`

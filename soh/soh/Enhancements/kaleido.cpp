@@ -18,6 +18,7 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #include <sstream>
 
@@ -75,7 +76,7 @@ void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
                                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
     // icon
-    if (!mAchieved) {
+    if (mGrayscale) {
         mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
         mEntryDl->push_back(gsSPGrayscale(true));
     }
@@ -145,6 +146,18 @@ Kaleido::Kaleido() {
             gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, RAND_INF_GANON_SOUL, 0, yOffset, "Ganon's Soul"));
         yOffset += 18;
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
+        for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
+            uint8_t dungeonId = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).DungeonID();
+            RandomizerCheckQuest dungeonQuest = ctx->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+            RandomizerCheckQuest rupeeQuest = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).Quest();
+            if (dungeonQuest == rupeeQuest) {
+                mEntries.push_back(
+                    std::make_shared<KaleidoEntrySilverRupeeCounter>(static_cast<RandomizerGet>(i), 0, yOffset));
+                yOffset += 18;
+            }
+        }
     }
 }
 
@@ -260,6 +273,7 @@ KaleidoEntryIconFlag::KaleidoEntryIconFlag(const char* iconResourceName, int ico
 
 void KaleidoEntryIconFlag::Update(PlayState* play) {
     mAchieved = GameInteractor::RawAction::CheckFlag(mFlagType, static_cast<int16_t>(mFlag));
+    mGrayscale = !mAchieved;
 }
 
 KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize,
@@ -267,14 +281,20 @@ KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconRes
                                                              int16_t x, int16_t y, int* watch, int required, int total)
     : mWatch(watch), mRequired(required), mTotal(total),
       KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor, x, y) {
-    mCount = *mWatch;
+    if (mWatch != nullptr) {
+        mCount = *mWatch;
+    }
+    mAchieved = mCount >= mRequired;
+    mGrayscale = mCount == 0;
     BuildText();
     BuildVertices();
 }
 
 void KaleidoEntryIconCountRequired::BuildText() {
     std::ostringstream totals;
-    totals << mCount;
+    if (mCount < mRequired) {
+        totals << mCount;
+    }
     if (mRequired != 0 && mCount < mRequired) {
         totals << '/' << mRequired;
     }
@@ -282,6 +302,49 @@ void KaleidoEntryIconCountRequired::BuildText() {
         totals << '/' << mTotal;
     }
     mText = totals.str();
+}
+
+KaleidoEntrySilverRupeeCounter::KaleidoEntrySilverRupeeCounter(RandomizerGet rgid, int16_t x, int16_t y)
+    : mRgid(rgid), KaleidoEntryIconCountRequired(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16,
+                                                 Color_RGBA8{ 255, 255, 255, 255 }, x, y) {
+    mCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
+    mRequired = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetTotal();
+    mAchieved = mCount >= mRequired;
+    mGrayscale = mCount == 0;
+    BuildText();
+    BuildVertices();
+}
+
+void KaleidoEntrySilverRupeeCounter::BuildText() {
+    KaleidoEntryIconCountRequired::BuildText();
+    CustomMessage name = CustomMessage(Rando::StaticData::RetrieveItem(mRgid).GetName());
+    // Abbreviate Dungeon Names
+    name.Replace("Spirit Temple", "SpT");
+    name.Replace("Shadow Temple", "ShT");
+    name.Replace("Bottom of the Well", "BotW");
+    name.Replace("Gerudo Training Grounds", "GTG");
+    name.Replace("Dodongo's Cavern", "DC");
+    name.Replace("Ice Cavern", "IC");
+    name.Replace("Ganon's Castle", "GC");
+    // Remove MQ to make spoilers less prevalent
+    name.Replace("MQ", "");
+    // Remove "Silver Rupee" from the name
+    name.Replace("Silver Rupee", "");
+    if (!mText.empty()) {
+        mText += " ";
+    }
+    mText += name.GetForCurrentLanguage();
+}
+
+void KaleidoEntrySilverRupeeCounter::Update(PlayState* play) {
+    int newCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
+    if (mCount != newCount) {
+        mCount = newCount;
+        BuildText();
+        RebuildVertices();
+        mAchieved = mCount >= mRequired;
+        mGrayscale = mCount == 0;
+    }
 }
 
 void KaleidoEntryIcon::BuildVertices() {
@@ -294,6 +357,19 @@ void KaleidoEntryIcon::BuildVertices() {
     offsetX += 18;
     for (size_t i = 0; i < mText.length(); i++) {
         int charWidth = static_cast<int>(Ship_GetCharFontWidth(mText[i]));
+        if ((offsetX + charWidth) > 220) {
+            offsetX -= Ship_GetCharFontWidth(mText[i - 1]);
+            offsetX -= Ship_GetCharFontWidth(mText[i - 2]);
+            mText = mText.substr(0, i - 2) + "...";
+            int periodWidth = Ship_GetCharFontWidth('.');
+            Ship_CreateQuadVertexGroup(&(vertices)[(i - 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            Ship_CreateQuadVertexGroup(&(vertices)[(i)*4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            break;
+        }
         Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
         offsetX += charWidth;
     }
@@ -326,6 +402,7 @@ void KaleidoEntryIconCountRequired::Update(PlayState* play) {
         BuildText();
         RebuildVertices();
         mAchieved = mCount >= mRequired;
+        mGrayscale = mCount == 0;
     }
 }
 
@@ -381,11 +458,13 @@ void KaleidoEntryOcarinaButtons::Update(PlayState* play) {
     mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
     CalculateColors();
     mAchieved = false;
+    mGrayscale = true;
     for (int i = 0; i < mButtonCollected.size(); i++) {
         if (!mButtonCollected[i]) {
             mButtonColors[i] = Color_RGBA8{ 109, 109, 109, 255 };
         } else {
             mAchieved = true;
+            mGrayscale = false;
         }
     }
 }
@@ -406,7 +485,7 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
                                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
     // icon
-    if (!mAchieved) {
+    if (mGrayscale) {
         mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
         mEntryDl->push_back(gsSPGrayscale(true));
     }

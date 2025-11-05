@@ -252,6 +252,12 @@ void SaveManager::LoadRandomizer() {
         SaveManager::Instance->LoadData("", value);
         randoContext->GetTrickOption(RandomizerTrick(i)).Set(value);
     });
+
+    SaveManager::Instance->LoadArray("silverRupees", RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1, [&](size_t i) {
+        size_t value;
+        SaveManager::Instance->LoadData("", value);
+        randoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST)).SetCollected(value);
+    });
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -399,6 +405,12 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("trickOptions", RT_MAX, [&](size_t i) {
         SaveManager::Instance->SaveData("", randoContext->GetTrickOption(RandomizerTrick(i)).Get());
+    });
+
+    SaveManager::Instance->SaveArray("silverRupees", RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1, [&](size_t i) {
+        SaveManager::Instance->SaveData(
+            "",
+            randoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST)).GetCollected());
     });
 }
 

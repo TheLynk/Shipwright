@@ -329,10 +329,16 @@ void RegionTable_Init_DodongosCavern() {
         //EventAccess(LOGIC_DC_CAN_CLIMB_STAIRS, []{return logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DC_STAIRS_WITH_BOW) && logic->CanUse(RG_FAIRY_BOW));}),
     }, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_1,         logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2,         logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3,         logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4,         logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4, logic->CanBreakPots()),
+        // RANDOTODO some of these are lower but some of these are actually in upper.
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_1,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_2,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_3,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_4,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_5,  true),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2, logic->CanBreakCrates()),
     }, {

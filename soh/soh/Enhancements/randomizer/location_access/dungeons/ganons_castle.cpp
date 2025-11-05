@@ -60,6 +60,13 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, logic->CanKillEnemy(RE_WOLFOS)),
         LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_POT_1, logic->CanBreakPots() && (logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))),
         LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_POT_2, logic->CanBreakPots() && (logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))),
+        // RANDOTODO consider adding a new region here, since there will now be
+        // seven checks locked behind Fire Arrows or Din's Fire.
+        LOCATION(RC_FOREST_TRIAL_SILVER_RUPEE_1, true),
+        LOCATION(RC_FOREST_TRIAL_SILVER_RUPEE_2, true),
+        LOCATION(RC_FOREST_TRIAL_SILVER_RUPEE_3, true),
+        LOCATION(RC_FOREST_TRIAL_SILVER_RUPEE_4, true),
+        LOCATION(RC_FOREST_TRIAL_SILVER_RUPEE_5, true),
     }, {});
 
     areaTable[RR_GANONS_CASTLE_FIRE_TRIAL] = Region("Ganon's Castle Fire Trial", SCENE_INSIDE_GANONS_CASTLE, {
@@ -70,6 +77,13 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_POT_1, logic->CanBreakPots() && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->CanUse(RG_LONGSHOT)),
         LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_POT_2, logic->CanBreakPots() && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->CanUse(RG_LONGSHOT)),
         LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART, logic->CanUse(RG_GORON_TUNIC)),
+        // RANDOTODO consider a new region here, since collecting silver rupees out in 
+        // the overworld will be required to reach the pots above.
+        LOCATION(RC_FIRE_TRIAL_SILVER_RUPEE_1, true),
+        LOCATION(RC_FIRE_TRIAL_SILVER_RUPEE_2, true),
+        LOCATION(RC_FIRE_TRIAL_SILVER_RUPEE_3, true),
+        LOCATION(RC_FIRE_TRIAL_SILVER_RUPEE_4, true),
+        LOCATION(RC_FIRE_TRIAL_SILVER_RUPEE_5, true),
     }, {});
 
     areaTable[RR_GANONS_CASTLE_WATER_TRIAL] = Region("Ganon's Castle Water Trial", SCENE_INSIDE_GANONS_CASTLE, {
@@ -114,6 +128,13 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_POT_2,                ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && (logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)))) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_SUN_FAIRY,            logic->CanUse(RG_SUNS_SONG)),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_HEART,                true),
+        // RANDOTODO new region here, some chests and pots will be locked behind collecting
+        // silver rupees from elsewhere now. Also one of these will require hookshot/a trick.
+        LOCATION(RC_SPIRIT_TRIAL_SILVER_RUPEE_1, true),
+        LOCATION(RC_SPIRIT_TRIAL_SILVER_RUPEE_2, true),
+        LOCATION(RC_SPIRIT_TRIAL_SILVER_RUPEE_3, true),
+        LOCATION(RC_SPIRIT_TRIAL_SILVER_RUPEE_4, true),
+        LOCATION(RC_SPIRIT_TRIAL_SILVER_RUPEE_5, true),
     }, {});
 
     areaTable[RR_GANONS_CASTLE_LIGHT_TRIAL] = Region("Ganon's Castle Light Trial", SCENE_INSIDE_GANONS_CASTLE, {
@@ -132,6 +153,13 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_LIGHT_TRIAL_BOULDER_POT_1,           logic->CanBreakPots() && logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 2)),
         LOCATION(RC_GANONS_CASTLE_LIGHT_TRIAL_POT_1,                   logic->CanBreakPots() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanGroundJump())) && logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 2) && (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))),
         LOCATION(RC_GANONS_CASTLE_LIGHT_TRIAL_POT_2,                   logic->CanBreakPots() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanGroundJump())) && logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 2) && (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        // RANDOTODO new region to handle silver rupee collection logic for the pots past
+        // this puzzle. Also one of these will require hookshot.
+        LOCATION(RC_LIGHT_TRIAL_SILVER_RUPEE_1, true),
+        LOCATION(RC_LIGHT_TRIAL_SILVER_RUPEE_2, true),
+        LOCATION(RC_LIGHT_TRIAL_SILVER_RUPEE_3, true),
+        LOCATION(RC_LIGHT_TRIAL_SILVER_RUPEE_4, true),
+        LOCATION(RC_LIGHT_TRIAL_SILVER_RUPEE_5, true),
     }, {});
 
 #pragma endregion
@@ -216,7 +244,14 @@ void RegionTable_Init_GanonsCastle() {
         Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM, []{return true;}),
     });
 
-    areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM] = Region("Ganon's Castle MQ Fire Trial Main Room", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
+areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM] = Region("Ganon's Castle MQ Fire Trial Main Room", SCENE_INSIDE_GANONS_CASTLE, {}, {
+        // RANDOTODO logic
+        LOCATION(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_1, true),
+        LOCATION(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_2, true),
+        LOCATION(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_3, true),
+        LOCATION(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_4, true),
+        LOCATION(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_5, true),
+    }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_MAIN,                  []{return true;}),
                                                                                                                                     //2 checks, 1 for the rupees, 1 for actually making it, as the rupees are permanent but throwing a pillar is not
@@ -246,7 +281,14 @@ void RegionTable_Init_GanonsCastle() {
         Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, []{return logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3) && Here(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM, []{return logic->BlueFire();});}),
     });
 
-    areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM] = Region("Ganon's Castle MQ Water Trial Block Room", SCENE_INSIDE_GANONS_CASTLE, {}, {}, { 
+    areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM] = Region("Ganon's Castle MQ Water Trial Block Room", SCENE_INSIDE_GANONS_CASTLE, {}, {
+        // RANDOTODO logic, most likely will need bottle/arrows to collect all, maybe hammer?
+        LOCATION(RC_WATER_TRIAL_MQ_SILVER_RUPEE_1, true),
+        LOCATION(RC_WATER_TRIAL_MQ_SILVER_RUPEE_2, true),
+        LOCATION(RC_WATER_TRIAL_MQ_SILVER_RUPEE_3, true),
+        LOCATION(RC_WATER_TRIAL_MQ_SILVER_RUPEE_4, true),
+        LOCATION(RC_WATER_TRIAL_MQ_SILVER_RUPEE_5, true),
+    }, { 
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM, []{return logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3);}),
         //This assumes there's no way for child to have blue fire and not adult.
@@ -310,6 +352,13 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_FAR_SIDE] = Region("Ganon's Castle MQ Shadow Trial Far Side", SCENE_INSIDE_GANONS_CASTLE, {}, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST,  logic->CanHitEyeTargets()),
+        // RANDOTODO logic for individual silver rupees, which probably also need to be moved
+        // to some of the other regions here rather than being all in one place.
+        LOCATION(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_1, true),
+        LOCATION(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_2, true),
+        LOCATION(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_3, true),
+        LOCATION(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_4, true),
+        LOCATION(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_5, true),
     }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_TORCH, []{return logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOVER_BOOTS);}),

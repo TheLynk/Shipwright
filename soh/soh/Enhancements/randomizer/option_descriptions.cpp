@@ -779,5 +779,16 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."
         "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+    mOptionDescriptions[RSK_SHUFFLE_SILVER_RUPEES] =
+        "THIS OPTION DOES NOT CURRENTLY HAVE ANY LOGIC ! ! ! "
+        "\n"
+        "Shuffle Silver Rupees out of their usual locations in dungeons. "
+        "\n"
+        "They will be replaced with new items and can be found at other locations in the game. The doors they "
+        "previously controlled will be opened when all of the Silver Rupees that used to be in that room have been "
+        "found wherever they have been shuffled to.";
+    mOptionDescriptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH] =
+        "Adds a special item to the pool that causes all "
+        "Silver Rupee puzzles to be completed regardless of how many Silver Rupees you have collected.";
 }
 } // namespace Rando

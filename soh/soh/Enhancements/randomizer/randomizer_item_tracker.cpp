@@ -9,6 +9,7 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "dungeon.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
@@ -28,6 +29,7 @@ extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <textures/parameter_static/parameter_static.h>
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -62,6 +64,7 @@ static WidgetInfo overworldKeysTracking;
 static WidgetInfo fishingPoleTracking;
 static WidgetInfo personalNotesWiget;
 static WidgetInfo hookshotIdentWidget;
+static WidgetInfo silverRupeeTracking;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -195,6 +198,49 @@ std::vector<ItemTrackerItem> overworldKeyItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> silverRupeeItems = {
+    ITEM_TRACKER_ITEM_CUSTOM(RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_ICE_CAVERN_SLIDING_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SPIRIT_GATE_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SPIRIT_BEAMOS_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SPIRIT_BOULDER_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_SCYTHE_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_FOREST_TRIAL_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_FIRE_TRIAL_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SPIRIT_TRIAL_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LIGHT_TRIAL_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER,
+                             0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0,
+                             DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_FIRE_TRIAL_MQ_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_WATER_TRIAL_MQ_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SHADOW_TRIAL_MQ_SILVER_RUPEE, ITEM_RUPEE_SILVER, ITEM_RUPEE_SILVER, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> fishingPoleItems = { ITEM_TRACKER_ITEM(ITEM_FISHING_POLE, 0, DrawItem) };
@@ -749,6 +795,30 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
+    } else if (item.id >= RG_SILVER_RUPEE_FIRST && item.id <= RG_SILVER_RUPEE_LAST && IS_RANDO &&
+               OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() >
+                   RO_DUNGEON_ITEM_LOC_VANILLA &&
+               IsValidSaveFile()) {
+        RandomizerGet rgid = static_cast<RandomizerGet>(item.id);
+        std::string current = "";
+        std::string max = "";
+        uint8_t rupeesMax = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(rgid).GetTotal();
+        ImU32 currentColor = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(rgid).AllCollected()
+                                 ? IM_COL_GREEN
+                                 : IM_COL_WHITE;
+        ImU32 maxColor = IM_COL_GREEN;
+        current += std::to_string(OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(rgid).GetCollected());
+        current += "/";
+        max += std::to_string(rupeesMax);
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((current + max).c_str()).x / 2), p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+        ImGui::Text("%d/", OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(rgid).GetCollected());
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+        ImGui::Text("%d", rupeesMax);
+        ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
         ImGui::Text("");
@@ -1085,6 +1155,41 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_FISHING_HOLE_KEY_OBTAINED);
             itemName = "Fishing Hole Key";
+            break;
+        case RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE:
+        case RG_ICE_CAVERN_SLIDING_SILVER_RUPEE:
+        case RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE:
+        case RG_SPIRIT_GATE_SILVER_RUPEE:
+        case RG_SPIRIT_BEAMOS_SILVER_RUPEE:
+        case RG_SPIRIT_BOULDER_SILVER_RUPEE:
+        case RG_SHADOW_SCYTHE_SILVER_RUPEE:
+        case RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE:
+        case RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE:
+        case RG_FOREST_TRIAL_SILVER_RUPEE:
+        case RG_FIRE_TRIAL_SILVER_RUPEE:
+        case RG_SPIRIT_TRIAL_SILVER_RUPEE:
+        case RG_LIGHT_TRIAL_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE:
+        case RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE:
+        case RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE:
+        case RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE:
+        case RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE:
+        case RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE:
+        case RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE:
+        case RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE:
+        case RG_FIRE_TRIAL_MQ_SILVER_RUPEE:
+        case RG_WATER_TRIAL_MQ_SILVER_RUPEE:
+        case RG_SHADOW_TRIAL_MQ_SILVER_RUPEE:
+            actualItemId = item.id;
+            hasItem = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() >
+                      RO_DUNGEON_ITEM_LOC_VANILLA;
+            itemName = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(actualItemId))
+                           .GetName()
+                           .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG));
             break;
     }
 
@@ -1617,6 +1722,26 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), overworldKeyItems.begin(), overworldKeyItems.end());
     }
 
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+        for (auto silverRupee : silverRupeeItems) {
+            uint8_t dungeonId =
+                OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                    .DungeonID();
+            RandomizerCheckQuest dungeonQuest =
+                OTRGlobals::Instance->gRandoContext->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+            RandomizerCheckQuest rupeeQuest =
+                OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                    .Quest();
+            if (dungeonQuest == rupeeQuest) {
+                mainWindowItems.push_back(silverRupee);
+            }
+        }
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -1799,6 +1924,28 @@ void ItemTrackerWindow::DrawElement() {
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Overworld Key Tracker");
             DrawItemsInRows(overworldKeyItems);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            std::vector<ItemTrackerItem> questMatchingSilverRupeeItems;
+            for (auto silverRupee : silverRupeeItems) {
+                uint8_t dungeonId = OTRGlobals::Instance->gRandoContext
+                                        ->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                                        .DungeonID();
+                RandomizerCheckQuest dungeonQuest =
+                    OTRGlobals::Instance->gRandoContext->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+                RandomizerCheckQuest rupeeQuest =
+                    OTRGlobals::Instance->gRandoContext
+                        ->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                        .Quest();
+                if (dungeonQuest == rupeeQuest) {
+                    questMatchingSilverRupeeItems.push_back(silverRupee);
+                }
+            }
+            BeginFloatingWindows("Silver Rupee Tracker");
+            DrawItemsInRows(questMatchingSilverRupeeItems);
             EndFloatingWindows();
         }
 
@@ -2026,6 +2173,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(silverRupeeTracking, 250, THEME_COLOR);
 
         if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
                          ComboboxOptions()
@@ -2207,6 +2355,16 @@ void RegisterItemTrackerWidgets() {
                      .ComboMap(extendedDisplayTypes))
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
+    silverRupeeTracking = { .name = "Silver Rupees", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    silverRupeeTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+
     SohGui::mSohMenu->AddSearchWidget(
         { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 

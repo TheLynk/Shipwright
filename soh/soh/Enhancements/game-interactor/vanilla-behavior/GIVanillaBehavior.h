@@ -1377,6 +1377,14 @@ typedef enum {
     // #### `args`
     // - `*EnOkarinaTag`
     VB_OKARINA_TAG_COMPLETED,
+    
+    // #### `result`
+    // ```c
+    // this->getItemId != GI_NONE
+    // ```
+    // #### `args`
+    // - `None`
+    VB_OPEN_CHEST,
 
     // #### `result`
     // ```c

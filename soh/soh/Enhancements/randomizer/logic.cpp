@@ -226,6 +226,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_WALLET) >= 2;
         case RG_TYCOON_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 3;
+        case RG_OPEN_CHEST:
+            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
             // Scales
         case RG_BRONZE_SCALE:
             return CheckRandoInf(RAND_INF_CAN_SWIM);
@@ -1592,6 +1594,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                     break;
+                case RG_OPEN_CHEST:
+                    SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
+                    break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
                     for (i = 0; i < 3; i++) {
@@ -2337,6 +2342,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling open chest, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

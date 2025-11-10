@@ -131,7 +131,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                  true),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -149,7 +149,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_OPEN_GROTTO] = Region("HF Open Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                   true),
+        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                   logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_OPEN_GROTTO_FISH,                    logic->HasBottle()),
         LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
         LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
@@ -203,7 +203,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_NEAR_MARKET_GROTTO] = Region("HF Near Market Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_NEAR_MARKET_GROTTO_CHEST,                  true),
+        LOCATION(RC_HF_NEAR_MARKET_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),

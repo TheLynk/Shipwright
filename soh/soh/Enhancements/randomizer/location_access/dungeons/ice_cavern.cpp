@@ -30,10 +30,10 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return logic->IsAdult || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump());}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MAP_CHEST,               logic->BlueFire() && (logic->IsAdult || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump()))),
-        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,           logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS)),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS) && logic->IsAdult),
+        LOCATION(RC_ICE_CAVERN_MAP_CHEST,               logic->BlueFire() && (logic->IsAdult && logic->HasItem(RG_OPEN_CHEST) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump() && logic->HasItem(RG_OPEN_CHEST)))),
+        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,           logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS) && logic->IsAdult && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,        logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang()),
         LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire() && logic->HookshotOrBoomerang()),
@@ -107,7 +107,7 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS,  []{return logic->IsChild || logic->CanJumpslash() || logic->HasExplosives();}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();})),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();}) && logic->HasItem(RG_OPEN_CHEST)),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {}, {
@@ -133,8 +133,8 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS)),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS)),
+        LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, []{return Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
@@ -146,7 +146,7 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    true),
+        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         //It is possible for child with master, BGS or sticks, or adult with BGS, to hit this switch through the ice with a crouchstab, but it's precise and unintuitive for a trick
         LOCATION(RC_ICE_CAVERN_MQ_FREESTANDING_POH, logic->HasExplosives()),
         //doing RT_ICE_MQ_RED_ICE_GS as child is untested, as I could not perform the trick reliably even as adult

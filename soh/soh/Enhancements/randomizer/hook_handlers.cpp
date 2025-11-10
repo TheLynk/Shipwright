@@ -863,6 +863,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
+        case VB_OPEN_CHEST:
+            *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            break;
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
                       RAND_GET_OPTION(RSK_FOREST) != RO_CLOSED_FOREST_ON;

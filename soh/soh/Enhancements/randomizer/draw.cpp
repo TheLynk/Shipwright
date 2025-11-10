@@ -1123,6 +1123,22 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    gSPGrayscale(POLY_OPA_DISP++, true);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+    gSPGrayscale(POLY_OPA_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
     Vec3f pos;
     OPEN_DISPS(play->state.gfxCtx);

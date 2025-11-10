@@ -7382,7 +7382,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) &&
                    !(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) &&
                    !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
-            if (this->getItemId != GI_NONE) {
+            if (GameInteractor_Should(VB_OPEN_CHEST, this->getItemId != GI_NONE)) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(-this->getItemId);

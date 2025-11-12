@@ -34,6 +34,7 @@ extern "C" {
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+#include "objects/object_vase/object_vase.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -1105,6 +1106,23 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(-30, -20, 0, MTXMODE_APPLY);
+    Matrix_Scale(0.03f, 0.01f, 0.03f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gUnusedVaseDL);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0, 600, 900, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gUnusedVaseDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

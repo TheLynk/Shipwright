@@ -6306,11 +6306,11 @@ void Player_SetupRoll(Player* this, PlayState* play) {
     }
 
     else {
-    Player_SetupAction(play, this, Player_Action_Roll, 0);
-    LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
-                                   GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
-                                   1.25f * sWaterSpeedFactor);
-    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
+        Player_SetupAction(play, this, Player_Action_Roll, 0);
+        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
+                                       GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
+                                       1.25f * sWaterSpeedFactor);
+        gSaveContext.ship.stats.count[COUNT_ROLLS]++;
     }
 }
 

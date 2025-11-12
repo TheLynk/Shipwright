@@ -379,7 +379,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_EPONA:
             return IsAdult && CanUse(RG_EPONAS_SONG);
         case RG_ROLL:
-            return IsChild && IsAdult; // possible crash ici
+            return IsChild && IsAdult;
 
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:

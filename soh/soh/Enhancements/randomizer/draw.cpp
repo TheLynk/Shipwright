@@ -1112,16 +1112,16 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
 
 extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
-
+    
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(-30, -20, 0, MTXMODE_APPLY);
-    Matrix_Scale(0.03f, 0.01f, 0.03f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gUnusedVaseDL);
-
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(0, 600, 900, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    
+    // Objet central qui roule - réduit de 20% avec centrage ajusté
+    Matrix_Translate(21.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_RotateZ(1.57f, MTXMODE_APPLY);
+    Matrix_RotateY(play->gameplayFrames * 0.15f, MTXMODE_APPLY);
+    Matrix_Scale(0.018f, 0.018f, 0.018f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gUnusedVaseDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

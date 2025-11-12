@@ -1110,11 +1110,11 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
+extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
-    
+
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    
+
     // Objet central qui roule - réduit de 20% avec centrage ajusté
     Matrix_Translate(21.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     Matrix_RotateZ(1.57f, MTXMODE_APPLY);

@@ -353,7 +353,7 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
     itemTable[RG_ROLL] =                                Item(RG_ROLL,                             Text{ "Roll", "TODO", "TODO" },                                                                                                      ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_NONE,                         RHT_ROLL,                              RG_ROLL,                              OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
-    itemTable[RG_ROLL].SetCustomDrawFunc(Randomizer_DrawKneePads);
+    itemTable[RG_ROLL].SetCustomDrawFunc(Randomizer_DrawRollAbility);
 
     itemTable[RG_BOMBCHU_BAG] =                         Item(RG_BOMBCHU_BAG,                      Text{ "Bombchu Bag", "Sac de Missiles Teigneux", "Krabbelminentasche" },                                                             ITEMTYPE_ITEM,              RG_BOMBCHU_BAG,       true,  LOGIC_BOMBCHUS,                     RHT_BOMBCHU_BAG,                       RG_BOMBCHU_BAG,                       OBJECT_GI_BOMB_2,       GID_BOMBCHU,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOMBCHU_BAG].SetCustomDrawFunc(Randomizer_DrawBombchuBag);

@@ -378,9 +378,6 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
         case RG_EPONA:
             return IsAdult && CanUse(RG_EPONAS_SONG);
-        case RG_ROLL:
-            return HasItem(RG_ROLL);
-
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
             return Get(LOGIC_BUG_SHRUB) || Get(LOGIC_WANDERING_BUGS) || Get(LOGIC_BUG_ROCK) || Get(LOGIC_BUGS_ACCESS);

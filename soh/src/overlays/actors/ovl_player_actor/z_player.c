@@ -6301,11 +6301,7 @@ s32 func_8083BBA0(Player* this, PlayState* play) {
 }
 
 void Player_SetupRoll(Player* this, PlayState* play) {
-    if (!GameInteractor_Should(VB_ROLL, true)) {
-        return false;
-    }
-
-    else {
+    if (GameInteractor_Should(VB_ROLL, true)) {
         Player_SetupAction(play, this, Player_Action_Roll, 0);
         LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
                                        GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),

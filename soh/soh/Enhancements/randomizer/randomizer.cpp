@@ -5814,7 +5814,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
         GIMESSAGE(RG_ROLL, ITEM_SCALE_SILVER, "You got the %rAbility do a roll%w!",
                   "Du hast die Fähigkeit, %reinen Wurf&zu machen%w!",
-                  "Vous obtenez la %rCapacité à faire&des roulade%w!"),
+                  "Vous obtenez la %rCapacité de faire&des roulades%w!"),
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),

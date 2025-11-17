@@ -28,12 +28,14 @@ extern "C" {
 #include "objects/object_bv/object_bv.h"
 #include "objects/object_gnd/object_gnd.h"
 #include "objects/object_fd/object_fd.h"
+#include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
 #include "objects/object_sst/object_sst.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -112,6 +114,17 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBeanSprout(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.3f, 0.3f, 0.3f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMagicBeanSeedlingDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1105,6 +1118,22 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    gSPGrayscale(POLY_OPA_DISP++, true);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

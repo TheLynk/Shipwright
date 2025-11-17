@@ -863,6 +863,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
+        case VB_OPEN_CHEST:
+            *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            break;
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
                       RAND_GET_OPTION(RSK_FOREST) != RO_CLOSED_FOREST_ON;
@@ -2171,6 +2174,49 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     ) {
         Actor_Kill(actor);
         return;
+    }
+
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BEAN_SOULS)) {
+        if (actor->id == ACTOR_OBJ_BEAN) {
+            RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
+            switch (gPlayState->sceneNum) {
+                case SCENE_DEATH_MOUNTAIN_CRATER:
+                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
+                    break;
+                case SCENE_DEATH_MOUNTAIN_TRAIL:
+                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL;
+                    break;
+                case SCENE_DESERT_COLOSSUS:
+                    currentBeanSoulRandInf = RAND_INF_DESERT_COLOSSUS_BEAN_SOUL;
+                    break;
+                case SCENE_GERUDO_VALLEY:
+                    currentBeanSoulRandInf = RAND_INF_GERUDO_VALLEY_BEAN_SOUL;
+                    break;
+                case SCENE_GRAVEYARD:
+                    currentBeanSoulRandInf = RAND_INF_GRAVEYARD_BEAN_SOUL;
+                    break;
+                case SCENE_KOKIRI_FOREST:
+                    currentBeanSoulRandInf = RAND_INF_KOKIRI_FOREST_BEAN_SOUL;
+                    break;
+                case SCENE_LAKE_HYLIA:
+                    currentBeanSoulRandInf = RAND_INF_LAKE_HYLIA_BEAN_SOUL;
+                    break;
+                case SCENE_LOST_WOODS:
+                    if ((actor->params & 0x3F) == 4) {
+                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL;
+                    } else {
+                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BEAN_SOUL;
+                    }
+                    break;
+                case SCENE_ZORAS_RIVER:
+                    currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
+                    break;
+            }
+            if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
+                Actor_Kill(actor);
+                return;
+            }
+        }
     }
 
     // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting

@@ -1964,6 +1964,8 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("a gold fragment", /*german*/"ein Goldfragment", /*french*/"un fragment d'or")});
                                                   // /*spanish*/un fragmento dorado
 
+    hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", TODO_TRANSLATE, TODO_TRANSLATE));
+
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),
                                              {
                                              CustomMessage("something webbed", /*german*/"etwas Verwobenes", /*french*/"un truc entoilé")
@@ -2099,6 +2101,8 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
+
+    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/"!!!", /*french*/"!!!"));
 
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));

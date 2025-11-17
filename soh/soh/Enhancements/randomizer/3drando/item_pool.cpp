@@ -578,6 +578,10 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_SCALE);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+        AddItemToMainPool(RG_OPEN_CHEST);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
         // 32 total beehive locations
         AddItemToPool(PendingJunkPool, RG_RED_RUPEE, 23);
@@ -597,6 +601,10 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
         PlaceItemsForType(RCTYPE_NLTREE, treesActive, false);
     }
+
+    // Shuffle Bushes
+    bool bushesActive = (bool)ctx->GetOption(RSK_SHUFFLE_BUSHES);
+    PlaceItemsForType(RCTYPE_BUSH, bushesActive, false);
 
     // Shuffle Crates
     bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
@@ -743,6 +751,19 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_HUGE_RUPEE);
     } else {
         ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_HUGE_RUPEE, false, true);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
+        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
+        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
+        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
+        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
+        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {

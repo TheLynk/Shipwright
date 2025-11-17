@@ -134,6 +134,17 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_OCARINA_C_RIGHT_BUTTON:
         case RG_OCARINA_C_DOWN_BUTTON:
         case RG_OCARINA_C_UP_BUTTON:
+            // Bean Souls
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
+        case RG_GRAVEYARD_BEAN_SOUL:
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
+        case RG_LAKE_HYLIA_BEAN_SOUL:
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+        case RG_LOST_WOODS_BEAN_SOUL:
+        case RG_ZORAS_RIVER_BEAN_SOUL:
             // Boss Souls
         case RG_GOHMA_SOUL:
         case RG_KING_DODONGO_SOUL:
@@ -215,6 +226,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_WALLET) >= 2;
         case RG_TYCOON_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 3;
+        case RG_OPEN_CHEST:
+            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
             // Scales
         case RG_BRONZE_SCALE:
             return CheckRandoInf(RAND_INF_CAN_SWIM);
@@ -1175,8 +1188,8 @@ bool Logic::BlastOrSmash() {
     return HasExplosives() || CanUse(RG_MEGATON_HAMMER);
 }
 
-bool Logic::CanSpawnSoilSkull() {
-    return IsChild && CanUse(RG_BOTTLE_WITH_BUGS);
+bool Logic::CanSpawnSoilSkull(RandomizerGet bean) {
+    return IsChild && CanUse(RG_BOTTLE_WITH_BUGS) && HasItem(bean);
 }
 
 bool Logic::CanReflectNuts() {
@@ -1404,6 +1417,16 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
     { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, RAND_INF_DESERT_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, RAND_INF_GERUDO_VALLEY_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, RAND_INF_GRAVEYARD_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, RAND_INF_KOKIRI_FOREST_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, RAND_INF_LAKE_HYLIA_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, RAND_INF_LOST_WOODS_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, RAND_INF_ZORAS_RIVER_BEAN_SOUL },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -1573,6 +1596,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_EYEDROPS:
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
+                    break;
+                case RG_OPEN_CHEST:
+                    SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
                     break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
@@ -1770,6 +1796,16 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_RUTOS_LETTER:
                     SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
                     break;
+                case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+                case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+                case RG_DESERT_COLOSSUS_BEAN_SOUL:
+                case RG_GERUDO_VALLEY_BEAN_SOUL:
+                case RG_GRAVEYARD_BEAN_SOUL:
+                case RG_KOKIRI_FOREST_BEAN_SOUL:
+                case RG_LAKE_HYLIA_BEAN_SOUL:
+                case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+                case RG_LOST_WOODS_BEAN_SOUL:
+                case RG_ZORAS_RIVER_BEAN_SOUL:
                 case RG_GOHMA_SOUL:
                 case RG_KING_DODONGO_SOUL:
                 case RG_BARINADE_SOUL:
@@ -2311,6 +2347,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
         }
 
+        // If we're not shuffling open chest, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
+        }
+
         // If we're not shuffling child's wallet, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
             SetRandoInf(RAND_INF_HAS_WALLET, true);
@@ -2319,6 +2360,19 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling fishing pole, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE).Is(false)) {
             SetRandoInf(RAND_INF_FISHING_POLE_FOUND, true);
+        }
+
+        if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS).Is(false)) {
+            SetRandoInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_GRAVEYARD_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LOST_WOODS_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL, true);
         }
 
         // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in

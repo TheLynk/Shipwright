@@ -372,6 +372,9 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE] =                        Item(RG_BRONZE_SCALE,                     Text{ "Bronze Scale", "Écaille de Bronze", "Bronzene Schuppe" },                                                                     ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_NONE,                         RHT_BRONZE_SCALE,                      RG_BRONZE_SCALE,                      OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
+    itemTable[RG_ROLL] =                                Item(RG_ROLL,                             Text{ "Roll", "Rouler", "Rolle" },                                                                                                      ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_NONE,                         RHT_ROLL,                              RG_ROLL,                              OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+    itemTable[RG_ROLL].SetCustomDrawFunc(Randomizer_DrawRollAbility);
+
     itemTable[RG_OPEN_CHEST] =                          Item(RG_OPEN_CHEST,                       Text{ "Open Chests", "!!!", "!!!" },                                                                                                 ITEMTYPE_ITEM,              GI_KEY_SMALL,         true,  LOGIC_NONE,                         RHT_OPEN_CHEST,                        RG_OPEN_CHEST,                        OBJECT_GI_KEY,          GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_OPEN_CHEST].SetCustomDrawFunc(Randomizer_DrawOpenChest);
 

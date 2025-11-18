@@ -214,6 +214,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_OCARINA, "Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
+    OPT_BOOL(RSK_SHUFFLE_ROLL, "Shuffle Roll", CVAR_RANDOMIZER_SETTING("ShuffleRoll"), mOptionDescriptions[RSK_SHUFFLE_ROLL]);
     OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
@@ -1266,6 +1267,7 @@ void Settings::CreateOptions() {
                                                                        &mOptions[RSK_SHUFFLE_OCARINA],
                                                                        &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                        &mOptions[RSK_SHUFFLE_SWIM],
+                                                                       &mOptions[RSK_SHUFFLE_ROLL],
                                                                        &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                                                        &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                                                        &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
@@ -1573,6 +1575,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OCARINA],
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                             &mOptions[RSK_SHUFFLE_SWIM],
+                                            &mOptions[RSK_SHUFFLE_ROLL],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                             &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],

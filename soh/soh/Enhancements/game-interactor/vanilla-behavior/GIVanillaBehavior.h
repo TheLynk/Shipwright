@@ -324,6 +324,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_ROLL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_CRAWL_SPEED_ENTER,
 
     // #### `result`

@@ -578,6 +578,10 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_SCALE);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
+        AddItemToMainPool(RG_ROLL);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
         AddItemToMainPool(RG_OPEN_CHEST);
     }

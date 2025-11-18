@@ -235,6 +235,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+        case RG_ROLL:
+            return CheckRandoInf(RAND_INF_CAN_ROLL);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
         case RG_COJIRO:
@@ -1169,7 +1171,7 @@ bool Logic::CanBreakPots() {
 }
 
 bool Logic::CanBreakCrates() {
-    return true;
+    return HasItem(RG_ROLL) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
 }
 
 bool Logic::CanBreakSmallCrates() {
@@ -1177,7 +1179,7 @@ bool Logic::CanBreakSmallCrates() {
 }
 
 bool Logic::CanBonkTrees() {
-    return true;
+    return HasItem(RG_ROLL);
 }
 
 bool Logic::HasExplosives() {
@@ -1596,6 +1598,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_EYEDROPS:
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
+                    break;
+                case RG_ROLL:
+                    SetRandoInf(RAND_INF_CAN_ROLL, state);
                     break;
                 case RG_OPEN_CHEST:
                     SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
@@ -2350,6 +2355,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling open chest, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
             SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
+        }
+
+        // If we're not shuffling roll, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_ROLL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_ROLL, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

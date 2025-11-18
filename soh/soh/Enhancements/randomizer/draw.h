@@ -22,6 +22,7 @@ void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry);

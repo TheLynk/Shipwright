@@ -446,7 +446,7 @@ void DrawGameplayStatsHeader() {
     // if tag is empty (not a release build)
     if (gGitCommitTag[0] == 0) {
         GameplayStatsRow("Git Branch:", (char*)gGitBranch);
-        GameplayStatsRow("Version : 5.0 | Git Commit Hash:", (char*)gGitCommitHash);
+        GameplayStatsRow("Version : 6.0 | Git Commit Hash:", (char*)gGitCommitHash);
     } else {
         GameplayStatsRow("Build Version:", (char*)gBuildVersion);
     }

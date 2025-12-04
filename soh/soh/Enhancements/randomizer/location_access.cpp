@@ -518,17 +518,14 @@ bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
     if (!logic->HasItem(bean)) {
         // Never available without soul
         return false;
-    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) &&
-               !ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) &&
-               !ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS)) {
         // All planted when skip enabled & bean pack not shuffled
-        return true;
-    } else if (logic->GetAmmo(ITEM_BEAN) <= 0) {
-        // Need bean pack
-        return false;
+        return (!ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) &&
+                !ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) ||
+               logic->GetAmmo(ITEM_BEAN) > 0;
     } else {
         // BothAgesCheck necessary when planting
-        return ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck();
+        return logic->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
     }
 }
 
@@ -699,6 +696,11 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
 }
 
 bool BeanPlanted(const RandomizerGet bean) {
+    auto logic = Rando::Context::GetInstance()->GetLogic();
+    // flag irrelevant if plant won't spawn
+    if (!logic->HasItem(bean)) {
+        return false;
+    }
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
     // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
@@ -756,7 +758,7 @@ bool BeanPlanted(const RandomizerGet bean) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
+        swch = logic->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }

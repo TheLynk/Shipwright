@@ -83,6 +83,9 @@ bool showDungeonGrass;
 bool showOverworldCrates;
 bool showDungeonCrates;
 bool showTrees;
+bool showRocks;
+bool showOverworldBoulders;
+bool showDungeonBoulders;
 bool showBushes;
 bool showFrogSongRupees;
 bool showFountainFairies;
@@ -1494,7 +1497,29 @@ void LoadSettings() {
                 showDungeonCrates = false;
                 break;
         }
+
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
+
+
+        showRocks = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ROCKS);
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOULDERS)) {
+            case RO_SHUFFLE_BOULDERS_ALL:
+                showOverworldBoulders = true;
+                showDungeonBoulders = true;
+                break;
+            case RO_SHUFFLE_BOULDERS_OVERWORLD:
+                showOverworldBoulders = true;
+                showDungeonBoulders = false;
+                break;
+            case RO_SHUFFLE_BOULDERS_DUNGEONS:
+                showOverworldBoulders = false;
+                showDungeonBoulders = true;
+                break;
+            default:
+                showOverworldBoulders = false;
+                showDungeonBoulders = false;
+                break;
+        }
         showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
     } else { // Vanilla
         showOverworldTokens = true;
@@ -1506,6 +1531,9 @@ void LoadSettings() {
         showOverworldCrates = false;
         showDungeonCrates = false;
         showTrees = false;
+        showRocks = false;
+        showOverworldBoulders = false;
+        showDungeonBoulders = false;
         showBushes = false;
     }
 
@@ -1623,6 +1651,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
                  OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
+               (loc->GetRCType() != RCTYPE_ROCK || showRocks) &&
+               (loc->GetRCType() != RCTYPE_BOULDER ||
+                (showOverworldBoulders && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonBoulders && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&

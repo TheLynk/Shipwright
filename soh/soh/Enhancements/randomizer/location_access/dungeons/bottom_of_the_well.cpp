@@ -231,6 +231,12 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7, logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8, logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9, logic->CanCutShrubs()),
+        LOCATION(RC_BOTW_BOULDER_1,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_2,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_3,                                   logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT))),
+        LOCATION(RC_BOTW_BOULDER_4,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_5,                                   logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_6,                                   logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_BOTW_B3_OOZE, []{return Here(RR_BOTW_B3_BLOCKED_GRASS, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}),
@@ -239,6 +245,12 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_B3_CHEST_AREA] = Region("Bottom of the Well B3 Chest Area", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTW_BOULDER_1,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_2,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_3,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_4,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_5,               logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_6,               logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Exits
         Entrance(RR_BOTW_B3_OOZE, []{return Here(RR_BOTW_B3_CHEST_AREA, []{return logic->BlastOrSmash();});}),
@@ -278,6 +290,9 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
+        LOCATION(RC_BOTW_MQ_BOULDER_1, logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_2, logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_3, logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_BOTW_ENTRYWAY,             []{return logic->IsChild/*CanCrawl() && CanClimb()*/;}),

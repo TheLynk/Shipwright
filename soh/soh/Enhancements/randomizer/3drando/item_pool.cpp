@@ -631,6 +631,17 @@ void GenerateItemPool() {
         PlaceItemsForType(RCTYPE_NLCRATE, overworldCratesActive, dungeonCratesActive);
     }
 
+    // Shuffle Rocks
+    bool rocksActive = ctx->GetOption(RSK_SHUFFLE_ROCKS).Get();
+    PlaceItemsForType(RCTYPE_ROCK, rocksActive, rocksActive);
+
+    // Shuffle Boulders
+    bool overworldBouldersActive = ctx->GetOption(RSK_SHUFFLE_BOULDERS).Is(RO_SHUFFLE_BOULDERS_OVERWORLD) ||
+                                   ctx->GetOption(RSK_SHUFFLE_BOULDERS).Is(RO_SHUFFLE_BOULDERS_ALL);
+    bool dungeonBouldersActive = ctx->GetOption(RSK_SHUFFLE_BOULDERS).Is(RO_SHUFFLE_BOULDERS_DUNGEONS) ||
+                                 ctx->GetOption(RSK_SHUFFLE_BOULDERS).Is(RO_SHUFFLE_BOULDERS_ALL);
+    PlaceItemsForType(RCTYPE_BOULDER, overworldBouldersActive, dungeonBouldersActive);
+
     auto fsMode = ctx->GetOption(RSK_FISHSANITY);
     if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
         if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {

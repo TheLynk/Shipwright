@@ -585,6 +585,23 @@ Rando::Location Rando::Location::NLTree(RandomizerCheck rc, RandomizerCheckQuest
              false,  collectionCheck };
 }
 
+Rando::Location Rando::Location::Rock(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                      RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                                      SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_ROCK,           area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::Boulder(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                         SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_BOULDER,        area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_BOMBS_5,
+             false,  collectionCheck };
+}
+
 Rando::Location Rando::Location::Bush(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                       SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                                       RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,

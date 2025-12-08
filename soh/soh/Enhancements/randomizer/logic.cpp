@@ -52,7 +52,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckInventory(ITEM_ARROW_ICE, true);
         case RG_LIGHT_ARROWS:
             return CheckInventory(ITEM_ARROW_LIGHT, true);
-        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
@@ -347,7 +347,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_BOMB_BAG:
             return true; // AmmoCanDrop || Get(LOGIC_BUY_BOMB)
-        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
@@ -1144,7 +1144,8 @@ bool Logic::CanAttack() {
 }
 
 bool Logic::BombchusEnabled() {
-    return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+    return ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE) ? CheckInventory(ITEM_BOMBCHU, true)
+                                                                      : HasItem(RG_BOMB_BAG);
 }
 
 // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -1717,7 +1718,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     }
                     SetUpgrade(UPG_STICKS, newLevel);
                 } break;
-                case RG_PROGRESSIVE_BOMBCHUS: {
+                case RG_PROGRESSIVE_BOMBCHU_BAG: {
                     auto realGI = item.GetGIEntry();
                     if (realGI->itemId == RG_BOMBCHU_INF && realGI->modIndex == MOD_RANDOMIZER) {
                         SetRandoInf(RAND_INF_HAS_INFINITE_BOMBCHUS, true);

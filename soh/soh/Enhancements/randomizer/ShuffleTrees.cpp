@@ -65,7 +65,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
 
         // If they have bombchus, don't consider the bombchu item major
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+            ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
              (treeItem.modIndex == MOD_NONE &&
               (treeItem.getItemId == GI_BOMBCHUS_5 || treeItem.getItemId == GI_BOMBCHUS_10 ||
                treeItem.getItemId == GI_BOMBCHUS_20)))) {

@@ -129,6 +129,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
         }
     }
     ShipInit::InitAll();
+    OTRGlobals::Instance->ScaleImGui();
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
@@ -251,6 +252,7 @@ void SavePreset(std::string& presetName) {
         fs::create_directory(presetFolder);
     }
     presets[presetName].presetValues["presetName"] = presetName;
+    presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
     std::ofstream file(
         fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);

@@ -15,7 +15,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
-        LOCATION(RC_KAK_ANJU_AS_CHILD,                     logic->IsChild && logic->AtDay),
+        LOCATION(RC_KAK_ANJU_AS_CHILD,                     logic->IsChild && logic->AtDay && logic->CanBreakCrates()), //Need Break one crate for get cucoo
         LOCATION(RC_KAK_ANJU_AS_ADULT,                     logic->IsAdult && logic->AtDay),
         LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->Get(LOGIC_WAKE_UP_ADULT_TALON))),
         //Can kill lower kak skulls with pots

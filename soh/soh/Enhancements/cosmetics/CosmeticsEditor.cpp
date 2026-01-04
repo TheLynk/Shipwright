@@ -100,7 +100,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
 };
 
 static const std::unordered_map<int32_t, const char*> cosmeticsRandomizerModes = {
-    { RANDOMIZE_OFF, "Disabled" },
+    { RANDOMIZE_OFF, "Manual" },
     { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
     { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },
     { RANDOMIZE_ON_FILE_LOAD, "On File Load" },
@@ -2111,10 +2111,8 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
 void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ImVec4 randomColor;
 
-    if (!manual && IS_RANDO &&
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-        !manual && IS_RANDO &&
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+    if (!manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
+        !manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
         uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
                              cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
@@ -2409,7 +2407,7 @@ void CosmeticsEditorWindow::DrawElement() {
             .DefaultIndex(RANDOMIZE_OFF)
             .Color(THEME_COLOR)
             .Tooltip("Set when the cosmetics is automaticly randomized:\n"
-                     "- Disabled: No cosmetics are randomized\n"
+                     "- Manual: Manually randomize cosmetics by pressing the 'Randomize all' button\n"
                      "- On New Scene : Randomizes when you enter a new scene.\n"
                      "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
                      "- On File Load: Randomizes on File Load.\n"
@@ -2604,36 +2602,8 @@ void CosmeticsEditorWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
-void RegisterOnLoadGameHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD ||
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED) {
-
-            CosmeticsEditor_AutoRandomizeAll();
-        } else {
-            ApplyOrResetCustomGfxPatches();
-        }
-    });
-}
-
 void RegisterOnGameFrameUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
-}
-
-void Cosmetics_RegisterOnSceneInitHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
-            CosmeticsEditor_AutoRandomizeAll();
-        }
-    });
-}
-
-void CosmeticsEditorRegisterOnGenerationCompletionHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
-            CosmeticsEditor_AutoRandomizeAll();
-        }
-    });
 }
 
 void CosmeticsEditorWindow::InitElement() {
@@ -2713,13 +2683,25 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
 }
 
 void RegisterCosmeticHooks() {
-    COND_HOOK(OnSceneInit, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnNewScene"), 0),
-              [](s16 sceneNum) { CosmeticsEditor_RandomizeAll(); });
+    COND_HOOK(OnGenerationCompletion,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_RANDO_GEN_ONLY,
+              []() { CosmeticsEditor_AutoRandomizeAll(); });
 
-    COND_HOOK(OnGenerationCompletion, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0),
-              []() { CosmeticsEditor_RandomizeAll(); });
+    COND_HOOK(OnLoadGame, CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_OFF,
+              [](s32 fileNum) { ApplyOrResetCustomGfxPatches(); });
 
-    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) { ApplyOrResetCustomGfxPatches(); });
+    COND_HOOK(OnLoadGame,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_FILE_LOAD,
+              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+
+    COND_HOOK(OnLoadGame,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) ==
+                  RANDOMIZE_ON_FILE_LOAD_SEEDED,
+              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+
+    COND_HOOK(OnSceneInit,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_NEW_SCENE,
+              [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
 }
@@ -2739,7 +2721,6 @@ void RegisterCosmeticWidgets() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterCosmeticHooks, {
-                                                                CVAR_COSMETIC("RandomizeAllOnNewScene"),
-                                                                CVAR_COSMETIC("RandomizeAllOnRandoGen"),
+                                                                CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
                                                             });
 static RegisterMenuInitFunc menuInitFunc(RegisterCosmeticWidgets);

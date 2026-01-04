@@ -659,6 +659,30 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_CONTINUE_WAITING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2500,9 +2524,53 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_DEATHS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_HEARTS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    // - `s16`
+    // - `u8`
+    VB_FILE_SELECT_DRAW_QUEST_ITEMS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*Player`
     // - `*Color_RGB8`
     VB_APPLY_TUNIC_COLOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `uint16_t` (cursorSlot - promoted from `u16`)
+    // - `uint16_t` (cursorItem - promoted from `u16`)
+    VB_EQUIP_ITEM_TO_C_BUTTON,
 
 } GIVanillaBehavior;
 

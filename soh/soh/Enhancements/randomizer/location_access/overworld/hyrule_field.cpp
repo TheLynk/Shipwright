@@ -7,7 +7,7 @@ void RegionTable_Init_HyruleField() {
     // clang-format off
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", SCENE_HYRULE_FIELD, {
         //Events
-        EventAccess(LOGIC_BIG_POE_KILL,       []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_EPONA) || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
+        EventAccess(LOGIC_BIG_POE_KILL,       []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->SummonEpona() || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
         EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
@@ -193,12 +193,12 @@ void RegionTable_Init_HyruleField() {
         Entrance(RR_KAKARIKO_VILLAGE,       []{return true;}),
         Entrance(RR_ZR_FRONT,               []{return true;}),
         Entrance(RR_LON_LON_RANCH,          []{return true;}),
-        Entrance(RR_HF_SOUTHEAST_GROTTO,    []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_SOUTHEAST_GROTTO,    []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
         Entrance(RR_HF_OPEN_GROTTO,         []{return true;}),
         Entrance(RR_HF_INSIDE_FENCE_GROTTO, []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_HF_COW_GROTTO,          []{return (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto();}),
-        Entrance(RR_HF_NEAR_MARKET_GROTTO,  []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_HF_FAIRY_GROTTO,        []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_NEAR_MARKET_GROTTO,  []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_FAIRY_GROTTO,        []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
         Entrance(RR_HF_NEAR_KAK_GROTTO,     []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_HF_TEKTITE_GROTTO,      []{return logic->CanOpenBombGrotto();}),
     });
@@ -241,7 +241,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Region("HF Inside Fence Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku()),
+        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
         LOCATION(RC_HF_FENCE_GROTTO_STORMS_FAIRY,   logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
@@ -257,8 +257,8 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_COW_GROTTO_BEHIND_WEBS] = Region("HF Cow Grotto Behind Webs", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs();}),
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->CanCutShrubs();}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_HF_GS_COW_GROTTO,                     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -295,7 +295,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HF_FAIRY_GROTTO_FAIRY_1, true),

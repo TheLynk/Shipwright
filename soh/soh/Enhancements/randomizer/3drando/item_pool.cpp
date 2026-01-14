@@ -937,3 +937,4 @@ void GenerateItemPool() {
 
     assert(itemPool.size() == locCount);
 }
+}

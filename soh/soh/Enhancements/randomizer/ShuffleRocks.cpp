@@ -21,13 +21,12 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void DrawItemCircle(PlayState* play, float scale, RockIdentity rockIdentity) {
     GraphicsContext* __gfxCtx = play->state.gfxCtx;
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
     u8 r1 = 200, g1 = 200, b1 = 200, r2 = 100, g2 = 100, b2 = 100;
 
-    if ((csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) &&
-        (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+    if ((!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
         auto itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rockIdentity.randomizerCheck, true, GI_NONE);
         GetItemCategory getItemCategory = itemEntry.getItemCategory;
 

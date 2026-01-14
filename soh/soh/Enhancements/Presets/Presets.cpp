@@ -393,7 +393,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
-    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
+    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 4)) {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 400);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());

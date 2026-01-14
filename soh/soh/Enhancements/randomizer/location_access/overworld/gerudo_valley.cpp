@@ -89,6 +89,17 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_CRATE_BRIDGE_2, logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_GV_CRATE_BRIDGE_3, logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_GV_CRATE_BRIDGE_4, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_1,           logic->IsAdult),
+        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_2,           logic->IsAdult),
+        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_3,           logic->IsAdult),
+        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_4,           logic->IsAdult),
+        LOCATION(RC_GV_BOULDER_ACROSS_BRIDGE,          logic->IsAdult && logic->BlastOrSmash()),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_1, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_2, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_3, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_4, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_5, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_6, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,      []{return true;}),

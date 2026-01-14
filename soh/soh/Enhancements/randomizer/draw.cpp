@@ -1195,6 +1195,9 @@ extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemE
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
     gSPGrayscale(POLY_OPA_DISP++, false);
 
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 

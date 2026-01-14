@@ -342,7 +342,7 @@ typedef enum {
     // #### `args`
     // - None
     VB_ROLL,
-  
+
     // #### `result`
     // ```c
     // true

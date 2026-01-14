@@ -2603,6 +2603,8 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling roll, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_ROLL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_ROLL, true);
+        }
+
         // If we're not shuffling crawl, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CRAWL, true);

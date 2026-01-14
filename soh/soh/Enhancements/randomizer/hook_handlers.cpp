@@ -57,6 +57,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
+#include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "draw.h"
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
@@ -386,6 +387,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_HEALTH ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
                    // Treat small keys as junk if Skeleton Key is obtained.
                    (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
@@ -841,6 +843,8 @@ void RandomizerOnDialogMessageHandler() {
     }
 }
 
+extern "C" void func_80A5475C(EnHeishi2* CastleGuard, PlayState* play);
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -848,6 +852,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     switch (id) {
         case VB_ROLL:
             *should = !RAND_GET_OPTION(RSK_SHUFFLE_ROLL) || Flags_GetRandomizerInf(RAND_INF_CAN_ROLL);
+
+        case VB_CRAWL:
+            *should = !RAND_GET_OPTION(RSK_SHUFFLE_CRAWL) || Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
+
             break;
         case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
             s32 entranceIndex = va_arg(args, s32);
@@ -951,6 +959,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             } else if (RAND_GET_OPTION(RSK_SKIP_PLANTING_BEANS)) {
                 *should = gSaveContext.rupees >= 60;
             }
+            break;
+        }
+        case VB_CAN_BRIBE_HEISHI2: {
+            EnHeishi2* guard = va_arg(args, EnHeishi2*);
+            guard->actor.textId = 0x7072;
+            guard->unk_300 = TEXT_STATE_CHOICE;
+            guard->unk_30E = 1;
+            guard->actionFunc = func_80A5475C;
+            *should = false;
             break;
         }
         case VB_GIVE_ITEM_MASTER_SWORD:
@@ -2022,6 +2039,9 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             case SCENE_DEKU_TREE:
                 if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DEKU_TREE_MQ_TORCH_SWITCH)) {
                     Flags_SetSwitch(gPlayState, 0x27);
+                }
+                if (isVanilla) { // make falling platform respawn
+                    Flags_UnsetSwitch(gPlayState, 0x14);
                 }
                 break;
             case SCENE_DODONGOS_CAVERN:

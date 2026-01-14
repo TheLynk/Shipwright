@@ -258,6 +258,7 @@ void Settings::CreateOptionDescriptions() {
         "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
     mOptionDescriptions[RSK_SHUFFLE_ROLL] = "Shuffles the ability do a roll into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"
@@ -774,6 +775,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_ROCS_FEATHER] =
+        "Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. "
+        "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic.";
     mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
         "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =

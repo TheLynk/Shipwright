@@ -1,5 +1,4 @@
 #include "Presets.h"
-#include <variant>
 #include <string>
 #include <fstream>
 #include <ship/config/Config.h>
@@ -302,7 +301,7 @@ void DrawEditPresetPopup() {
         auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             if (saveSection[i]) {
-                for (int j = 0; j < blockInfo[i].sections.size(); j++) {
+                for (size_t j = 0; j < blockInfo[i].sections.size(); j++) {
                     presets[newPresetName].presetValues["blocks"][blockInfo[i].names[1]][blockInfo[i].sections[j]] =
                         config["CVars"][blockInfo[i].sections[j]];
                 }
@@ -371,7 +370,7 @@ void DrawEditPresetPopup() {
 }
 
 void PresetsCustomWidget(WidgetInfo& info) {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions(
                                             { { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
                                                 .disabledTooltip = "Disabled because of race lockout" } })
@@ -394,8 +393,8 @@ void PresetsCustomWidget(WidgetInfo& info) {
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
-    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 4)) {
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
+    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 400);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
         }

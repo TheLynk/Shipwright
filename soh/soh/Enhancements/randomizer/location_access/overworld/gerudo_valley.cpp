@@ -27,7 +27,8 @@ void RegionTable_Init_GerudoValley() {
         Entrance(RR_GV_UPPER_STREAM,  []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
         Entrance(RR_GV_CRATE_LEDGE,   []{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
-        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->CanJumpslash());}),
+        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS)) ||
+                                                ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->CanJumpslash());}),
         Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild;}), //can use cucco as child
     });
 
@@ -80,30 +81,19 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", SCENE_GERUDO_VALLEY, {}, {
         //Locations
-        LOCATION(RC_GV_CHEST,                          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_GV_TRADE_SAW,                      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
-        LOCATION(RC_GV_GS_BEHIND_TENT,                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_GV_GS_PILLAR,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_GV_CRATE_BRIDGE_1,                 logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_CRATE_BRIDGE_2,                 logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_CRATE_BRIDGE_3,                 logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_CRATE_BRIDGE_4,                 logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_1,           logic->IsAdult),
-        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_2,           logic->IsAdult),
-        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_3,           logic->IsAdult),
-        LOCATION(RC_GV_ROCK_ACROSS_BRIDGE_4,           logic->IsAdult),
-        LOCATION(RC_GV_BOULDER_ACROSS_BRIDGE,          logic->IsAdult && logic->BlastOrSmash()),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_1, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_2, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_3, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_4, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_5, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_GV_BRONZE_BOULDER_ACROSS_BRIDGE_6, logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GV_CHEST,          (logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)))) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
+        LOCATION(RC_GV_GS_BEHIND_TENT, logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_GS_PILLAR,      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_CRATE_BRIDGE_1, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_2, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_3, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_4, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,      []{return true;}),
         Entrance(RR_GV_UPPER_STREAM,   []{return true;}),
-        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS);}),
+        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS));}),
         Entrance(RR_GV_CARPENTER_TENT, []{return logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT);}),
         Entrance(RR_GV_STORMS_GROTTO,  []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
         Entrance(RR_GV_CRATE_LEDGE,    []{return (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)));}),

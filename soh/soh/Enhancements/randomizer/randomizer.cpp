@@ -67,6 +67,7 @@ const std::string Randomizer::triforcePieceMessageTableID = "RandomizerTriforceP
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
+const std::string Randomizer::RocsFeatherMessageTableID = "RandomizerRocsFeather";
 
 static const char* englishRupeeNames[188] = {
     "[P]",
@@ -982,7 +983,13 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_FARORES_WIND:
             return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_NAYRUS_LOVE:
-            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            if (!GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            } else {
+                return Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+            }
+        case RG_ROCS_FEATHER:
+            return Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 
         // Bottles
         case RG_EMPTY_BOTTLE:
@@ -4606,6 +4613,22 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
     return messageEntry;
 }
 
+void CreateRocsFeatherMessage() {
+    CustomMessage RocsFeatherMessage = {
+        { "You found %cRoc's Feather%w!", "You found %cRoc's Feather%w!", "You found %cRoc's Feather%w!" },
+    };
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::RocsFeatherMessageTableID);
+    customMessageManager->CreateMessage(Randomizer::RocsFeatherMessageTableID, 0, RocsFeatherMessage);
+}
+
+CustomMessage Randomizer::GetRocsFeatherMessage() {
+    CustomMessage messageEntry =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::RocsFeatherMessageTableID, 0);
+    messageEntry.Format();
+    return messageEntry;
+}
+
 void CreateNaviRandoMessages() {
     CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = {
 
@@ -5217,7 +5240,8 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 124> getItemMessages = { {
+    const std::array<GetItemMessage, 125> getItemMessages = { {
+
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5567,6 +5591,9 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rCapacité de faire&des roulades%w!"),
         GIMESSAGE(RG_OPEN_CHEST, ITEM_KEY_SMALL, "You got the %rAbility to Open Chests%w!", TODO_TRANSLATE,
                   TODO_TRANSLATE),
+        GIMESSAGE_NO_GERMAN(RG_CRAWL, ITEM_SCALE_SILVER, // TODO_TRANSLATE
+                            "You got the %rAbility to Crawl%w!&The power of kneecaps is yours!",
+                            "Vous obtenez la %rCapacité à Ramper%w!"),
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
@@ -5610,6 +5637,7 @@ void Randomizer::CreateCustomMessages() {
     } };
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
+    CreateRocsFeatherMessage();
     CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
     CreateFireTempleGoronMessages();
@@ -5732,6 +5760,7 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
     { RG_ROLL, RAND_INF_CAN_ROLL },
     { RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST },
+    { RG_CRAWL, RAND_INF_CAN_CRAWL },
     { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
     { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
     { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
@@ -6066,6 +6095,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
             AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
+            break;
+        case RG_ROCS_FEATHER:
+            Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+            }
             break;
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);

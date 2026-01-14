@@ -175,6 +175,7 @@ void GenerateItemPool() {
     AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
     AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4, 3, 3, 3);
     AddItemToPool(RG_DOUBLE_DEFENSE, 2, 1, 0, 0);
+    AddItemToPool(RG_BIGGORON_SWORD, 2, 1, 1, 0);
     bool isScrubs = ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL);
     AddFixedItemToPool(RG_DEKU_SHIELD, isScrubs ? 1 : 2);
     AddFixedItemToPool(RG_RECOVERY_HEART, isScrubs ? 6 : 11);
@@ -384,6 +385,10 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
+    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
+        AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
+    }
+
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale);
 
@@ -393,6 +398,9 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
         AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
+
+    if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
+        AddItemToPool(RG_CRAWL, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {

@@ -34,7 +34,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     (logic->HasExplosives() && (ctx->GetTrickOption(RT_LENS_BOTW) && logic->HasItem(RG_OPEN_CHEST)) || (logic->CanUse(RG_LENS_OF_TRUTH) && logic->HasItem(RG_OPEN_CHEST)))),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     (logic->HasExplosives() && logic->HasItem(RG_OPEN_CHEST) && ((ctx->GetTrickOption(RT_LENS_BOTW)) || (logic->CanUse(RG_LENS_OF_TRUTH))))),
         LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_1,          logic->CanBreakPots()),
@@ -143,7 +143,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_BEHIND_MOAT] = Region("Bottom of the Well Behind Moat", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         //Climb always needed in case water is lowered out of logic

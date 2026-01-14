@@ -66,7 +66,7 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,       (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,       (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,    (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()), // can skip blue fire with rang trick
         LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM, logic->HookshotOrBoomerang()),
     }, {
@@ -104,7 +104,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_FINAL_ROOM] = Region("Ice Cavern Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);})),
+        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS) && logic->HasItem(RG_OPEN_CHEST);})),
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,         AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);})), // rando enables this for child
     }, {
         //Exits
@@ -165,7 +165,7 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP);}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();})),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch() && logic->HasItem(RG_OPEN_CHEST);})),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {

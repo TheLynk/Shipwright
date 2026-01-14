@@ -130,7 +130,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EventAccess(LOGIC_JABU_WEST_TENTACLE, []{return logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
+        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST, logic->Get(LOGIC_JABU_WEST_TENTACLE) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, []{return true;}),
@@ -146,7 +146,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_FORK_NORTH_WEST] = Region("Jabu Jabus Belly Fork North West", SCENE_JABU_JABU, {}, {
         //Locations
         //ruto could theoretically clear this room, but it's hard because of the timer and she doesn't appear with you when you respawn after failing, which would force a savewarp
-        LOCATION(RC_JABU_JABUS_BELLY_COMPASS_CHEST, logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9)),
+        LOCATION(RC_JABU_JABUS_BELLY_COMPASS_CHEST, logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9);});}),
@@ -186,7 +186,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_FORK_EAST] = Region("Jabu Jabus Belly Fork East", SCENE_JABU_JABU, {}, {
         //Locations
         //We can kill the Stingers with ruto
-        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, logic->Get(LOGIC_JABU_RUTO_IN_1F) || logic->CanKillEnemy(RE_STINGER, ED_CLOSE, true, 4)),
+        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, logic->Get(LOGIC_JABU_RUTO_IN_1F) || logic->CanKillEnemy(RE_STINGER, ED_CLOSE, true, 4) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, []{return true;}),
@@ -330,8 +330,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_HOLES_BASEMENT] = Region("Jabu Jabus Belly MQ Holes Basement", SCENE_JABU_JABU, {}, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1,             logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2,             logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3,             logic->CanCutShrubs()),
@@ -353,9 +353,9 @@ void RegionTable_Init_JabuJabusBelly() {
         EventAccess(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS, []{return logic->CanKillEnemy(RE_LIZALFOS);}),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, true),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,          logic->CanKillEnemy(RE_LIZALFOS)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,  (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,          logic->CanKillEnemy(RE_LIZALFOS) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,  ((logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanUse(RG_BOOMERANG))) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_1,         logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_2,         logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_BOOMERANG_GRASS, logic->CanCutShrubs()),

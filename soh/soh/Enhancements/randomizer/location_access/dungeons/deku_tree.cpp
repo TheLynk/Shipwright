@@ -313,7 +313,7 @@ void RegionTable_Init_DekuTree() {
         EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_BASEMENT_CHEST,         logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_DEKU_TREE_MQ_BASEMENT_CHEST,         (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_3, logic->CanCutShrubs()),

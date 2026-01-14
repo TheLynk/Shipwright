@@ -76,7 +76,7 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH)),
+        LOCATION(RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_FOREST_TEMPLE_LOWER_STALFOS_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_LOWER_STALFOS_POT_2, logic->CanBreakPots()),
     }, {
@@ -153,7 +153,7 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return logic->ScarecrowsSong();}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, true),
+        LOCATION(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,           []{return true;}),
@@ -234,7 +234,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MIDDLE_BLOCK_PUSH_ROOM] = Region("Forest Temple Middle Block Push Room", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, logic->CanHitEyeTargets()),
+        LOCATION(RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, logic->CanHitEyeTargets() && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_LOWER_BLOCK_PUSH_ROOM,            []{return true;}),
@@ -288,7 +288,7 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3)),
+        LOCATION(RC_FOREST_TEMPLE_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_2, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_3, logic->CanBreakPots()),
@@ -338,7 +338,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_FALLING_ROOM] = Region("Forest Temple Falling Room", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, true),
+        LOCATION(RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_SCARECROW_LEDGE, []{return true;}),
@@ -389,7 +389,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_TREES] = Region("Forest Temple MQ Trees", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, logic->CanPassEnemy(RE_BIG_SKULLTULA, ED_SHORT_JUMPSLASH, false) || logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, (logic->CanPassEnemy(RE_BIG_SKULLTULA, ED_SHORT_JUMPSLASH, false) || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_ENTRYWAY,                   []{return true;}),
@@ -536,7 +536,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_REDEAD_ROOM] = Region("Forest Temple MQ Redead Room", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, logic->CanKillEnemy(RE_REDEAD)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, logic->CanKillEnemy(RE_REDEAD) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);});}),
@@ -588,7 +588,7 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_FOREST_DRAINED_WELL, []{return logic->CanHitEyeTargets();}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 (logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         //implies logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),

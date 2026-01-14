@@ -319,7 +319,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_OUTSIDE_POES_ROOM] = Region("Dodongos Cavern MQ Outside Poes Room", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Events
         Entrance(RR_DODONGOS_CAVERN_MQ_LOBBY,     []{return true;}),
@@ -604,7 +604,7 @@ void RegionTable_Init_DodongosCavern() {
     });
 
     areaTable[RR_DODONGOS_CAVERN_MQ_BACK_POE_ROOM] = Region("Dodongos Cavern MQ Back Poe Room", SCENE_DODONGOS_CAVERN, {}, {
-        LOCATION(RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, true), //pulling the grave isn't required, as you can open the chest through it
+        LOCATION(RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, logic->HasItem(RG_OPEN_CHEST)), //pulling the grave isn't required, as you can open the chest through it
         LOCATION(RC_DODONGOS_CAVERN_MQ_BACKROOM_POT_1,    logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BACKROOM_POT_2,    logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BACK_POE_GRASS,    logic->CanCutShrubs()),

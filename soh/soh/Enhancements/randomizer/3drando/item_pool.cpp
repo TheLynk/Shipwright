@@ -388,11 +388,11 @@ void GenerateItemPool() {
     AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale);
 
     if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
-        AddItemToMainPool(RG_ROLL);
+        AddItemToPool(RG_ROLL, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
-        AddItemToMainPool(RG_OPEN_CHEST);
+        AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {

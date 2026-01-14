@@ -945,17 +945,6 @@ extern "C" void DrawGanon(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawBeanSprout(PlayState* play, GetItemEntry* getItemEntry) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(0.3f, 0.3f, 0.3f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMagicBeanSeedlingDL);
-
-    CLOSE_DISPS(play->state.gfxCtx);
-}
-
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
     s16 slot;
     if (getItemEntry->getItemId != RG_ICE_TRAP) {

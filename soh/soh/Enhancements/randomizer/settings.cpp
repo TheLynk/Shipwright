@@ -2310,7 +2310,6 @@ void Settings::CreateOptions() {
                                                                      WidgetContainerType::TABLE);
     mOptionGroups[RSG_MENU_SECTION_BASIC_SHUFFLES] =
         OptionGroup::SubGroup("Shuffle Items",
-                                                                       &mOptions[RSK_SHUFFLE_SWIM],
                               {
                                   &mOptions[RSK_SHUFFLE_SONGS],
                                   &mOptions[RSK_SHUFFLE_TOKENS],
@@ -2392,6 +2391,7 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
                                                                                  &mOptions[RSK_SHUFFLE_CRAWL],
+                                                                                 &mOptions[RSK_SHUFFLE_ROLL],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                                                                  &mOptions[RSK_ROCS_FEATHER],
                                                                                  &mOptions[RSK_BOMBCHU_BAG],

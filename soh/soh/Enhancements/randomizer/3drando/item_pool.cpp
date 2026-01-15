@@ -397,7 +397,7 @@ void GenerateItemPool() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
-        AddItemToMainPool(RG_ROLL);
+        AddItemToPool(RG_ROLL, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {

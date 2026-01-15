@@ -35,7 +35,6 @@ extern "C" {
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
 #include "objects/object_gi_shield_1/object_gi_shield_1.h"
-#include "objects/object_vase/object_vase.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "roll_animation_data.h"
 
@@ -1171,16 +1170,16 @@ extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getIte
                            ROLL_ANIMATION_LIMBS);
     }
 
-    // Animation manuelle avec les frames capturées
+    // Manual animation with captured frames
     if (lastUpdate != play->state.frames) {
         lastUpdate = play->state.frames;
 
-        // Avance d'une frame toutes les 2 frames de jeu
+        // Advances one frame every 2 frames of play
         if ((play->state.frames % 2) == 0) {
             currentFrame = (currentFrame + 1) % ROLL_ANIMATION_FRAMES;
         }
 
-        // Copie les données de la frame actuelle
+        // Copies data from current frame
         for (int i = 0; i < ROLL_ANIMATION_LIMBS; i++) {
             jointTable[i] = rollAnimationData[currentFrame][i];
         }

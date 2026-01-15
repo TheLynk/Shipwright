@@ -6,6 +6,7 @@
 // roll et dans cet exemple je l'avais mis temporairement dans le fichier Draw.cpp et j'appelais la fonction au moment
 // que Link fessait une roulade
 
+/*
 #define NUM_FRAMES_TO_CAPTURE 10
 static Vec3s capturedRollFrames[NUM_FRAMES_TO_CAPTURE][LIMB_COUNT_LINK];
 static int captureFrameCount = 0;
@@ -53,3 +54,4 @@ extern "C" void CaptureRollAnimation(PlayState* play) {
         }
     }
 }
+*/

@@ -1,10 +1,5 @@
-// Animation capture tool | OUTIL DE CAPTURE
-// I provide here the code which allowed me to have all the data for the roll animation for my Shuffle Roll model
-// following the request of Serprex
-
-// and in this example I had temporarily put it in the Draw.cpp file and I called the function when Link performed a
-// roll et dans cet exemple je l'avais mis temporairement dans le fichier Draw.cpp et j'appelais la fonction au moment
-// que Link fessait une roulade
+// I provide here the code which allowed me to have all the data for the roll animation for roll_animation_data.h
+// I had temporarily put it in the Draw.cpp file and I called the function when Link performed a roll
 
 /*
 #define NUM_FRAMES_TO_CAPTURE 10

@@ -120,6 +120,31 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckQuestItem(RandoGetToQuestItem.at(itemName));
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
+            // Masks
+        case RG_SKULL_MASK:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return Get(LOGIC_BORROW_SKULL_MASK);
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
+                default:
+                    assert(false);
+                    return false;
+            }
+        case RG_MASK_OF_TRUTH:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return Get(LOGIC_BORROW_RIGHT_MASKS);
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+                default:
+                    assert(false);
+                    return false;
+            }
         case RG_FISHING_POLE:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
@@ -229,6 +254,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 2;
         case RG_CRAWL:
             return CheckRandoInf(RAND_INF_CAN_CRAWL);
+        case RG_OPEN_CHEST:
+            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
         case RG_COJIRO:
@@ -347,6 +374,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsChild;
         case RG_MAGIC_BEAN:
             return IsChild;
+        case RG_SKULL_MASK:
+        case RG_MASK_OF_TRUTH:
+            return IsChild;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -462,7 +492,8 @@ bool Logic::CanMiddairGroundJump(bool hasBombflower) {
 }
 
 bool Logic::CanOpenUnderwaterChest() {
-    return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
+    return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT) &&
+           HasItem(RG_OPEN_CHEST);
 }
 
 uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
@@ -970,7 +1001,7 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity
         case RE_KEESE:
         case RE_FIRE_KEESE:
         case RE_GUAY:
-            return CanUse(RG_NUTS);
+            return CanUse(RG_NUTS) || CanUse(RG_SKULL_MASK);
         case RE_BLUE_BUBBLE:
             // RANDOTODO Trick to use shield hylian shield as child to stun these guys
             return !grounded || CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
@@ -1561,6 +1592,14 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_KEATON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_KEATON },
+    { RG_SKULL_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SKULL },
+    { RG_SPOOKY_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY },
+    { RG_BUNNY_HOOD, RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY },
+    { RG_GORON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GORON },
+    { RG_ZORA_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_ZORA },
+    { RG_GERUDO_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO },
+    { RG_MASK_OF_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH },
     { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_GREG_RUPEE, RAND_INF_GREG_FOUND },
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
@@ -1719,6 +1758,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     break;
                 case RG_CRAWL:
                     SetRandoInf(RAND_INF_CAN_CRAWL, state);
+                    break;
+                case RG_OPEN_CHEST:
+                    SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
                     break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
@@ -1940,6 +1982,14 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_OCARINA_C_DOWN_BUTTON:
                 case RG_OCARINA_C_LEFT_BUTTON:
                 case RG_OCARINA_C_RIGHT_BUTTON:
+                case RG_KEATON_MASK:
+                case RG_SKULL_MASK:
+                case RG_SPOOKY_MASK:
+                case RG_BUNNY_HOOD:
+                case RG_GORON_MASK:
+                case RG_ZORA_MASK:
+                case RG_GERUDO_MASK:
+                case RG_MASK_OF_TRUTH:
                 case RG_GREG_RUPEE:
                 case RG_FISHING_POLE:
                 case RG_GUARD_HOUSE_KEY:
@@ -2586,6 +2636,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling crawl, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CRAWL, true);
+        }
+
+        // If we're not shuffling open chest, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

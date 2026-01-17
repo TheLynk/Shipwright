@@ -25,6 +25,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bigmirror/z_bg_jya_bigmirror.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
+#include "src/overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
@@ -369,7 +370,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
         iceTrapScale = 0.0f;
         randomizerQueuedCheck = rc;
         randomizerQueuedItemEntry = getItemEntry;
-        SPDLOG_INFO("Queueing Item mod {} item {} from RC {}", getItemEntry.modIndex, getItemEntry.itemId,
+        SPDLOG_INFO("Queuing Item mod {} item {} from RC {}", getItemEntry.modIndex, getItemEntry.itemId,
                     static_cast<uint32_t>(rc));
         if (
             // Skipping ItemGet animation incompatible with checks that require closing a text box to finish
@@ -851,7 +852,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
     switch (id) {
         case VB_CRAWL:
-            *should = !RAND_GET_OPTION(RSK_SHUFFLE_CRAWL) || Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
+            *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
         case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
             s32 entranceIndex = va_arg(args, s32);
@@ -920,6 +921,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
+            break;
+        case VB_OPEN_CHEST:
+            *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
             break;
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
@@ -1192,40 +1196,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetItemGetInf(ITEMGETINF_2C);
             enNiwLady->actionFunc = func_80ABA778;
             *should = false;
-            break;
-        }
-        case VB_BOTTLE_BIG_POE: {
-            EnPoField* enPoe = va_arg(args, EnPoField*);
-            enPoe->actor.textId = 0x5090;
-            Flags_SetSwitch(gPlayState, enPoe->actor.params & 0xFF);
-            HIGH_SCORE(HS_POE_POINTS) += 100;
-            if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
-                HIGH_SCORE(HS_POE_POINTS) = 1100;
-            }
-            *should = false;
-            break;
-        }
-        case VB_SELL_POES_TO_POE_COLLECTOR: {
-            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000 &&
-                !(GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS)) {
-                EnGb* enGb = va_arg(args, EnGb*);
-                enGb->textId = 0x70F8;
-                Message_ContinueTextbox(gPlayState, enGb->textId);
-                enGb->actionFunc = func_80A2FB40;
-                *should = false;
-            }
-            break;
-        }
-        case VB_GIVE_ITEM_FROM_POE_COLLECTOR: {
-            EnGb* enGb = va_arg(args, EnGb*);
-            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)) {
-                Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
-                Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
-                enGb->textId = 0x70F5;
-                enGb->dyna.actor.parent = NULL;
-                enGb->actionFunc = func_80A2F83C;
-                *should = false;
-            }
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN: {
@@ -2224,6 +2194,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (CompletedAllTrials()) {
             Actor_Kill(actor);
         }
+    }
+
+    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK &&
+        RAND_GET_OPTION(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE) {
+        Actor_Kill(actor);
     }
 
     if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT &&

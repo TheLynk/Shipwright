@@ -1340,6 +1340,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_LINK_SPIN_WITH_GORON_POT,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)
     // ```
     // #### `args`
@@ -1460,6 +1468,14 @@ typedef enum {
     // #### `args`
     // - `*EnOkarinaTag`
     VB_OKARINA_TAG_COMPLETED,
+
+    // #### `result`
+    // ```c
+    // this->getItemId != GI_NONE
+    // ```
+    // #### `args`
+    // - `None`
+    VB_OPEN_CHEST,
 
     // #### `result`
     // ```c
@@ -1702,6 +1718,14 @@ typedef enum {
     // #### `args`
     // - `*int16_t` (cutscene id)
     VB_PLAY_ONEPOINT_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `int32_t` (owl type)
+    VB_PLAY_OWL_TRAVEL_CS,
 
     // #### `result`
     // ```c

@@ -295,6 +295,12 @@ void Settings::CreateOptions() {
     OPT_CALLBACK(RSK_SHUFFLE_BOSS_ENTRANCES, {
         HandleMixedEntrancePoolsUI();
 
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Hide();
+        } else {
+            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Unhide();
+        }
+
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
             RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
@@ -303,6 +309,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_MIX_BOSS_ENTRANCES].Unhide();
         }
     });
+    OPT_BOOL(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE, "Ganon's Tower Entrance", CVAR_RANDOMIZER_SETTING("ShuffleGanonTowerEntrance"), mOptionDescriptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE]);
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_ENTRANCES, "Overworld Entrances", CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_ENTRANCES, {
         HandleMixedEntrancePoolsUI();
@@ -778,7 +785,9 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
+    OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
     OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
+    OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
     OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
@@ -1407,6 +1416,8 @@ void Settings::CreateOptions() {
               "Enables ground jumps which require some precision outside of setting up jump:\n- While using Hover "
               "Boots in Forest Temple Courtyard to reach upper ledge\n- While using Hover Boots in Shadow Temple "
               "invisible spike room to reach door\n- Jumping past second step in Ice Cavern");
+    OPT_TRICK(RT_SLIDE_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Sliding Jumps",
+              "Running forward while sliding sideways on ice can be used to jump on platforms.");
     OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
               "Adult Kokiri Forest GS with Hover Boots",
               "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
@@ -1702,8 +1713,8 @@ void Settings::CreateOptions() {
         "room using a precisely-aimed use of the Slingshot, Bow, or Longshot. As well, if you climb to the top of the "
         "vines you can stand on the right edge of the platform and shoot around the glass. From this distance, even "
         "the Hookshot can reach the switch. This trick is only relevant if \"Shuffle Boss Entrances\" is enabled. MQ "
-        "Jabu: A Gold Skulltula Token can be collected with the Hookshot or Longshot using the same methods as hitting "
-        "the switch in Vanilla. This MQ trick is not currently relevant in logic.");
+        "Jabu: A Gold Skulltula Token can be collected with Longshot using the same methods as hitting the switch in "
+        "Vanilla.");
     OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
               "Jabu Near Boss Ceiling Switch with Explosives",
               "You can hit the switch that opens the door to the boss room using a precisely-aimed Bombchu. Also, "
@@ -2060,7 +2071,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_SPIRIT_SUN_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED },
               "Spirit Temple Sun Block Room Chest with Bow",
               "Using the blocks in the room as platforms you can get lines of sight to all three torches. The timer on "
-              "the torches is quite short so you must move quickly in order to light all three.");
+              "the torches is quite short so you must move quickly in order to light all three.\n"
+              "A backflip can be used instead to light torches without pushing blocks.");
     OPT_TRICK(
         RT_SPIRIT_WALL, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
         "Spirit Temple Shifting Wall with No Additional Items",
@@ -2093,6 +2105,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE },
               "Ice Cavern Stalagmites with Hookshot",
               "Shooting stalagmites with hookshot in the right way also breaks them. Also applies to Water Trial.");
+    // RANDOTO sweep trick descriptions and make sure they match a post-refactor, post shuffles reality
     OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE },
               "Ice Cavern Block Room GS with Hover Boots",
               "The Hover Boots can be used to get in front of the Skulltula to kill it with a jump slash. Then, the "
@@ -2101,9 +2114,6 @@ void Settings::CreateOptions() {
               "Ice Cavern MQ Red Ice GS without Song of Time",
               "If you side-hop into the perfect position, you can briefly stand on the platform with the red ice just "
               "long enough to dump some blue fire.");
-    OPT_TRICK(RT_ICE_MQ_SCARECROW, RCQUEST_MQ, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE },
-              "Ice Cavern MQ Scarecrow GS with No Additional Items",
-              "As adult a precise jump can be used to reach this alcove.");
     OPT_TRICK(RT_LENS_GTG, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE },
               "Gerudo Training Ground without Lens of Truth",
               "Removes the requirements for the Lens of Truth in Gerudo Training Ground.");
@@ -2242,13 +2252,13 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_ENTRANCES] = OptionGroup::SubGroup(
         "Entrances",
         { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES], &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
-          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
-          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
-          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
-          &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
+          &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
+          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
+          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
+          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
+          &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ENTRANCES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_ENTRANCES] }, WidgetContainerType::COLUMN);
@@ -2390,6 +2400,8 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
                                                                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
+                                                                                 &mOptions[RSK_SHUFFLE_GRAB],
+                                                                                 &mOptions[RSK_SHUFFLE_CLIMB],
                                                                                  &mOptions[RSK_SHUFFLE_CRAWL],
                                                                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
@@ -2535,6 +2547,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_SHUFFLE_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
+                                                                 &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE],
                                                                  &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
@@ -2609,6 +2622,8 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OCARINA],
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                             &mOptions[RSK_SHUFFLE_SWIM],
+                                            &mOptions[RSK_SHUFFLE_GRAB],
+                                            &mOptions[RSK_SHUFFLE_CLIMB],
                                             &mOptions[RSK_SHUFFLE_CRAWL],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
@@ -2952,6 +2967,10 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_ON);
     } else {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Set(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {

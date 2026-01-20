@@ -296,6 +296,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CLIMB,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`
@@ -577,6 +585,15 @@ typedef enum {
     // #### `args`
     // - None
     VB_FIX_SAW_SOFTLOCK,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*EnFz`
+    // - `*s32`
+    VB_FREEZARD_SCALE_HEALTH_WITH_SIZE,
 
     // #### `result`
     // ```c
@@ -1880,6 +1897,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - None
+    VB_PREVENT_STRENGTH,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2534,6 +2559,27 @@ typedef enum {
     // - `uint16_t` (cursorSlot - promoted from `u16`)
     // - `uint16_t` (cursorItem - promoted from `u16`)
     VB_EQUIP_ITEM_TO_C_BUTTON,
+
+    // #### `result`
+    // ```c
+    // (
+    //     (
+    //         (commonType + FIDGET_SWORD_SWING != FIDGET_SWORD_SWING) &&
+    //         (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)
+    //     ) ||
+    //     (
+    //         (player->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
+    //         (
+    //             (commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
+    //             (Player_GetMeleeWeaponHeld2(player) != 0)
+    //         )
+    //     )
+    // )
+    // ```
+    // #### `args`
+    // - `Player*`
+    // - `s32` commonType
+    VB_SET_IDLE_ANIM,
 
 } GIVanillaBehavior;
 

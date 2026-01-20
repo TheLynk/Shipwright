@@ -850,6 +850,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     va_copy(args, originalArgs);
 
     switch (id) {
+        case VB_CLIMB:
+            if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
+                s32* x = va_arg(args, s32*);
+                s32* y = va_arg(args, s32*);
+
+                *x = 0;
+                if (*y > 0) {
+                    *y = 0;
+                }
+            }
+            break;
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
@@ -1061,6 +1072,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             // claim check from being traded multiple times, so we don't really need the quest to ever be considered
             // "complete"
             *should = false;
+            break;
+        }
+        case VB_PREVENT_STRENGTH: {
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_GRAB)) {
+                GET_PLAYER(gPlayState)->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
+                *should = true;
+            }
             break;
         }
         case VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED: {

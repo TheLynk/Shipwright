@@ -169,11 +169,11 @@ void GenerateItemPool() {
     AddItemToPool(RG_ICE_ARROWS, 2, 1, 1, 1);
     AddItemToPool(RG_LIGHT_ARROWS, 2, 1, 1, 1);
     AddItemToPool(RG_DINS_FIRE, 2, 1, 1, 1);
+    AddItemToPool(RG_FARORES_WIND, 2, 1, 0, 0);
     AddItemToPool(RG_NAYRUS_LOVE, 2, 1, 0, 0);
     AddItemToPool(RG_GREG_RUPEE, 1, 1, 1, 1);
     AddItemToPool(RG_PROGRESSIVE_HOOKSHOT, 2, 2, 2, 2);
     AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
-    AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4, 3, 3, 3);
     AddItemToPool(RG_DOUBLE_DEFENSE, 2, 1, 0, 0);
     AddItemToPool(RG_BIGGORON_SWORD, 2, 1, 1, 0);
     bool isScrubs = ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL);
@@ -402,7 +402,12 @@ void GenerateItemPool() {
 
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale);
+    int powerBracelet = ctx->GetOption(RSK_SHUFFLE_GRAB) ? 1 : 0;
+    AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet);
 
+    if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
+        AddItemToPool(RG_CLIMB, 2, 1, 1, 1);
+    }
     if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
         AddItemToPool(RG_CRAWL, 2, 1, 1, 1);
     }
@@ -822,11 +827,11 @@ void GenerateItemPool() {
     } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
             if (dungeon->GetMap() != RG_NONE) {
-                AddFixedItemToPool(dungeon->GetMap(), false);
+                AddFixedItemToPool(dungeon->GetMap(), 1, false);
             }
 
             if (dungeon->GetCompass() != RG_NONE) {
-                AddFixedItemToPool(dungeon->GetCompass(), false);
+                AddFixedItemToPool(dungeon->GetCompass(), 1, false);
             }
         }
     }

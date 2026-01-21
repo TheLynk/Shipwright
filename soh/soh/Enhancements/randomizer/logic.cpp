@@ -2683,7 +2683,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         if (ctx->GetOption(RSK_SHUFFLE_ROLL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_ROLL, true);
         }
-        
+
         // If we're not shuffling open chest, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
             SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);

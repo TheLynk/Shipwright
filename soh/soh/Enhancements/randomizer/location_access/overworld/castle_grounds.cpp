@@ -59,6 +59,10 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_NEAR_GUARDS_TREE_6, logic->CanBonkTrees()),
         LOCATION(RC_HC_NL_TREE_1,          false),
         LOCATION(RC_HC_NL_TREE_2,          false),
+        LOCATION(RC_HC_ROCK_1,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_ROCK_2,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_ROCK_3,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_BOULDER,            logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_HC_GATE,                  []{return true;}),

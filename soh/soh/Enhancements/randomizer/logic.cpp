@@ -246,8 +246,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_WALLET) >= 2;
         case RG_TYCOON_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 3;
-        case RG_OPEN_CHEST:
-            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
             // Scales
         case RG_BRONZE_SCALE:
             return CheckRandoInf(RAND_INF_CAN_SWIM);
@@ -255,16 +253,16 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+
         case RG_CLIMB:
             return CheckRandoInf(RAND_INF_CAN_CLIMB);
-
         case RG_ROLL:
             return CheckRandoInf(RAND_INF_CAN_ROLL);
-
         case RG_CRAWL:
             return CheckRandoInf(RAND_INF_CAN_CRAWL);
         case RG_OPEN_CHEST:
             return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
+
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG) ||
                    CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);

@@ -59,6 +59,10 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_NEAR_GUARDS_TREE_6, logic->CanBonkTrees()),
         LOCATION(RC_HC_NL_TREE_1,          false),
         LOCATION(RC_HC_NL_TREE_2,          false),
+        LOCATION(RC_HC_ROCK_1,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_ROCK_2,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_ROCK_3,             logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_HC_BOULDER,            logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_HC_GATE,                  []{return true;}),
@@ -140,6 +144,14 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_STORMS_GROTTO_POT_2,                  logic->CanBreakPots()),
         LOCATION(RC_HC_STORMS_GROTTO_POT_3,                  logic->CanBreakPots()),
         LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_1,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_2,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_3,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_4,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_5,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_6,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_7,                 true),
+        LOCATION(RC_HC_STORMS_GROTTO_ROCK_8,                 true),
     }, {
         //Exits
         Entrance(RR_HC_STORMS_GROTTO, []{return true;}),
@@ -150,7 +162,14 @@ void RegionTable_Init_CastleGrounds() {
         EventAccess(LOGIC_BUILD_RAINBOW_BRIDGE, []{return logic->CanBuildRainbowBridge();}),
     }, {
         //Locations
-        LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
+        LOCATION(RC_OGC_GS,               logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
+        LOCATION(RC_OGC_BRONZE_BOULDER_1, logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_OGC_BRONZE_BOULDER_2, logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_OGC_BRONZE_BOULDER_3, logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_OGC_SILVER_BOULDER_1, logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_OGC_SILVER_BOULDER_2, logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_OGC_SILVER_BOULDER_3, logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_OGC_SILVER_BOULDER_4, logic->CanUse(RG_SILVER_GAUNTLETS)),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,           []{return logic->AtNight;}),

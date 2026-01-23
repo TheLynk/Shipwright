@@ -1927,7 +1927,6 @@ void SaveEditorWindow::DrawElement() {
             DrawPlayerTab();
             ImGui::EndTabItem();
         }
-
         ImGui::EndTabBar();
     }
 

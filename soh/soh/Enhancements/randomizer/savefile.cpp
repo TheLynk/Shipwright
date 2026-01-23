@@ -324,180 +324,183 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CRAWL) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_CRAWL);
     }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ROLL) == RO_GENERIC_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_CAN_ROLL);
-    }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_GENERIC_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
-    }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
-    }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-    }
-
-    // Give Link's pocket item
-    GiveLinksPocketItem();
-
-    // Remove One Time Scrubs with Scrubsanity off
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
-        Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
-        Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
-        Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
-    }
-
-    int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
-    gSaveContext.savedSceneNum = -1;
-    switch (startingAge) {
-        case RO_AGE_ADULT: // Adult
-            gSaveContext.linkAge = LINK_AGE_ADULT;
-            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.cutsceneIndex = 0;
-            break;
-        case RO_AGE_CHILD: // Child
-            gSaveContext.linkAge = LINK_AGE_CHILD;
-            break;
-        default:
-            break;
-    }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
-        // Override the spawn entrance so entrance rando can take control,
-        // and to prevent remember save location from breaking initial spawn.
-        gSaveContext.entranceIndex = -1;
-    }
-
-    for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, EVENTCHKINF_COMPLETED_FOREST_TRIAL,
-                            EVENTCHKINF_COMPLETED_FIRE_TRIAL, EVENTCHKINF_COMPLETED_WATER_TRIAL,
-                            EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, EVENTCHKINF_COMPLETED_SHADOW_TRIAL }) {
-        if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag)) {
-            Flags_SetEventChkInf(trialFlag);
+  
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ROLL) == RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(RAND_INF_CAN_ROLL);
         }
-    }
 
-    if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
-        StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
-        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, (GetItemID)RG_WEIRD_EGG);
-        StartingItemGive(getItemEntry, RC_HC_ZELDAS_LETTER);
-        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, (GetItemID)RG_ZELDAS_LETTER);
-        StartingItemGive(getItemEntry, RC_HC_MALON_EGG);
-
-        // Malon/Talon back at ranch.
-        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
-        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
-        Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
-        Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
-
-        // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
-        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
-        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
-
-        // Got item from Impa.
-        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-
-        gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x4); // Move milk crates in Hyrule Castle to moat.
-
-        // Set this at the end to ensure we always start with the letter.
-        // This is for the off chance, we got the Weird Egg from Impa (which should never happen).
-        INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
-    }
-
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
-        StartingItemGive(getItemEntry, RC_TOT_MASTER_SWORD);
-        Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
-    }
-
-    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
-
-    if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
-        Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
-    }
-
-    // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts).
-    // Not done on Keysanity since this lockout is a non-issue when Fire Keys can be found outside the temple.
-    u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                   Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                   Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
-    if (!ResourceMgr_IsSceneMasterQuest(SCENE_FIRE_TEMPLE) && !keysanity) {
-        gSaveContext.sceneFlags[SCENE_FIRE_TEMPLE].swch |= (1 << 0x17);
-    }
-
-    // Opens locked Water Temple door in vanilla to prevent softlocks.
-    // West door on the middle level that leads to the water raising thing.
-    // Happens in 3DS rando and N64 rando as well.
-    if (!ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE)) {
-        gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
-    }
-
-    int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
-    switch (doorOfTime) {
-        case RO_DOOROFTIME_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
-            break;
-    }
-
-    if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
-        Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
-        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
-    }
-
-    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST ||
-        Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
-        Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(1));
-        Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(2));
-        Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(3));
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x02); // heard yells and unlocked doors
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x03);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x04);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x06);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x07);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x08);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x10);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x12);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x13);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0A); // picked up keys
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0E);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0F);
-    }
-
-    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
-        Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(0));
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x01); // heard yell and unlocked door
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x05);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x11);
-        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0C); // picked up key
-
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-            Item_Give(NULL, ITEM_GERUDO_CARD);
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
         }
-    }
 
-    // complete mask quest
-    if (Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_COMPLETED) {
-        Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
-        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+        }
 
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_KEATON);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GORON);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_ZORA);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+        }
 
-        gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
-        gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
-        gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
-        gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
-        gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
+        // Give Link's pocket item
+        GiveLinksPocketItem();
+
+        // Remove One Time Scrubs with Scrubsanity off
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+            Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
+            Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
+            Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
+        }
+
+        int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+        gSaveContext.savedSceneNum = -1;
+        switch (startingAge) {
+            case RO_AGE_ADULT: // Adult
+                gSaveContext.linkAge = LINK_AGE_ADULT;
+                gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
+                gSaveContext.cutsceneIndex = 0;
+                break;
+            case RO_AGE_CHILD: // Child
+                gSaveContext.linkAge = LINK_AGE_CHILD;
+                break;
+            default:
+                break;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+            // Override the spawn entrance so entrance rando can take control,
+            // and to prevent remember save location from breaking initial spawn.
+            gSaveContext.entranceIndex = -1;
+        }
+
+        for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, EVENTCHKINF_COMPLETED_FOREST_TRIAL,
+                                EVENTCHKINF_COMPLETED_FIRE_TRIAL, EVENTCHKINF_COMPLETED_WATER_TRIAL,
+                                EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, EVENTCHKINF_COMPLETED_SHADOW_TRIAL }) {
+            if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag)) {
+                Flags_SetEventChkInf(trialFlag);
+            }
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
+            GetItemEntry getItemEntry =
+                Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
+            StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
+            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, (GetItemID)RG_WEIRD_EGG);
+            StartingItemGive(getItemEntry, RC_HC_ZELDAS_LETTER);
+            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, (GetItemID)RG_ZELDAS_LETTER);
+            StartingItemGive(getItemEntry, RC_HC_MALON_EGG);
+
+            // Malon/Talon back at ranch.
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+            Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
+            Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
+            Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
+
+            // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+            Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+
+            // Got item from Impa.
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
+
+            gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |=
+                (1 << 0x4); // Move milk crates in Hyrule Castle to moat.
+
+            // Set this at the end to ensure we always start with the letter.
+            // This is for the off chance, we got the Weird Egg from Impa (which should never happen).
+            INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
+            StartingItemGive(getItemEntry, RC_TOT_MASTER_SWORD);
+            Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
+        }
+
+        HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
+
+        if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
+            Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
+        }
+
+        // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts).
+        // Not done on Keysanity since this lockout is a non-issue when Fire Keys can be found outside the temple.
+        u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_FIRE_TEMPLE) && !keysanity) {
+            gSaveContext.sceneFlags[SCENE_FIRE_TEMPLE].swch |= (1 << 0x17);
+        }
+
+        // Opens locked Water Temple door in vanilla to prevent softlocks.
+        // West door on the middle level that leads to the water raising thing.
+        // Happens in 3DS rando and N64 rando as well.
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE)) {
+            gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
+        }
+
+        int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
+        switch (doorOfTime) {
+            case RO_DOOROFTIME_OPEN:
+                Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
+                break;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
+            Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
+            Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+        }
+
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST ||
+            Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
+            Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(1));
+            Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(2));
+            Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(3));
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x02); // heard yells and unlocked doors
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x03);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x04);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x06);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x07);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x08);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x10);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x12);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x13);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0A); // picked up keys
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0E);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0F);
+        }
+
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
+            Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(0));
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x01); // heard yell and unlocked door
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x05);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x11);
+            gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0C); // picked up key
+
+            if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
+                Item_Give(NULL, ITEM_GERUDO_CARD);
+            }
+        }
+
+        // complete mask quest
+        if (Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_COMPLETED) {
+            Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
+            Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
+
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_KEATON);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GORON);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_ZORA);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO);
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+
+            gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
+            gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
+            gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
+            gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
+            gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
+        }
     }
 }

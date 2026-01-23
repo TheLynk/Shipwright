@@ -48,6 +48,7 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY,              logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LW_BOULDER_BY_GORON_CITY,           logic->BlastOrSmash()),
         LOCATION(RC_LW_GOSSIP_STONE,                    true),
         LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
@@ -81,6 +82,8 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_BOULDER_BY_SACRED_FOREST_MEADOW,    logic->BlastOrSmash()),
+        LOCATION(RC_LW_RUPEE_BOULDER,                      logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,   []{return true;}),

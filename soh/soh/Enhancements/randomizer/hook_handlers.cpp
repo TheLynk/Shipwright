@@ -850,6 +850,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     va_copy(args, originalArgs);
 
     switch (id) {
+        case VB_ROLL:
+            *should = !RAND_GET_OPTION(RSK_SHUFFLE_ROLL) || Flags_GetRandomizerInf(RAND_INF_CAN_ROLL);
+
         case VB_CLIMB:
             if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
                 s32* x = va_arg(args, s32*);

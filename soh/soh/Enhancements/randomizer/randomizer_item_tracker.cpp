@@ -2311,6 +2311,7 @@ void RegisterItemTrackerWidgets() {
                      .ComboMap(extendedDisplayTypes))
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
+
     SohGui::mSohMenu->AddSearchWidget(
         { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 

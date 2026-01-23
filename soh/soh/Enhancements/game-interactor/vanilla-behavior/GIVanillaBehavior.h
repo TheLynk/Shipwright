@@ -237,6 +237,15 @@ typedef enum {
     VB_BOTTLE_ACTOR,
 
     // #### `result`
+    // Actor is ACTOR_OBJ_BOMBIWA, or ACTOR_OBJ_HAMISHI
+    // ```c
+    // Flags_GetSwitch(play, this->actor.params & 0x3F)
+    // ```
+    // #### `args`
+    // - `*Actor` (interactRangeActor)
+    VB_BOULDER_BREAK_FLAG,
+
+    // #### `result`
     // ```c
     // true
     // ```
@@ -333,6 +342,14 @@ typedef enum {
     // #### `args`
     // - `*ObjKibako2`
     VB_CRATE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_ROLL,
 
     // #### `result`
     // ```c
@@ -580,11 +597,60 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // ((this->unk_2A8 != 8) && !(this->fairyFlags & 8))
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_DRAW,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    // - `int32_t` (sparkleLife)
+    VB_FAIRY_SPAWN_SPARKLES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_C_UP_TALK_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_DASH_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_VANISH_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_UPDATE_LIGHTS,
 
     // #### `result`
     // ```c
@@ -1709,6 +1775,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*ObjectKankyo`
+    VB_PLAY_INTRO_NAVI_SOUNDS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_PLAY_MINUET_OF_FOREST_CS,
 
@@ -1727,6 +1801,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `int32_t` (naviCallState) (promoted from `uint16_t` by va_arg)
+    VB_PLAY_NAVI_CALL_SOUND,
 
     // #### `result`
     // ```c
@@ -1951,6 +2033,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_REVERT_SPOILING_ITEMS,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*EnIshi`
+    VB_ROCK_DROP_ITEM,
 
     // #### `result`
     // ```c
@@ -2392,7 +2482,23 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnRr`
+    VB_LIKE_LIKE_DROP_COLLECTIBLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
     VB_LIKE_LIKE_GRAB_PLAYER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
+    VB_LIKE_LIKE_STEAL_EQUIPMENT,
 
     // #### `result`
     // ```c

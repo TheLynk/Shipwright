@@ -1,10 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Notification/Notification.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SohGui/ImGuiUtils.h"
-#include "soh/SaveManager.h"
 
 extern "C" {
 #include "variables.h"
@@ -93,150 +90,13 @@ std::vector<AltTrapType> getEnabledAddTraps() {
     return enabledAddTraps;
 };
 
-void TriggerVoidOut() {
-    Player* player = GET_PLAYER(gPlayState);
+static void RollRandomTrap(uint64_t seed) {
+    uint64_t finalSeed = seed + (IS_RANDO ? static_cast<uint64_t>(Rando::Context::GetInstance()->GetSeed())
+                                          : gSaveContext.ship.stats.fileCreatedAt);
+    uint64_t state;
+    ShipUtils::RandInit(finalSeed, &state);
 
-    Audio_PlaySoundGeneral(NA_SE_EN_BUBLE_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-
-    // Hyrule Castle: Very likely to fall through floor, so we force a specific entrance
-    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE || gPlayState->sceneNum == SCENE_OUTSIDE_GANONS_CASTLE) {
-        gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
-    } else {
-        gSaveContext.respawnFlag = 1;
-        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-
-        // Preserve the player's position and orientation
-        gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = gPlayState->nextEntranceIndex;
-        gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex = gPlayState->roomCtx.curRoom.num;
-        gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = player->actor.world.pos;
-        gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = player->actor.shape.rot.y;
-
-        if (gPlayState->roomCtx.curRoom.behaviorType2 < 4) {
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
-        } else {
-            // Scenes with static backgrounds use a special camera we need to preserve
-            Camera* camera = GET_ACTIVE_CAM(gPlayState);
-            s16 camId = camera->camDataIdx;
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0D00 | camId;
-        }
-    }
-
-    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = TRANS_TYPE_INSTANT;
-    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
-}
-
-void ExecutePocketTrap() {
-    std::vector<uint32_t> currentLoadout;
-
-    for (auto& items : itemMapping) {
-        if (INV_CONTENT(items.second.id) == items.second.id) {
-            currentLoadout.push_back(items.second.id);
-            continue;
-        }
-        auto questItem = itemToQuestMap.find(
-            (ItemID)items.second.id); // std::find(itemToQuestMap.begin(), itemToQuestMap.end(), items.second.id);
-        if (questItem == itemToQuestMap.end()) {
-            continue;
-        }
-        if (CHECK_QUEST_ITEM(questItem->second)) {
-            currentLoadout.push_back(items.second.id);
-            continue;
-        }
-    }
-
-    if (currentLoadout.size() == 0) {
-        GameInteractor::RawAction::FreezePlayer();
-        return;
-    }
-
-    RandomizerGet rgItem = RG_NONE;
-
-    uint32_t roll = Random(0, currentLoadout.size() - 1);
-    if (currentLoadout[roll] >= ITEM_SONG_MINUET) {
-        rgItem = RetrieveRandomizerGetFromItemID((ItemID)currentLoadout[roll]);
-    } else {
-        GetItemID getItemId = RetrieveGetItemIDFromItemID((ItemID)currentLoadout[roll]);
-        for (auto& randoGet : Rando::StaticData::GetItemTable()) {
-            if (randoGet.GetItemID() == getItemId) {
-                rgItem = randoGet.GetRandomizerGet();
-                break;
-            }
-        }
-    }
-
-    if (rgItem == RG_NONE) {
-        GameInteractor::RawAction::FreezePlayer();
-        return;
-    }
-
-    for (auto& check : Rando::StaticData::GetLocationTable()) {
-        if (Rando::Context::GetInstance()->GetItemLocation(check.GetRandomizerCheck())->GetPlacedRandomizerGet() ==
-            rgItem) {
-            if (check.GetRandomizerCheck() == RC_UNKNOWN_CHECK || check.GetRandomizerCheck() == RC_LINKS_POCKET) {
-                GameInteractor::RawAction::FreezePlayer();
-                return;
-            }
-            switch (check.GetActorID()) {
-                case ACTOR_EN_BOX:
-                    GameInteractor::RawAction::UnsetSceneFlag(check.GetScene(), FLAG_SCENE_TREASURE,
-                                                              check.GetActorParams() & 0x1F);
-                    break;
-                default:
-                    if (check.GetCollectionCheck().type != SPOILER_CHK_NONE) {
-                        switch (check.GetCollectionCheck().type) {
-                            case SPOILER_CHK_ITEM_GET_INF:
-                                Flags_UnsetItemGetInf(check.GetCollectionCheck().flag);
-                                break;
-                            case SPOILER_CHK_RANDOMIZER_INF:
-                                Flags_UnsetRandomizerInf((RandomizerInf)check.GetCollectionCheck().flag);
-                                break;
-                            case SPOILER_CHK_EVENT_CHK_INF:
-                                Flags_UnsetEventInf(check.GetCollectionCheck().flag);
-                                break;
-                            case SPOILER_CHK_CHEST:
-                                GameInteractor::RawAction::UnsetSceneFlag(check.GetScene(), FLAG_SCENE_TREASURE,
-                                                                          check.GetCollectionCheck().flag);
-                                break;
-                            case SPOILER_CHK_COLLECTABLE:
-                                GameInteractor::RawAction::UnsetSceneFlag(check.GetScene(), FLAG_SCENE_COLLECTIBLE,
-                                                                          check.GetCollectionCheck().flag);
-                                break;
-                            case SPOILER_CHK_INF_TABLE:
-                                Flags_UnsetInfTable(check.GetCollectionCheck().flag);
-                                break;
-                            default:
-                                GameInteractor::RawAction::FreezePlayer();
-                                return;
-                        }
-                    }
-                    break;
-            }
-
-            Rando::Context::GetInstance()->GetItemLocation(check.GetRandomizerCheck())->SetCheckStatus(RCSHOW_SEEN);
-            INV_CONTENT(currentLoadout[roll]) = ITEM_NONE;
-            break;
-        }
-    }
-
-    Notification::Emit({ .itemIcon = (const char*)gItemIcons[currentLoadout[roll]],
-                         .prefix = "You've lost your",
-                         .prefixColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White),
-                         .message = Rando::StaticData::RetrieveItem(rgItem).GetName().english.c_str(),
-                         .messageColor = UIWidgets::ColorValues.at(UIWidgets::Colors::Green),
-                         .suffix = ". I remember seeing it somewhere...",
-                         .suffixColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White) });
-
-    TriggerVoidOut();
-}
-
-static void RollRandomTrap(uint32_t seed) {
-    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                          : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
-    Random_Init(finalSeed);
-    // roll = ADD_PERMADEATH_TRAP;
-    roll = RandomElement(getEnabledAddTraps());
+    roll = ShipUtils::RandomElement(getEnabledAddTraps(), &state);
     switch (roll) {
         case ADD_ICE_TRAP:
             GameInteractor::RawAction::FreezePlayer();

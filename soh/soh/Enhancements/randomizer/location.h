@@ -105,7 +105,6 @@ class Location {
     bool IsOverworld() const;
     bool IsShop() const;
     bool IsVanillaCompletion() const;
-    uint32_t Getuint32_t() const;
     const HintText& GetHint() const;
     RandomizerGet GetVanillaItem() const;
     int16_t GetVanillaPrice() const;

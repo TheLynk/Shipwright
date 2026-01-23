@@ -141,6 +141,26 @@ std::vector<ItemTrackerItem> rocsFeather = {
     ITEM_TRACKER_ITEM(RG_ROCS_FEATHER, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> swimItems = {
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, ITEM_SCALE_SILVER, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> crawlItems = {
+    ITEM_TRACKER_ITEM(RG_CRAWL, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> climbItems = {
+    ITEM_TRACKER_ITEM(RG_CLIMB, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> grabItems = {
+    ITEM_TRACKER_ITEM(RG_POWER_BRACELET, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> openChestItems = {
+    ITEM_TRACKER_ITEM(RG_OPEN_CHEST, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> beanSoulItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
@@ -787,6 +807,14 @@ void DrawQuest(ItemTrackerItem item) {
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 };
 
+bool HasBossSoul(RandomizerInf bossSoul) {
+    uint8_t soulSetting = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS);
+    bool isSoulRandomized = IS_RANDO && (soulSetting == RO_BOSS_SOULS_ON_PLUS_GANON ||
+                                         (soulSetting == RO_BOSS_SOULS_ON && bossSoul != RAND_INF_GANON_SOUL));
+
+    return isSoulRandomized ? Flags_GetRandomizerInf(bossSoul) : true;
+}
+
 void DrawItem(ItemTrackerItem item) {
 
     uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
@@ -904,50 +932,47 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_GOHMA_SOUL);
             itemName = "Gohma's Soul";
             break;
         case RG_KING_DODONGO_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KING_DODONGO_SOUL);
+            hasItem = HasBossSoul(RAND_INF_KING_DODONGO_SOUL);
             itemName = "King Dodongo's Soul";
             break;
         case RG_BARINADE_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL);
+            hasItem = HasBossSoul(RAND_INF_BARINADE_SOUL);
             itemName = "Barinade's Soul";
             break;
         case RG_PHANTOM_GANON_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL);
+            hasItem = HasBossSoul(RAND_INF_PHANTOM_GANON_SOUL);
             itemName = "Phantom Ganon's Soul";
             break;
         case RG_VOLVAGIA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_VOLVAGIA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_VOLVAGIA_SOUL);
             itemName = "Volvagia's Soul";
             break;
         case RG_MORPHA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MORPHA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_MORPHA_SOUL);
             itemName = "Morpha's Soul";
             break;
         case RG_BONGO_BONGO_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BONGO_BONGO_SOUL);
+            hasItem = HasBossSoul(RAND_INF_BONGO_BONGO_SOUL);
             itemName = "Bongo Bongo's Soul";
             break;
         case RG_TWINROVA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_TWINROVA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_TWINROVA_SOUL);
             itemName = "Twinrova's Soul";
             break;
         case RG_GANON_SOUL:
             actualItemId = item.id;
-            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) ==
-                              RO_BOSS_SOULS_ON_PLUS_GANON
-                          ? Flags_GetRandomizerInf(RAND_INF_GANON_SOUL)
-                          : true;
+            hasItem = HasBossSoul(RAND_INF_GANON_SOUL);
             itemName = "Ganon's Soul";
             break;
 
@@ -1102,6 +1127,31 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_FISHING_HOLE_KEY_OBTAINED);
             itemName = "Fishing Hole Key";
             break;
+        case RG_BRONZE_SCALE:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SWIM);
+            itemName = "Swim";
+            break;
+        case RG_CRAWL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
+            itemName = "Crawl";
+            break;
+        case RG_CLIMB:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB);
+            itemName = "Climb";
+            break;
+        case RG_POWER_BRACELET:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_GRAB);
+            itemName = "Grab";
+            break;
+        case RG_OPEN_CHEST:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            itemName = "Open";
+            break;
     }
 
     if (GameInteractor::IsSaveLoaded() &&
@@ -1155,6 +1205,15 @@ void DrawItem(ItemTrackerItem item) {
                                          p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
         ImGui::Text("%s", overworldKeyName.c_str());
+        ImGui::PopStyleColor();
+    }
+
+    if (item.id >= RG_BRONZE_SCALE && item.id <= RG_OPEN_CHEST) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(itemName.c_str()).x / 2), p.y - (iconSize + 2)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", itemName.c_str());
         ImGui::PopStyleColor();
     }
 
@@ -1509,6 +1568,21 @@ void UpdateVectors() {
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
         mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SWIM)) {
+        mainWindowItems.insert(mainWindowItems.end(), swimItems.begin(), swimItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_GRAB)) {
+        mainWindowItems.insert(mainWindowItems.end(), grabItems.begin(), grabItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CLIMB)) {
+        mainWindowItems.insert(mainWindowItems.end(), climbItems.begin(), climbItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRAWL)) {
+        mainWindowItems.insert(mainWindowItems.end(), crawlItems.begin(), crawlItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST)) {
+        mainWindowItems.insert(mainWindowItems.end(), openChestItems.begin(), openChestItems.end());
     }
 
     // if we're adding greg to the misc window,

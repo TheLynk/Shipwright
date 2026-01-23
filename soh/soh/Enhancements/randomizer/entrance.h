@@ -26,6 +26,7 @@ enum class EntranceType {
     ChildBossReverse,
     AdultBoss,
     AdultBossReverse,
+    GanonTower,
     Interior,
     InteriorReverse,
     SpecialInterior,
@@ -49,7 +50,6 @@ class Entrance {
     std::string GetName() const;
     void printAgeTimeAccess();
     bool ConditionsMet(bool allAgeTimes = false) const;
-    uint32_t Getuint32_t() const;
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
     RandomizerRegion GetOriginalConnectedRegionKey() const;

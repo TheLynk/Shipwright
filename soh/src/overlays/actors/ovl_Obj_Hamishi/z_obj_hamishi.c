@@ -6,7 +6,6 @@
 
 #include "z_obj_hamishi.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -151,7 +150,7 @@ void ObjHamishi_Init(Actor* thisx, PlayState* play) {
     ObjHamishi_InitCollision(&this->actor, play);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (GameInteractor_Should(VB_BOULDER_BREAK_FLAG, Flags_GetSwitch(play, this->actor.params & 0x3F), this)) {
+    if (Flags_GetSwitch(play, this->actor.params & 0x3F)) {
         Actor_Kill(&this->actor);
         return;
     }

@@ -43,7 +43,6 @@ class Randomizer {
     CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ);
-    RockIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
                                        bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,

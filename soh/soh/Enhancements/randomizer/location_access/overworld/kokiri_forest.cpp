@@ -67,18 +67,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_ADULT_GRASS_18,          logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_19,          logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_20,          logic->IsAdult && logic->CanCutShrubs()),
-        LOCATION(RC_KF_CIRCLE_ROCK_1,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_2,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_3,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_4,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_5,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_6,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_7,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_CIRCLE_ROCK_8,           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_KF_ROCK_BY_SARIAS_HOUSE,    logic->IsChild && (logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash())),
-        LOCATION(RC_KF_ROCK_BEHIND_SARIAS_HOUSE,   logic->IsChild && (logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash())),
-        LOCATION(RC_KF_ROCK_BY_MIDOS_HOUSE,        logic->IsChild && (logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash())),
-        LOCATION(RC_KF_ROCK_BY_KNOW_IT_ALLS_HOUSE, logic->IsChild && (logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash())),
     }, {
         //Exits
         Entrance(RR_KF_BOULDER_LOOP,       []{return logic->CanUse(RG_CRAWL);}),

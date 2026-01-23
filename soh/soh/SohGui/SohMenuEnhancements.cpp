@@ -290,10 +290,6 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BetterOwl"))
         .Options(CheckboxOptions().Tooltip(
             "The default response to Kaepora Gaebora is always that you understood what he said."));
-    AddWidget(path, "Allow Dropping Throw-Only Objects", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("DropThrowOnlyObjects"))
-        .Options(CheckboxOptions().Tooltip("Allows normally throw-only objects (such as Cuccos, pots, grass, and small "
-                                           "rocks) to be dropped by pressing A while standing still."));
 
     AddWidget(path, "Convenience", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Quit Fishing at Door", WIDGET_CVAR_CHECKBOX)
@@ -1773,9 +1769,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."));
-    AddWidget(path, "Like Like don't Steal Items", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_CHEAT("NoLikeLikeItemSteal"))
-        .Options(CheckboxOptions().Tooltip("Prevents Like Likes from being able to steal your equipments."));
     AddWidget(path, "Disable Haunted Wasteland Sandstorm", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("DisableSandstorm"))
         .Options(CheckboxOptions().Tooltip("Disables sandstorm effect in Haunted Wasteland."));

@@ -35,14 +35,6 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_NEAR_SHOP_POT_3,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_4,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_5,                     logic->CanBreakPots()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_1,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_2,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_3,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_4,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_5,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_6,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_7,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
-        LOCATION(RC_ZD_CIRCLE_ROCK_8,                       logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_ZR_BEHIND_WATERFALL, []{return true;}),

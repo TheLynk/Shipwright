@@ -104,7 +104,7 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {
         //Locations
-        LOCATION(RC_LA_ROCK, true),
+        LOCATION(RC_LA_ROCK, logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_LAKE_HYLIA,      []{return logic->HasItem(RG_BRONZE_SCALE);}),

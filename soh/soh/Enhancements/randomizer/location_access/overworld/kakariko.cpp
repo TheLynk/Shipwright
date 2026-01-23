@@ -61,8 +61,8 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_TREE,                              logic->CanBonkTrees()),
         LOCATION(RC_KAK_SILVER_BOULDER,                    logic->IsAdult && logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_KAK_ROCK_1,                            true),
-        LOCATION(RC_KAK_ROCK_2,                            true),
+        LOCATION(RC_KAK_ROCK_1,                            logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
+        LOCATION(RC_KAK_ROCK_2,                            logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,             []{return true;}),

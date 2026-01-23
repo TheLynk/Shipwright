@@ -263,6 +263,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_CLIMB] = "Shuffle the ability to climb ladders into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_ROLL] = "Shuffles the ability do a roll into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_ROLL] = "Shuffles the ability do a roll into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"

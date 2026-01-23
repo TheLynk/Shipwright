@@ -26,6 +26,7 @@ void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry);

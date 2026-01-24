@@ -79,7 +79,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_UNDERWATER_ROCK_1,                    (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_BOMBCHU_5)),
         LOCATION(RC_ZR_UNDERWATER_ROCK_2,                    (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_BOMBCHU_5)),
         LOCATION(RC_ZR_UNDERWATER_ROCK_3,                    (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_BOMBCHU_5)),
-        LOCATION(RC_ZR_UNDERWATER_ROCK_4,                    logic->IsAdult || logic->CanUse(RG_BOMBCHU_5)),
+        LOCATION(RC_ZR_UNDERWATER_ROCK_4,                    (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_BOMBCHU_5)),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
     }, {

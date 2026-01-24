@@ -786,7 +786,6 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
     OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
-    OPT_BOOL(RSK_SHUFFLE_ROLL, "Shuffle Roll", CVAR_RANDOMIZER_SETTING("ShuffleRoll"), mOptionDescriptions[RSK_SHUFFLE_ROLL]);
     OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
     OPT_BOOL(RSK_SHUFFLE_ROLL, "Shuffle Roll", CVAR_RANDOMIZER_SETTING("ShuffleRoll"), mOptionDescriptions[RSK_SHUFFLE_ROLL]);
     OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
@@ -2406,7 +2405,6 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
                                                                                  &mOptions[RSK_SHUFFLE_GRAB],
                                                                                  &mOptions[RSK_SHUFFLE_CLIMB],
-                                                                                 &mOptions[RSK_SHUFFLE_ROLL],
                                                                                  &mOptions[RSK_SHUFFLE_CRAWL],
                                                                                  &mOptions[RSK_SHUFFLE_ROLL],
                                                                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
@@ -2632,7 +2630,6 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_SWIM],
                                             &mOptions[RSK_SHUFFLE_GRAB],
                                             &mOptions[RSK_SHUFFLE_CLIMB],
-                                            &mOptions[RSK_SHUFFLE_ROLL],
                                             &mOptions[RSK_SHUFFLE_CRAWL],
                                             &mOptions[RSK_SHUFFLE_ROLL],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],

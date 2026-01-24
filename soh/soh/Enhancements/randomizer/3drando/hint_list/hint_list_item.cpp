@@ -2124,9 +2124,6 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_ROLL] = HintText(CustomMessage("the ability to roll", /*german*/"die Fähigkeit zu rollen", /*french*/"la capacité de faire des roulades"));
   
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
-
-    hintTextTable[RHT_ROLL] = HintText(CustomMessage("the ability to roll", /*german*/"die Fähigkeit zu rollen", /*french*/"la capacité de faire des roulades"));
-    //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));
 
     hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"die unendliche Bombentasche", /*french*/"un Sac de Bombe sans fond"));

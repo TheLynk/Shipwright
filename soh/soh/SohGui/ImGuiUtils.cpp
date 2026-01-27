@@ -154,6 +154,7 @@ std::map<uint32_t, ItemMapEntry> customItemsMapping = {
 std::map<uint32_t, ItemMapEntry> actionShuffleMapping = {
     { RG_CRAWL, { RG_CRAWL, "RG_CRAWL", "RG_CRAWL_Faded", gButtonBackgroundTex } },
     { RG_CLIMB, { RG_CLIMB, "RG_CLIMB", "RG_CLIMB_Faded", gButtonBackgroundTex } },
+    { RG_ROLL, { RG_ROLL, "RG_ROLL", "RG_ROLL_Faded", gButtonBackgroundTex } },
     { RG_POWER_BRACELET, { RG_POWER_BRACELET, "RG_POWER_BRACELET", "RG_POWER_BRACELET_Faded", gButtonBackgroundTex } },
 };
 

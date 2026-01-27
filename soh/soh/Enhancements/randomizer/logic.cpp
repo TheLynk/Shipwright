@@ -257,6 +257,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckRandoInf(RAND_INF_CAN_CLIMB);
         case RG_CRAWL:
             return CheckRandoInf(RAND_INF_CAN_CRAWL);
+        case RG_ROLL:
+            return CheckRandoInf(RAND_INF_CAN_ROLL);
         case RG_OPEN_CHEST:
             return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
         case RG_POCKET_EGG:
@@ -1318,7 +1320,7 @@ bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater)
 }
 
 bool Logic::CanBreakCrates() {
-    return true;
+    return HasItem(RG_ROLL) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
 }
 
 bool Logic::CanBreakSmallCrates() {
@@ -1326,7 +1328,7 @@ bool Logic::CanBreakSmallCrates() {
 }
 
 bool Logic::CanBonkTrees() {
-    return true;
+    return HasItem(RG_ROLL);
 }
 
 bool Logic::HasExplosives() {
@@ -1766,6 +1768,8 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_CRAWL:
                     SetRandoInf(RAND_INF_CAN_CRAWL, state);
                     break;
+                case RG_ROLL:
+                    SetRandoInf(RAND_INF_CAN_ROLL, state);
                 case RG_OPEN_CHEST:
                     SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
                     break;
@@ -2673,6 +2677,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling crawl, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CRAWL, true);
+        }
+
+        // If we're not shuffling roll, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_ROLL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_ROLL, true);
         }
 
         // If we're not shuffling open chest, we start with it

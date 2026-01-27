@@ -37,6 +37,9 @@ extern "C" {
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
 #include "objects/object_gi_shield_1/object_gi_shield_1.h"
+#include "objects/object_link_child/object_link_child.h"
+#include "roll_animation_data.h"
+
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -1185,6 +1188,48 @@ extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEn
     Matrix_Translate(35, -7, 4, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry) {
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[ROLL_ANIMATION_LIMBS];
+    static Vec3s morphTable[ROLL_ANIMATION_LIMBS];
+    static u32 lastUpdate = 0;
+    static int currentFrame = 0;
+
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(play, &skelAnime, (FlexSkeletonHeader*)gLinkChildSkel, NULL, jointTable, morphTable,
+                           ROLL_ANIMATION_LIMBS);
+    }
+
+    // Manual animation with captured frames
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
+
+        // Advances one frame every 2 frames of play
+        if ((play->state.frames % 2) == 0) {
+            currentFrame = (currentFrame + 1) % ROLL_ANIMATION_FRAMES;
+        }
+
+        // Copies data from current frame
+        for (int i = 0; i < ROLL_ANIMATION_LIMBS; i++) {
+            jointTable[i] = rollAnimationData[currentFrame][i];
+        }
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    Matrix_Translate(0.0f, -30.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_RotateY(play->gameplayFrames * 0.05f, MTXMODE_APPLY);
+    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
+
+    SkelAnime_DrawFlexOpa(play, skelAnime.skeleton, jointTable, skelAnime.dListCount, NULL, NULL, NULL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

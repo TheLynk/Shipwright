@@ -1660,11 +1660,10 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
               "Dodongo\'s Cavern Stairs with Bow",
               "The Bow can be used to knock down the stairs with two well-timed shots.");
+    //The second room's jump exists in MQ, but is irrelevent outside of doorsanity
     OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT },
               "Dodongo\'s Cavern Child Slingshot Skips",
-              "With precise platforming, child can cross the platforms while the flame circles are there. When "
-              "enabling this trick, it's recommended that you also enable the Adult variant: \"Dodongo's Cavern Spike "
-              "Trap Room Jump without Hover Boots\".");
+              "With precise platforming, child can cross the platforms while the flame circles are there.");
     OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
               "Dodongo\'s Cavern Two Scrub Room with Strength",
               "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy "
@@ -2035,7 +2034,7 @@ void Settings::CreateOptions() {
         RT_SHADOW_MQ_WINDY_WALKWAY, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
         "Shadow Temple MQ Windy Walkway Reverse without Hover Boots",
         "It is possible to jump from the alcove in the windy hallway to the middle platform. There are two methods: "
-        "wait out the fan opposite the door and hold forward, or jump to the right to be pushed by the fan there "
+        "wait out the fan opposite the door and rolljump, or jump to the right to be pushed by the fan there "
         "towards the platform ledge. Note that jumps of this distance are inconsistent, but still possible.");
     OPT_TRICK(RT_LENS_SPIRIT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
               "Spirit Temple without Lens of Truth",

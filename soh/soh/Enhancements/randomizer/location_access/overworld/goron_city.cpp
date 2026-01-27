@@ -25,7 +25,7 @@ void RegionTable_Init_GoronCity() {
         LOCATION(RC_GC_ROLLING_GORON_AS_CHILD,      logic->IsChild && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
         LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,      logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)),
         LOCATION(RC_GC_GS_BOULDER_MAZE,             logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_GC_GS_CENTER_PLATFORM,          logic->IsAdult && logic->CanAttack()),
+        LOCATION(RC_GC_GS_CENTER_PLATFORM,          logic->IsAdult && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) || logic->HasItem(RG_POWER_BRACELET))),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY,     (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY_BIG, (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE,           logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),

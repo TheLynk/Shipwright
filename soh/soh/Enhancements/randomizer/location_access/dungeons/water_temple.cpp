@@ -523,7 +523,7 @@ void RegionTable_Init_WaterTemple() {
     //This is specifically the initial entrance alcove and platform directly underneath
     areaTable[RR_WATER_TEMPLE_WATERFALL] = Region("Water Temple Waterfall", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) ||
+        LOCATION(RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) ||
                                                            (ctx->GetTrickOption(RT_WATER_RANG_FALLING_PLATFORM_GS) && logic->CanUse(RG_BOOMERANG)) ||
                                                            (ctx->GetTrickOption(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT))),
     }, {

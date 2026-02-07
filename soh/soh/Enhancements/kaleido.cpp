@@ -3,7 +3,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "ship/utils/StringHelper.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/frame_interpolation.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
@@ -208,6 +207,15 @@ Kaleido::Kaleido() {
                                                                   32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
                                                                   RAND_INF_CAN_ROLL, "Roll"));
     }
+    if (ctx->GetOption(RSK_SHUFFLE_SPEAK)) {
+        int rg = RG_SPEAK_DEKU;
+        for (int i = RAND_INF_CAN_SPEAK_DEKU; i <= RAND_INF_CAN_SPEAK_ZORA; i++, rg++) {
+            std::string speakName = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english;
+            StringHelper::ReplaceOriginal(speakName, " Jabber Nut", "");
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gItemIconDekuNutTex, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                                                                      32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+                                                                      FlagType::FLAG_RANDOMIZER_INF, i, speakName));
+        }
     if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
             gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },

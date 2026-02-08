@@ -102,6 +102,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
 
+void GameInteractor_ExecuteOnPlayerBottleHeldChanged(s32 item, s32 actionParam) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleHeldChanged>(item, actionParam);
+}
+
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetDoAction>(action);
 }

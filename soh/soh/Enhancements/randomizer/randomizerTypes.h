@@ -6145,7 +6145,6 @@ typedef enum {
     RHT_MASK_ZORA,
     RHT_MASK_GERUDO,
     RHT_MASK_TRUTH,
-    RHT_BRONZE_SCALE,
     RHT_CLIMB,
     RHT_CRAWL,
     RHT_ROLL,

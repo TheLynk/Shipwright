@@ -1232,6 +1232,9 @@ extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getIte
 
     SkelAnime_DrawFlexOpa(play, skelAnime.skeleton, jointTable, skelAnime.dListCount, NULL, NULL, NULL);
 
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 

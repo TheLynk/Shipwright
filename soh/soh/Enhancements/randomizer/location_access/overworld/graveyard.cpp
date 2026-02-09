@@ -32,6 +32,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_GRASS_11,                       logic->CanCutShrubs()),
         LOCATION(RC_GY_GRASS_12,                       logic->CanCutShrubs()),
         LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD, RG_GRAVEYARD_BEAN_SOUL)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
+        LOCATION(RC_GY_ROCK,                           logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash()),
     }, {
         //Exits
         ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE,       (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),

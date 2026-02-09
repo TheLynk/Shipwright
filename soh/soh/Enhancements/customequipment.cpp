@@ -78,11 +78,16 @@ static void UpdateCustomEquipment() {
     RefreshCustomEquipment();
 }
 
+static void OnBottleHeldChanged(s32 item, s32 actionParam) {
+    RefreshCustomEquipment();
+}
+
 static void PatchCustomEquipment() {
     COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
     COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
     COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+    COND_HOOK(OnPlayerBottleHeldChanged, true, OnBottleHeldChanged);
 }
 
 static RegisterShipInitFunc initFunc(PatchCustomEquipment);
@@ -476,6 +481,97 @@ static void ApplyCommonEquipmentPatches() {
     });
 }
 
+static s32 sLastBottleContentIndex = -1;
+
+static void ResetBottlePatch() {
+    const bool isChild = LINK_IS_CHILD;
+    const char* bottleDL = isChild ? gLinkChildBottleDL : gLinkAdultBottleDL;
+
+    UnpatchGroup(bottleDL, { "customBottle1", "customBottle2", "customBottle3" });
+    sLastBottleContentIndex = -1;
+}
+
+static void ApplyBottleContentPatches() {
+    constexpr s32 BOTTLE_EMPTY = 0;
+    constexpr s32 BOTTLE_MILK_FULL = PLAYER_IA_BOTTLE_MILK_FULL - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_MILK_HALF = PLAYER_IA_BOTTLE_MILK_HALF - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_FAIRY = PLAYER_IA_BOTTLE_FAIRY - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_ACTION_COUNT = BOTTLE_FAIRY + 1;
+
+    const char* bottleContentDLs[] = {
+        nullptr,                    // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
+        gCustomBottleFishDL,        // 1: PLAYER_IA_BOTTLE_FISH
+        gCustomBottleBlueFireDL,    // 2: PLAYER_IA_BOTTLE_FIRE
+        gCustomBottleBugDL,         // 3: PLAYER_IA_BOTTLE_BUG
+        gCustomBottlePoeDL,         // 4: PLAYER_IA_BOTTLE_POE
+        gCustomBottleBigPoeDL,      // 5: PLAYER_IA_BOTTLE_BIG_POE
+        gCustomBottleLetterDL,      // 6: PLAYER_IA_BOTTLE_RUTOS_LETTER
+        gCustomBottleRedPotionDL,   // 7: PLAYER_IA_BOTTLE_POTION_RED
+        gCustomBottleBluePotionDL,  // 8: PLAYER_IA_BOTTLE_POTION_BLUE
+        gCustomBottleGreenPotionDL, // 9: PLAYER_IA_BOTTLE_POTION_GREEN
+        gCustomBottleMilkDL,        // 10: PLAYER_IA_BOTTLE_MILK_FULL
+        gCustomBottleMilkHalfDL,    // 11: PLAYER_IA_BOTTLE_MILK_HALF
+        gCustomBottleFairyDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
+    };
+
+    if (!ResourceMgr_IsAltAssetsEnabled()) {
+        ResetBottlePatch();
+        ResourceMgr_UnloadResource(gCustomBottleDL);
+        return;
+    }
+
+    bool bottleDLAvailable = ResourceGetIsCustomByName(gCustomBottleDL) || ResourceMgr_FileExists(gCustomBottleDL);
+
+    if (!bottleDLAvailable) {
+        return;
+    }
+
+    if (gPlayState == nullptr) {
+        return;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return;
+    }
+
+    s32 bottleIndex = player->itemAction - PLAYER_IA_BOTTLE;
+
+    // Special case: when drinking milk, preserve the half-full visual instead of showing empty
+    if (sLastBottleContentIndex == BOTTLE_MILK_FULL && bottleIndex == BOTTLE_EMPTY) {
+        bottleIndex = BOTTLE_MILK_HALF;
+    }
+
+    bool isBottleAction = (bottleIndex >= 0 && bottleIndex < BOTTLE_ACTION_COUNT);
+
+    if (!isBottleAction) {
+        if (sLastBottleContentIndex != -1) {
+            ResetBottlePatch();
+        }
+        return;
+    }
+
+    if (sLastBottleContentIndex == bottleIndex) {
+        return;
+    }
+
+    const bool isChild = LINK_IS_CHILD;
+    const char* bottleDL = isChild ? gLinkChildBottleDL : gLinkAdultBottleDL;
+
+    const char* contentDL = bottleContentDLs[bottleIndex];
+
+    if (contentDL && !ResourceMgr_FileExists(contentDL) && !ResourceGetIsCustomByName(contentDL)) {
+        contentDL = nullptr;
+    }
+
+    ApplyPatchEntries({
+        { bottleDL, gCustomBottleDL, "customBottle1", "customBottle2", contentDL ? "customBottle3" : nullptr,
+          contentDL },
+    });
+
+    sLastBottleContentIndex = bottleIndex;
+}
+
 void UpdatePatchCustomEquipmentDlists() {
     const u8 equippedSword = GetEquippedSwordItem();
 
@@ -510,4 +606,5 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
+    ApplyBottleContentPatches();
 }

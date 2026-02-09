@@ -202,6 +202,12 @@ Kaleido::Kaleido() {
                                                                   32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
                                                                   RAND_INF_CAN_GRAB, "Grab"));
     }
+    if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_ROLL, "Roll"));
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SPEAK)) {
         int rg = RG_SPEAK_DEKU;
         for (int i = RAND_INF_CAN_SPEAK_DEKU; i <= RAND_INF_CAN_SPEAK_ZORA; i++, rg++) {

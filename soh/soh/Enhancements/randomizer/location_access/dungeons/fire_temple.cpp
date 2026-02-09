@@ -305,7 +305,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,      logic->Get(LOGIC_FIRE_HIT_PLATFORM) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->TakeDamage())),
         ENTRANCE(RR_FIRE_TEMPLE_CORRIDOR,            true),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_PLATFORMS, logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->Get(LOGIC_FIRE_HIT_ABOVE_MAZE_PLATFORM) || logic->CanGroundJump()))),
-        ENTRANCE(RR_FIRE_TEMPLE_CAGELESS_CHEST_ROOM, true),
+        ENTRANCE(RR_FIRE_TEMPLE_CAGELESS_CHEST_ROOM, logic->HasItem(RG_OPEN_CHEST)),
         ENTRANCE(RR_FIRE_TEMPLE_SOT_CAGE_LOWER,      logic->SmallKeys(SCENE_FIRE_TEMPLE, 8)),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH,    (bool)ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS)),
     });

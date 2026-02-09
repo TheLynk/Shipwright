@@ -262,6 +262,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle the ability to grab as a progressive upgrade before Goron Bracelet.";
     mOptionDescriptions[RSK_SHUFFLE_CLIMB] = "Shuffle the ability to climb ladders into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_ROLL] = "Shuffles the ability do a roll into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_SPEAK] =
         "Shuffle ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
         "Zora\nKaepora Gaebora speaks any language.";
@@ -518,6 +519,8 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only shuffle grass/bushes that are outside of dungeons.\n"
         "\n"
         "All Grass/Bushes - Shuffle all grass/bushes.";
+    mOptionDescriptions[RSK_SHUFFLE_ROCKS] = "Shuffle rock locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BOULDERS] = "Shuffle boulder locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"

@@ -787,6 +787,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
     OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
     OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
+    OPT_BOOL(RSK_SHUFFLE_ROLL, "Shuffle Roll", CVAR_RANDOMIZER_SETTING("ShuffleRoll"), mOptionDescriptions[RSK_SHUFFLE_ROLL]);
     OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
     OPT_BOOL(RSK_SHUFFLE_SPEAK, "Shuffle Jabber Nuts", CVAR_RANDOMIZER_SETTING("ShuffleSpeak"), mOptionDescriptions[RSK_SHUFFLE_SPEAK]);
     OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
@@ -796,6 +797,8 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
     OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_CRATES_OFF);
     OPT_BOOL(RSK_SHUFFLE_TREES, "Shuffle Trees", CVAR_RANDOMIZER_SETTING("ShuffleTrees"), mOptionDescriptions[RSK_SHUFFLE_TREES]);
+    OPT_BOOL(RSK_SHUFFLE_ROCKS, "Shuffle Rocks", CVAR_RANDOMIZER_SETTING("ShuffleRocks"), mOptionDescriptions[RSK_SHUFFLE_ROCKS]);
+    OPT_U8(RSK_SHUFFLE_BOULDERS, "Shuffle Boulders", {"Off", "Dungeons", "Overworld", "All Boulders"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBoulders"), mOptionDescriptions[RSK_SHUFFLE_BOULDERS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_BOULDERS_OFF);
     OPT_BOOL(RSK_SHUFFLE_BUSHES, "Shuffle Bushes", CVAR_RANDOMIZER_SETTING("ShuffleBushes"), mOptionDescriptions[RSK_SHUFFLE_BUSHES]);
     OPT_BOOL(RSK_SHUFFLE_FISHING_POLE, "Shuffle Fishing Pole", CVAR_RANDOMIZER_SETTING("ShuffleFishingPole"), mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE]);
     OPT_CALLBACK(RSK_SHUFFLE_FISHING_POLE, {
@@ -2331,6 +2334,8 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_FISHSANITY_AGE_SPLIT],
                                   &mOptions[RSK_SHUFFLE_FREESTANDING],
                                   &mOptions[RSK_SHUFFLE_BEEHIVES],
+                                  &mOptions[RSK_SHUFFLE_ROCKS],
+                                  &mOptions[RSK_SHUFFLE_BOULDERS],
                                   &mOptions[RSK_SHUFFLE_COWS],
                                   &mOptions[RSK_SHUFFLE_POTS],
                                   &mOptions[RSK_SHUFFLE_GRASS],
@@ -2374,6 +2379,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT],
                                   &mOptions[RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT],
                                   &mOptions[RSK_SCRUBS_PRICES_AFFORDABLE],
+
                                   &mOptions[RSK_SHUFFLE_MERCHANTS],
                                   &mOptions[RSK_MERCHANT_PRICES],
                                   &mOptions[RSK_MERCHANT_PRICES_FIXED_PRICE],
@@ -2389,28 +2395,21 @@ void Settings::CreateOptions() {
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_SHOP_SHUFFLES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_SHOP_SHUFFLES] }, WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_MENU_SECTION_ADDITIONAL_ITEMS] = OptionGroup::SubGroup("Additional Items",
-                                                                             {
-                                                                                 &mOptions[RSK_SHUFFLE_CHILD_WALLET],
-                                                                                 &mOptions[RSK_INCLUDE_TYCOON_WALLET],
-                                                                                 &mOptions[RSK_SHUFFLE_FISHING_POLE],
-                                                                                 &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
-                                                                                 &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
-                                                                                 &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
-                                                                                 &mOptions[RSK_SHUFFLE_SWIM],
-                                                                                 &mOptions[RSK_SHUFFLE_GRAB],
-                                                                                 &mOptions[RSK_SHUFFLE_CLIMB],
-                                                                                 &mOptions[RSK_SHUFFLE_CRAWL],
-                                                                                 &mOptions[RSK_SHUFFLE_SPEAK],
-                                                                                 &mOptions[RSK_SHUFFLE_OPEN_CHEST],
-                                                                                 &mOptions[RSK_SHUFFLE_BEAN_SOULS],
-                                                                                 &mOptions[RSK_ROCS_FEATHER],
-                                                                                 &mOptions[RSK_BOMBCHU_BAG],
-                                                                                 &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
-                                                                                 &mOptions[RSK_INFINITE_UPGRADES],
-                                                                                 &mOptions[RSK_SKELETON_KEY],
-                                                                             },
-                                                                             WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_ADDITIONAL_ITEMS] =
+        OptionGroup::SubGroup("Additional Items",
+                              {
+                                  &mOptions[RSK_SHUFFLE_CHILD_WALLET], &mOptions[RSK_INCLUDE_TYCOON_WALLET],
+                                  &mOptions[RSK_SHUFFLE_FISHING_POLE], &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG], &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+                                  &mOptions[RSK_SHUFFLE_SWIM],         &mOptions[RSK_SHUFFLE_GRAB],
+                                  &mOptions[RSK_SHUFFLE_CLIMB],        &mOptions[RSK_SHUFFLE_CRAWL],
+                                  &mOptions[RSK_SHUFFLE_ROLL],         &mOptions[RSK_SHUFFLE_SPEAK],
+                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],   &mOptions[RSK_SHUFFLE_BEAN_SOULS],
+                                  &mOptions[RSK_ROCS_FEATHER],         &mOptions[RSK_BOMBCHU_BAG],
+                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS], &mOptions[RSK_INFINITE_UPGRADES],
+                                  &mOptions[RSK_SKELETON_KEY],
+                              },
+                              WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ADDITIONAL_ITEMS] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_ADDITIONAL_ITEMS] }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_MENU_SIDEBAR_SHUFFLES] =
@@ -2617,6 +2616,8 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_CRATES],
                                             &mOptions[RSK_SHUFFLE_TREES],
                                             &mOptions[RSK_SHUFFLE_BUSHES],
+                                            &mOptions[RSK_SHUFFLE_ROCKS],
+                                            &mOptions[RSK_SHUFFLE_BOULDERS],
                                             &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
                                             &mOptions[RSK_SHUFFLE_OCARINA],
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
@@ -2624,6 +2625,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_GRAB],
                                             &mOptions[RSK_SHUFFLE_CLIMB],
                                             &mOptions[RSK_SHUFFLE_CRAWL],
+                                            &mOptions[RSK_SHUFFLE_ROLL],
                                             &mOptions[RSK_SHUFFLE_SPEAK],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],

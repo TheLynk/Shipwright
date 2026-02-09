@@ -324,6 +324,9 @@ void RegionTable_Init_DekuTree() {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,    true),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_1,             true),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_2,             true),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_3,             true),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_COMPASS_ROOM, logic->BlastOrSmash()),

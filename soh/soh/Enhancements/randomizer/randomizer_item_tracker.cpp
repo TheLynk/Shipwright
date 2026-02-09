@@ -154,6 +154,10 @@ std::vector<ItemTrackerItem> climbItems = {
     ITEM_TRACKER_ITEM(RG_CLIMB, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> rollItems = {
+    ITEM_TRACKER_ITEM(RG_ROLL, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> grabItems = {
     ITEM_TRACKER_ITEM(RG_POWER_BRACELET, 0, DrawItem),
 };
@@ -1185,6 +1189,11 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB);
             itemName = "Climb";
             break;
+        case RG_ROLL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_ROLL);
+            itemName = "Roll";
+            break;
         case RG_POWER_BRACELET:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_GRAB);
@@ -1630,6 +1639,9 @@ void UpdateVectors() {
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CLIMB)) {
         mainWindowItems.insert(mainWindowItems.end(), climbItems.begin(), climbItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ROLL)) {
+        mainWindowItems.insert(mainWindowItems.end(), rollItems.begin(), rollItems.end());
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRAWL)) {
         mainWindowItems.insert(mainWindowItems.end(), crawlItems.begin(), crawlItems.end());
@@ -2367,6 +2379,7 @@ void RegisterItemTrackerWidgets() {
                      .ComboMap(extendedDisplayTypes))
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
+
     SohGui::mSohMenu->AddSearchWidget(
         { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 

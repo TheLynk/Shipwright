@@ -44,6 +44,8 @@ class Logic {
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool CanEquipBow();
+    bool ItemInHand();
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpJumpSlash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
@@ -54,7 +56,7 @@ class Logic {
                       uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
     bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
-    bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
+    bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
     bool CanGetDekuBabaNuts();

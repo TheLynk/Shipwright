@@ -480,6 +480,17 @@ bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
     return HasItem(key);
 }
 
+bool Logic::CanEquipBow(){ 
+    // Add equip swap here too
+    return ((HasItem(RG_FAIRY_BOW) || HasItem(RG_FIRE_ARROWS) || HasItem(RG_ICE_ARROWS) || HasItem(RG_LIGHT_ARROWS)) && IsAdult);
+}
+
+bool Logic::ItemInHand(){ 
+    //add equip swap to slingshot
+    return CanUse(RG_HOOKSHOT) || CanJumpslash() || CanUse(RG_GIANTS_KNIFE) || CanUse(RG_EMPTY_BOTTLE) ||
+           (IsChild && HasItem(RG_FAIRY_SLINGSHOT)) || CanEquipBow() || CanUse(RG_BOOMERANG);
+}
+
 bool Logic::CanGroundJump(bool hasBombflower) {
     return ctx->GetTrickOption(RT_GROUND_JUMP) && CanStandingShield() &&
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
@@ -1019,8 +1030,8 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity
     }
 }
 
-bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool aboveLink) {
-    if (!CanKillEnemy(enemy, distance)) {
+bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool wallorFloor, bool aboveLink) {
+    if (!CanKillEnemy(enemy, distance, wallorFloor)) {
         return false;
     }
     // RANDOTODO assumption broke with RC_WATER_TEMPLE_GS_BEHIND_GATE, redesign GS helpers
@@ -2553,7 +2564,8 @@ bool Logic::SpiritExplosiveKeyLogic() {
 }
 
 bool Logic::SpiritWestToSkull() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || ReachScarecrow();
+    //Adult can inconsistently backwalk across, but it's hard to get consistent without a frame perfect hovers equip, so I'm rolling it into backwalk->backflip
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || (CanUse(RG_HOVER_BOOTS) && HasItem(RG_ROLL)) || ReachScarecrow();
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {

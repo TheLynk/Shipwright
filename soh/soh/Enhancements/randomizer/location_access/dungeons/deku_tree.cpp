@@ -115,7 +115,7 @@ void RegionTable_Init_DekuTree() {
         //Exits
         Entrance(RR_DEKU_TREE_LOBBY,               []{return logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT));}),
         Entrance(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
-        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK);}),
+        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || (ctx->GetTrickOption(RT_DEKU_B1_SKIP) && logic->CanUse(RG_ROLL)) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK);}),
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   []{return false;}),
     });
 
@@ -318,7 +318,9 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM,    []{return true;}),
-        Entrance(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, []{return (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME))) && AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || (logic->CanUse(RG_MEGATON_HAMMER) && ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));});}),
+        Entrance(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, []{return (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME))) && 
+                                                               AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ((logic->CanUse(RG_SONG_OF_TIME) && logic->HasItem(RG_CLIMB)) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || 
+                                                                                    (logic->CanUse(RG_MEGATON_HAMMER) && ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));});}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_PAST_BOULDER_VINES] = Region("Deku Tree MQ Past Boulder Vines", SCENE_DEKU_TREE, {}, {
@@ -348,7 +350,7 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM,   []{return AnyAgeTime([]{return logic->CanHitEyeTargets();});}),
         //includes RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM Access, other fire sources clear directly from there
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return AnyAgeTime([]{return logic->CanHitEyeTargets();}) && logic->Get(LOGIC_DEKU_TREE_MQ_CLEARED_SE_ROOM) && AnyAgeTime([]{return logic->CanUse(RG_STICKS);});}),
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,            []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK) || logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,            []{return logic->IsAdult || (ctx->GetTrickOption(RT_DEKU_B1_SKIP) && logic->HasItem(RG_ROLL)) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK) || logic->CanUse(RG_HOVER_BOOTS);}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM] = Region("Deku Tree MQ Southeast Room", SCENE_DEKU_TREE, {
@@ -370,7 +372,8 @@ void RegionTable_Init_DekuTree() {
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT] = Region("Deku Tree MQ Basement Water Room Front", SCENE_DEKU_TREE, {
         //Events
         //It's possible to get this with bow if you have move while in first person and one-point skips on, noticeably harder and jankier as child, but that's a trick
-        EventAccess(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES, []{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_STICKS) && (ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield())));}),
+        EventAccess(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES, []{return logic->CanUse(RG_FIRE_ARROWS) || 
+                                                                     (logic->CanUse(RG_STICKS) && ((ctx->GetTrickOption(RT_DEKU_MQ_LOG) && logic->HasItem(RG_ROLL)) || (logic->IsChild && logic->CanShield())));}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST,           logic->HasItem(RG_OPEN_CHEST)),
@@ -379,7 +382,9 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_3, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) || logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS));}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (ctx->GetTrickOption(RT_DEKU_MQ_LOG) && logic->HasItem(RG_ROLL) ) || 
+                                                                     (logic->IsChild && logic->CanShield()) || 
+                                                                     logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS));}),
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM,  []{return true;}),
     });
 
@@ -396,7 +401,9 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   []{return logic->Get(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES) && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_SHORT_JUMPSLASH);}),
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) || logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)));}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return (ctx->GetTrickOption(RT_DEKU_MQ_LOG) && logic->HasItem(RG_ROLL)) || 
+                                                                      (logic->IsChild && logic->CanShield()) || 
+                                                                      logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)));}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM] = Region("Deku Tree MQ Basement Southwest Room", SCENE_DEKU_TREE, {}, {

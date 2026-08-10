@@ -421,6 +421,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_ROLL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_CRAWL,
 
     // #### `result`
@@ -790,6 +798,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_FLASH_SCREEN_FOR_FINISHING_BLOW,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `s32` (drop id)
+    VB_FLEX_DROP_AMMO,
 
     // #### `result`
     // ```c
@@ -1634,6 +1650,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // reflection[i].reflectionPoly != NULL
+    // ```
+    // #### `args`
+    // - `*MirRayShieldReflection`
+    VB_MIRRAY_DRAW_REFLECTION,
+
+    // #### `result`
+    // ```c
     // false
     // ```
     // #### `args`
@@ -2004,6 +2028,31 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossTw`
+    // - `*PlayState`
+    VB_PLAY_TWINROVA_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOTAKE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOUME,
 
     // #### `result`
     // ```c
@@ -2579,7 +2628,7 @@ typedef enum {
     // BgCheck_SphVsFirstPoly(&play->colCtx, &rodCheckPos, 20.0f)
     // ```
     // #### `args`
-    // - `*f32`
+    // - `*Vec3f`
     VB_NOT_CAST_FISHING,
 
     // #### `result`
@@ -3076,7 +3125,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // varies
     // ```
     // #### `args`
     // - `*Actor`
@@ -3167,14 +3216,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_DRAW_2D_BACKGROUND,
-
-    // #### `result`
-    // ```c
-    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
-    // ```
-    // #### `args`
-    // - None
-    VB_LOAD_SKYBOX,
 
     // true
     // ```

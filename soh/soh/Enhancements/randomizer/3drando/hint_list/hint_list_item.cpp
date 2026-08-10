@@ -2129,6 +2129,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_CLIMB] = HintText(CustomMessage("the ability to climb", /*german*/TODO_TRANSLATE, /*french*/"la capacité de grimper"));
     hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/TODO_TRANSLATE, /*french*/"la capacité de ramper"));
     hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/TODO_TRANSLATE, /*french*/TODO_TRANSLATE));
+    hintTextTable[RHT_ROLL] = HintText(CustomMessage("the ability to roll", /*german*/"die Fähigkeit zu rollen", /*french*/"la capacité de faire des roulades"));
     hintTextTable[RHT_SPEAK] = HintText(CustomMessage("the ability to speak",  /*german*/TODO_TRANSLATE, /*french*/"la faculté de parler"));
 
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));
@@ -2166,7 +2167,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso
 
-    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"objet mystérieux"));
+    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("a mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"un objet mystérieux"));
                                                   // /*spanish*/algo misterioso
 
      hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));
